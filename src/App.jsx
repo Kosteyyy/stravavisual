@@ -298,7 +298,9 @@ const Map = () => {
 
 
 function authAtStrava() {
-    const firstAuthLink = "https://www.strava.com/oauth/authorize?client_id=***REMOVED***&response_type=code&redirect_uri=http://localhost:3000/report&approval_prompt=force&scope=activity:read"
+    // https://stravavusual.herokuapp.com/
+    // const firstAuthLink = "https://www.strava.com/oauth/authorize?client_id=***REMOVED***&response_type=code&redirect_uri=https://stravavusual.herokuapp.com/report&approval_prompt=force&scope=activity:read"
+    // const firstAuthLink = "https://www.strava.com/oauth/authorize?client_id=***REMOVED***&response_type=code&redirect_uri=http://localhost:3000/report&approval_prompt=force&scope=activity:read"
     document.location.href = STRAVA_GET_CODE_LINK;
 }
 
