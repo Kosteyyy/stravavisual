@@ -4,6 +4,7 @@
   "description": "",
   "main": "fetchfromstrava.js",
   "scripts": {
+    "heroku-postbuild": "npm run compile",
     "start": "nodemon -w server server/server.js",
     "compile": "webpack --mode production",
     "watch": "webpack --watch",
