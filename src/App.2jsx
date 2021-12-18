@@ -1,0 +1,14 @@
+import React from "react";
+import ReactDOM from 'react-dom';
+import Hi from './Hi.jsx';
+
+function App() {
+    return (
+        <div>
+            <div>This is Hi module:</div>
+            <Hi />
+        </div>
+    )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
