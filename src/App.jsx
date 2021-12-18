@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { VictoryPie } from "victory-pie";
 import { Link, Routes, Route, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import URLSearchParams from 'url-search-params';
 import axios from 'axios';
@@ -138,6 +139,48 @@ function ShowResults({resultList} = []) {
     )
 }
 
+function ShowAggregatedResults({activitiesList}) {
+    const [state, setState] = useState([]);
+    function aggregateResultsPlaceDistance(data = []) {
+        //Аггрегирует активности по местам и соответствующим дистанциям, на выходе объект
+        let placedistobj = {};
+        
+        data.forEach(el => {
+            if (placedistobj[el.stravavisualPlace] == undefined) placedistobj[el.stravavisualPlace] = 0;
+            placedistobj[el.stravavisualPlace] += Number(el.distance);
+        });
+
+        return placedistobj;
+    }
+    useEffect(() => {
+        let aggrobject = aggregateResultsPlaceDistance(activitiesList);
+        console.log('actList: ', activitiesList);
+        console.log('aggr: ', aggrobject);
+        let diaData = Object.keys(aggrobject).map((key) => {
+             return {x: key, y: aggrobject[key]};
+        });
+        setState(diaData);
+        console.log('diaData: ', diaData);
+    }, [activitiesList]);
+
+    // const myData = [
+    //     { x: "Group A", y: 900 },
+    //     { x: "Group B", y: 400 },
+    //     { x: "Group C", y: 300 },
+    //   ];
+
+    return(
+        <div>
+            {state.length ? <h1>Распределение километража по месту</h1> : null }
+            <VictoryPie
+                data={state}
+                colorScale={["BurlyWood", "LightSkyBlue", "LightCoral", "LightPink", "Teal"]}
+                radius={100}
+            />
+        </div>
+    )
+}
+
 function Page({ authData }) { 
     const [queryParams, setQueryParams] = useState({before: '1639833642', after: '1633046400'})
     const [activities, setActivities] = useState([]);
@@ -166,10 +209,12 @@ function Page({ authData }) {
                 res.stravavisualPlace = 'Неизвестно';
             }
         });
-        //console.log("Найдено ", result.length, " результатов");
-        //console.log(result);
-        setActivities(result);    
+
+        setActivities(result);
+  
     }
+
+
 
     let authInfo = authData.stravaAuthInfo;
 
@@ -196,6 +241,7 @@ function Page({ authData }) {
     return(
         <div>
             <ActivityForm handleFormSubmit={handleFormSubmit}/>
+            {activities ? <ShowAggregatedResults activitiesList={activities}/> : null}
             <ShowResults resultList={activities} />
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>
@@ -242,7 +288,7 @@ function App() {
 
     useEffect(() => {
         //Проверяем, появились ли данные в stravaAuthInfo
-        //console.log('Проверяю наличие данных в СтраваИнфо');
+        //console.log('Проверяю наличие данных в Страва�?нфо');
         if (authData.stravaAuthInfo == undefined) {return}
         else if (Object.keys(authData.stravaAuthInfo).length !== 0 && authData.status !== "authorized") {
             let obj = {...authData, status: "authorized"};
@@ -251,7 +297,7 @@ function App() {
     }, [authData]);
 
      useEffect(() => {
-        //console.log('App. Извлекаем данные из локального хранилища.')
+        //console.log('App. �?звлекаем данные из локального хранилища.')
         let object = JSON.parse(localStorage.getItem ("StravaAuthInfo"));
         if (object == null) {
         //    console.log('В хранилище данных нет.');
