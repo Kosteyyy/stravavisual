@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-export default function Header({ authData, signOut, signIn }) {
+export default function Header({ authInfo, signOut, signIn }) {
     return (
         <header className="header">
             <div className="container">
                 <div className="header_body">
-                    <HeaderAuthInfo authData={authData} signOut={signOut} signIn={signIn}/> 
+                    <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn}/> 
                     <Nav />
                 </div>
             </div>
@@ -27,12 +27,10 @@ const UserName = ({firstname, lastname}) => {
 }
 
 
-function HeaderAuthInfo({ authData, signOut, signIn }) {
-    let authInfo = authData.stravaAuthInfo;
-    let displayUserInfo = (authData.status == "authorized");
+function HeaderAuthInfo({ authInfo, signOut, signIn }) {
     return(
         <div className="header_userinfo">
-            {displayUserInfo ? 
+            {authInfo.isAuth ? 
                 <>
                     <Avatar link={authInfo.athlete.profile} />
                     <UserName firstname={authInfo.athlete.firstname} lastname={authInfo.athlete.lastname} /> 
@@ -48,7 +46,8 @@ const Nav = () => {
     return(
         <nav>   
         <Link to="/">Home</Link>|{" "}
-        <Link to="map">Места</Link> 
+        <Link to="map">Места</Link>|{" "}
+        <Link to="activities">Тренировки</Link> 
         </nav>
     )
 }
