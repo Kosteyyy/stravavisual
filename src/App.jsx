@@ -9,13 +9,6 @@ import STRAVA_GET_CODE_LINK from './constants';
 
 import Header from './Header.jsx';
 
-function NewBranch () {
-    return (
-        <div>This function is in a new branch</div>
-    )
-}
-// There is no function here
-
 
 const PLACES = [
     {name: 'Митино Парк', latlng: [55.84, 37.37]},
@@ -180,11 +173,11 @@ function ShowAggregatedResults({activitiesList}) {
     return(
         <div>
             {state.length ? <h1>Распределение километража по месту</h1> : null }
-            <VictoryPie
+            {/* <VictoryPie
                 data={state}
                 colorScale={["BurlyWood", "LightSkyBlue", "LightCoral", "LightPink", "Teal"]}
                 radius={100}
-            />
+            /> */}
         </div>
     )
 }
@@ -256,7 +249,11 @@ function Page({ authData }) {
      )
 }
 
-function Mainpage({ authData, setAuthData }) {
+function Mainpage({ authData, setAuthData, startRedirect }) {
+    let navigate = useNavigate();
+
+    useEffect(() => {if (startRedirect) navigate("redirect");}, [])
+    
     return (
         <div>
             {authData.status == "unauthorized" ? <Unauthorized setAuthData={setAuthData} /> : null}
@@ -266,9 +263,17 @@ function Mainpage({ authData, setAuthData }) {
     )
 }
 
+function RedirectTarget({disableRedirect}) {
+    let navigate = useNavigate()
+    return (
+        <button onClick={() => {disableRedirect(); navigate('/')}}>disableRedirect </button>
+    )
+}
 
 function App() {
     const [authData, setAuthData] = useState({status: "unauthorized", stravaAuthInfo: {}}); //["unauthorized", "authorized", "processing"]
+    const [startRedirect, setStartRedirect] = useState(true);
+    function disableRedirect() {setStartRedirect(false)};
 
     function signOut() {
         localStorage.removeItem("StravaAuthInfo");
@@ -296,7 +301,7 @@ function App() {
 
     useEffect(() => {
         //Проверяем, появились ли данные в stravaAuthInfo
-        //console.log('Проверяю наличие данных в СтраваИнфо');
+        //console.log('Проверяю наличие данных в Страва�?нфо');
         if (authData.stravaAuthInfo == undefined) {return}
         else if (Object.keys(authData.stravaAuthInfo).length !== 0 && authData.status !== "authorized") {
             let obj = {...authData, status: "authorized"};
@@ -305,7 +310,7 @@ function App() {
     }, [authData]);
 
      useEffect(() => {
-        //console.log('App. Извлекаем данные из локального хранилища.')
+        //console.log('App. �?звлекаем данные из локального хранилища.')
         let object = JSON.parse(localStorage.getItem ("StravaAuthInfo"));
         if (object == null) {
         //    console.log('В хранилище данных нет.');
@@ -336,9 +341,10 @@ function App() {
             <BrowserRouter>
                 <Header authData={authData} signOut={signOut} signIn={authAtStrava}/>
                 <Routes>
-                    <Route path="/" element={<Mainpage authData={authData} setAuthData={setAuthData} /> } />
+                    <Route path="/" element={<Mainpage authData={authData} setAuthData={setAuthData} startRedirect={startRedirect}/> } />
                     <Route path="auth" element={<Authorization authData={authData} handleData={setAuthData} />} />
                     <Route path="map" element={<Map />} />
+                    <Route path="redirect" element={<RedirectTarget disableRedirect={disableRedirect} />} />
                 </Routes>
             </BrowserRouter>
         </>
