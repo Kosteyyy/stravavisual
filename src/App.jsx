@@ -9,6 +9,11 @@ import STRAVA_GET_CODE_LINK from './constants';
 
 import Header from './Header.jsx';
 
+function NewBranch () {
+    return (
+        <div>This function is in a new branch</div>
+    )
+}
 
 const PLACES = [
     {name: 'Митино Парк', latlng: [55.84, 37.37]},
@@ -61,7 +66,8 @@ function Authorization({ authData, handleData }) {
                     localStorage.setItem ("StravaAuthInfo", JSON.stringify(res));
                     handleData({status: "unauthorized", stravaAuthInfo: res}); //Чтобы избежать ререндеринга Роутера пока статус оставляем unauth, обработаем в App
                     navigate('/');
-                });
+                })
+                .catch(err => console.log(err));
             } else {
                 //navigate('/');
             }
@@ -288,7 +294,7 @@ function App() {
 
     useEffect(() => {
         //Проверяем, появились ли данные в stravaAuthInfo
-        //console.log('Проверяю наличие данных в Страва�?нфо');
+        //console.log('Проверяю наличие данных в СтраваИнфо');
         if (authData.stravaAuthInfo == undefined) {return}
         else if (Object.keys(authData.stravaAuthInfo).length !== 0 && authData.status !== "authorized") {
             let obj = {...authData, status: "authorized"};
@@ -297,7 +303,7 @@ function App() {
     }, [authData]);
 
      useEffect(() => {
-        //console.log('App. �?звлекаем данные из локального хранилища.')
+        //console.log('App. Извлекаем данные из локального хранилища.')
         let object = JSON.parse(localStorage.getItem ("StravaAuthInfo"));
         if (object == null) {
         //    console.log('В хранилище данных нет.');
