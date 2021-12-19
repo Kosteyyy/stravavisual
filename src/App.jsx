@@ -14,6 +14,8 @@ function NewBranch () {
         <div>This function is in a new branch</div>
     )
 }
+// There is no function here
+
 
 const PLACES = [
     {name: 'Митино Парк', latlng: [55.84, 37.37]},
