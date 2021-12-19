@@ -252,7 +252,7 @@ function Page({ authData }) {
 function Mainpage({ authData, setAuthData, startRedirect }) {
     let navigate = useNavigate();
 
-    useEffect(() => {if (startRedirect) navigate("redirect");}, [])
+    //useEffect(() => {if (startRedirect) navigate("redirect");}, [])
     
     return (
         <div>
