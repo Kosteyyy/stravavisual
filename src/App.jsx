@@ -65,12 +65,15 @@ function App() {
                     <Route path="map" element={<Map />} />
                     <Route path="notauth" element={<Unauthorized />} />
                     <Route path="activities" element={<Activities activityList={activityList} setActivityList={setActivityList} accessToken={authInfo.access_token} />} />
+                    <Route path="secret" element={<Secret />} />                    
                 </Routes>
             </BrowserRouter>
         </>
     )
 }
-
+const Secret = () => {
+    return <div>I love you!</div>
+}
 const Map = () => {
     return <div>Здесь будут карты</div>
 }

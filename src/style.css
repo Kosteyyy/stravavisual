@@ -117,9 +117,9 @@ button {
     z-index: 3;
 }
 
-#myChart {
+.my-chart {
     width: 400px;
-    height: 400px;
+    height: 470px;
 }
 
 @media (max-width:767px){
@@ -199,8 +199,9 @@ button {
         top: 0;
     }
 
-    #myChart {
-        width: 90%;
+    .my-chart {
+        width: 95%;
+        height: 450px;
     }
 
 }

@@ -1,95 +1,83 @@
 import React, { useState, useEffect } from "react";
 import URLSearchParams from 'url-search-params';
-import { Chart, BarElement, BarController, LinearScale, CategoryScale, PieController, ArcElement } from 'chart.js';
-// Chart.register();
-Chart.register( LinearScale, BarController, CategoryScale, PieController, ArcElement);
-
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 import ActivityFilter from './ActivityFilter.jsx';
 import { PLACES } from "./constants.js";
 import ResultList from './ResultList.jsx';
 import { isNear } from './functions.js';
 
-function ChartComponent() {
-    useEffect(() => {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const data = {
-            labels: [
-              'Red',
-              'Blue',
-              'Yellow'
-            ],
-            datasets: [{
-              label: 'My First Dataset',
-              data: [300, 50, 100],
-              backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
-              ],
-              hoverOffset: 4
-            }]
-          };
-        const myChart = new Chart(ctx, {
-            type: 'pie',
-            data: data,
-        })
-        // const myChart = new Chart(ctx, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        //         datasets: [{
-        //             label: '# of Votes',
-        //             data: [12, 19, 3, 5, 2, 3],
-        //             backgroundColor: [
-        //                 'rgba(255, 99, 132, 0.2)',
-        //                 'rgba(54, 162, 235, 0.2)',
-        //                 'rgba(255, 206, 86, 0.2)',
-        //                 'rgba(75, 192, 192, 0.2)',
-        //                 'rgba(153, 102, 255, 0.2)',
-        //                 'rgba(255, 159, 64, 0.2)'
-        //             ],
-        //             borderColor: [
-        //                 'rgba(255, 99, 132, 1)',
-        //                 'rgba(54, 162, 235, 1)',
-        //                 'rgba(255, 206, 86, 1)',
-        //                 'rgba(75, 192, 192, 1)',
-        //                 'rgba(153, 102, 255, 1)',
-        //                 'rgba(255, 159, 64, 1)'
-        //             ],
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     options: {
-        //         scales: {
-        //             y: {
-        //                 beginAtZero: true
-        //             }
-        //         }
-        //     }
-        // });
-    }, [])
-    
-// return <canvas id="myChart" width="400" height="400"></canvas>
-return <canvas id="myChart" width="400" height="400"></canvas>
+// function ChartComponent({ data = [] }) {
+//     const [showChart, setShowChart] = useState(false);
+//     console.log('ChartComponent. data: ', data);
 
-}
+
+//     useEffect(() => {
+//         const ctx = document.getElementById('myChart').getContext('2d');
+//         if (data.labels.length == 0) return;
+//         // const data = {
+//         //     labels: labels,
+//         //     datasets: [{
+//         //       label: 'My First Dataset',
+//         //       data: chartdata,
+//         //       backgroundColor: [
+//         //         'rgb(255, 99, 132)',
+//         //         'rgb(54, 162, 235)',
+//         //         'red',
+//         //         'green',
+                
+//         //       ],
+//         //       hoverOffset: 4
+//         //     }]
+//         //   };
+//         const myChart = new Chart(ctx, {
+//             type: 'pie',
+//             data: data,
+//         });
+//         setShowChart(true);
+//     }, [data])
+
+//     // return <canvas id="myChart" width="400" height="400"></canvas>
+//     return (
+//         <canvas id="myChart" width="400" height="400"></canvas>
+//     )
+
+// }
 
 function ShowAggregatedResults({activitiesList}) {
-    const [state, setState] = useState([]);
-    // function aggregateResultsPlaceDistance(data = []) {
-    //     //Аггрегирует активности по местам и соответствующим дистанциям, на выходе объект
-    //     let placedistobj = {};
-        
-    //     data.forEach(el => {
-    //         if (placedistobj[el.stravavisualPlace] == undefined) placedistobj[el.stravavisualPlace] = 0;
-    //         placedistobj[el.stravavisualPlace] += Number(el.distance);
-    //     });
+    const [aggrData, setAggrData] = useState([]);
+    const [showChart, setShowChart] = useState(false);
+    let startData = {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)"
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)"
+            ],
+            borderWidth: 1
+          }
+        ]
+      };
+    const [chartData, setChartData] = useState({})
 
-    //     return placedistobj;
-    // }
-
-    function aggrData(data, keyField, targetField ) {
+    function calcAggrData(data, keyField, targetField ) {
         //Аггрегирует в массиве объектов data данные по полю объектов keyField, суммируя поля targetField
         let result = {};
         data.forEach(el => {
@@ -100,38 +88,67 @@ function ShowAggregatedResults({activitiesList}) {
     }
 
     useEffect(() => {
+        if (activitiesList.length == 0) { 
+            setShowChart(false);
+            return;
+        }
         //let aggrobject = aggregateResultsPlaceDistance(activitiesList);
-        let aggrobject = aggrData(activitiesList, "stravavisualPlace", "distance");
-        console.log('arrgobject1: ', aggrobject);
-        console.log('actList: ', activitiesList);
-        console.log('aggr: ', aggrobject);
-        let diaData = Object.keys(aggrobject).map((key) => {
-             return {x: key, y: aggrobject[key]};
-        });
-        setState(diaData);
-        console.log('diaData: ', diaData);
+        let aggrobject = calcAggrData(activitiesList, "stravavisualPlace", "distance");
+        setAggrData(aggrobject);
     }, [activitiesList]);
 
-    // const myData = [
-    //     { x: "Group A", y: 900 },
-    //     { x: "Group B", y: 400 },
-    //     { x: "Group C", y: 300 },
-    //   ];
+    useEffect(() => {
+        if (aggrData.length == 0) return
+        let labels = Object.keys(aggrData);
+        let data = Object.keys(aggrData).map(key => {
+            return aggrData[key];
+        })
+        console.log('aggrData: ', aggrData);
+        console.log('labels: ', labels, 'data: ', data);
+        //labels = ["Один он", "two его"]
+        let readyData = {
+            labels: labels,
+            datasets: [
+              {
+                label: "# of Votes",
+                data: data,
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                  "rgba(255, 159, 64, 0.2)"
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)"
+                ],
+                borderWidth: 1
+              }
+            ]
+          };
+        setChartData(readyData);
+        setShowChart(true);
+    }, [aggrData]);
 
     return(
-        <div>
-            {state.length ? <h1>Распределение километража по месту</h1> : null }
-            <ChartComponent />
-            {/* <VictoryPie
-                data={state}
-                colorScale={["BurlyWood", "LightSkyBlue", "LightCoral", "LightPink", "Teal"]}
-                radius={100}
-            /> */}
-        </div>
+        showChart ? 
+            <div className="my-chart">
+                <h1>Распределение километража по месту</h1> 
+                <Pie data={chartData} />
+            </div>
+        : null
     )
+
 }
 
 export default function Activities({ activityList, setActivityList, accessToken }) { 
+    console.log("rendering Activities");
     const [queryParams, setQueryParams] = useState({})
     const [activities, setActivities] = useState([]);
 
