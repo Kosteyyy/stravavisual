@@ -1,26 +1,87 @@
 import React, { useState, useEffect } from "react";
 import URLSearchParams from 'url-search-params';
+import { Chart, BarElement, BarController, LinearScale, CategoryScale, registerables } from 'chart.js';
+// Chart.register();
+Chart.register(BarElement, LinearScale, BarController, CategoryScale);
+
 
 import ActivityFilter from './ActivityFilter.jsx';
 import { PLACES } from "./constants.js";
 import ResultList from './ResultList.jsx';
 import { isNear } from './functions.js';
 
+function ChartComponent() {
+    useEffect(() => {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }, [])
+    
+
+return <canvas id="myChart" width="400" height="400"></canvas>
+
+}
+
 function ShowAggregatedResults({activitiesList}) {
     const [state, setState] = useState([]);
-    function aggregateResultsPlaceDistance(data = []) {
-        //Аггрегирует активности по местам и соответствующим дистанциям, на выходе объект
-        let placedistobj = {};
+    // function aggregateResultsPlaceDistance(data = []) {
+    //     //Аггрегирует активности по местам и соответствующим дистанциям, на выходе объект
+    //     let placedistobj = {};
         
-        data.forEach(el => {
-            if (placedistobj[el.stravavisualPlace] == undefined) placedistobj[el.stravavisualPlace] = 0;
-            placedistobj[el.stravavisualPlace] += Number(el.distance);
-        });
+    //     data.forEach(el => {
+    //         if (placedistobj[el.stravavisualPlace] == undefined) placedistobj[el.stravavisualPlace] = 0;
+    //         placedistobj[el.stravavisualPlace] += Number(el.distance);
+    //     });
 
-        return placedistobj;
+    //     return placedistobj;
+    // }
+
+    function aggrData(data, keyField, targetField ) {
+        //Аггрегирует в массиве объектов data данные по полю объектов keyField, суммируя поля targetField
+        let result = {};
+        data.forEach(el => {
+            if (result[el[keyField]] == undefined) result[el[keyField]] = 0;
+            result[el[keyField]] += Number(el[targetField]);
+        })
+        return result;
     }
+
     useEffect(() => {
-        let aggrobject = aggregateResultsPlaceDistance(activitiesList);
+        //let aggrobject = aggregateResultsPlaceDistance(activitiesList);
+        let aggrobject = aggrData(activitiesList, "stravavisualPlace", "distance");
+        console.log('arrgobject1: ', aggrobject);
         console.log('actList: ', activitiesList);
         console.log('aggr: ', aggrobject);
         let diaData = Object.keys(aggrobject).map((key) => {
@@ -39,6 +100,7 @@ function ShowAggregatedResults({activitiesList}) {
     return(
         <div>
             {state.length ? <h1>Распределение километража по месту</h1> : null }
+            <ChartComponent />
             {/* <VictoryPie
                 data={state}
                 colorScale={["BurlyWood", "LightSkyBlue", "LightCoral", "LightPink", "Teal"]}
