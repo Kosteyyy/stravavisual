@@ -1,12 +1,23 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
+function setActiveClass() {
+    document.querySelector(".header_burger").classList.toggle("active");
+    document.querySelector(".header_menu").classList.toggle("active");
+    document.querySelector("body").classList.toggle("lock");
+
+}
+
 export default function Header({ authInfo, signOut, signIn }) {
+
     return (
         <header className="header">
             <div className="container">
                 <div className="header_body">
                     <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn}/> 
+                    <div className="header_burger" onClick={setActiveClass}>
+                        <span></span>
+                    </div>
                     <Nav />
                 </div>
             </div>
@@ -44,10 +55,10 @@ function HeaderAuthInfo({ authInfo, signOut, signIn }) {
 
 const Nav = () => {
     return(
-        <nav>   
-        <Link to="/">Home</Link>|{" "}
-        <Link to="map">Места</Link>|{" "}
-        <Link to="activities">Тренировки</Link> 
+        <nav className="header_menu">   
+            <Link onClick={setActiveClass} to="/">Home</Link>{" "}
+            <Link onClick={setActiveClass} to="map">Места</Link>{" "}
+            <Link onClick={setActiveClass} to="activities">Тренировки</Link> 
         </nav>
     )
 }
