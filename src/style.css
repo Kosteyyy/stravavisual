@@ -117,6 +117,11 @@ button {
     z-index: 3;
 }
 
+#myChart {
+    width: 400px;
+    height: 400px;
+}
+
 @media (max-width:767px){
     body.lock {
         overflow: hidden;
@@ -194,6 +199,10 @@ button {
         top: 0;
     }
 
+    #myChart {
+        width: 90%;
+    }
+
 }
 
 
@@ -216,3 +225,4 @@ button {
     font-size: 1em;
     line-height: 1em;
 }
+
