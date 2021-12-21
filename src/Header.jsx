@@ -56,7 +56,7 @@ function HeaderAuthInfo({ authInfo, signOut, signIn }) {
 const Nav = () => {
     return(
         <nav className="header_menu">   
-            <Link onClick={setActiveClass} to="/">Home</Link>{" "}
+            <Link onClick={setActiveClass} to="/">Главная</Link>{" "}
             <Link onClick={setActiveClass} to="map">Места</Link>{" "}
             <Link onClick={setActiveClass} to="activities">Тренировки</Link> 
         </nav>

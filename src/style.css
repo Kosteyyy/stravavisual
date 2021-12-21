@@ -1,17 +1,55 @@
+/*Обнуление*/
+*{padding: 0; margin: 0; border: 0}
+*,*:before,*:after{-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
+:focus, :active{outline: none;}
+a:focus, a:active{outline: none;}
+nav, footer, header, aside{display: block;}
+html,body {height: 100%;width: 100%;font-size: 100%;line-height: 1;}
+input, button, textarea{font-family: inherit;}
+input::-ms-clear{display: none;}
+button {cursor: pointer;}
+button::-moz-focus-inner{padding: 0;border: 0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;};
+h1,h2,h3,h4,h5,h6{font-size: inherit;font-weight: inherit;}
+/*Обнуление*/
+
+/* 
+--star-command-blue: #2176aeff;
+--blue-jeans: #57b8ffff;
+--liver-dogs: #b66d0dff;
+--bright-yellow-crayola: #fbb13cff;
+--outrageous-orange: #fe6847ff;*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,500;0,600;0,700;0,800;1,300;1,800&display=swap');
+
 :root {
-    --header-bg-color: #5e5373;
-    --button-color: orange;
-    --main-bg-color: #13b5ca;
+    --main-color: #2176aeff;
+    --main-light: #57b8ffff;
+    --secondary-color: #ffb13cff;
+    --secondary-color-light: #fcc873;
+    --secondary-dark: #b66d0dff;
+    --header-bg-color: #2176aeff;
+    --button-color: #fbb13cff;
+    --button-hover-color: #b66d0dff;
+    --button-text: #fff;
+    --main-bg-color: #fff;
     --header-link: white;
-    --main-text: #555;
+    --main-text: #888;
+    --text-lighter: #888;
+    --tex--darker: #444;
+    --light-text: #fff;
 }
 body {
     display: flex;
-    height: 100vh;
+    height: fit-content;
+    min-height: 100vh;
     justify-content: center;
     align-items: center;
-    font-family: 'Nanum Gothic', sans-serif;
-    background-color: #eeebf0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    background-color: var(--main-bg-color);
     color: var(--main-text);
 }
 
@@ -19,48 +57,65 @@ body {
     display: flex;
     width: 100%;
     max-width: 800px;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    font-family: 'Nanum Gothic', sans-serif
+    font-family: 'Open Sans', sans-serif;
+}
+#root {
+    background-color: white;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    padding: 100px 10px 10px 10px;
 }
 
+.content {
+    width: 100%;
+}
+.component-card {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(92, 99, 105, .2);
+    padding: 5px;
+    margin-bottom: 10px;
+}
 .container {
     max-width: 800px;
     margin: 0px auto;
     padding: 0px 10px;
 }
 
-#root {
-    display: flex;
-    width: 100%;
-    max-width: 800px;
-    height: 100vh;
-    justify-content: center;
-    padding: 100px 10px 10px 10px;
-}
+
 .unauth {
     text-align: center;
     margin: 20px;
 }
 
 button {
-    background-color: orange;
-    color: white;
+    background-color: var(--button-color);
+    color: var(--button-text);
     font-size: 1em;
     padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: var(--button-hover-color);
 }
 
 .header {
+    font-size: 1em;
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 50;
-    color: white;
+    color: var(--light-text);
 }
 
 .header:before{
@@ -90,9 +145,18 @@ button {
     color: var(--header-link);
     padding: 10px;
 }
+.header a:hover {
+    color: var(--secondary-color);
+}
 .header button {
+    background-color: transparent;
+    border: 1px solid var(--light-text);
     font-size: .8em;
     padding: 8px;
+}
+.header button:hover {
+    background-color: var(--secondary-color);
+    border: none;
 }
 
 .header_userinfo {
@@ -117,9 +181,23 @@ button {
     z-index: 3;
 }
 
+#aggregate {
+    display: flex;
+    justify-content: center;;
+    text-align: center;
+}
 .my-chart {
     width: 400px;
     height: 470px;
+}
+.my-chart h1 {
+    color: var(--tex--darker);
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+.activity{
+    border: 1px solid var(--main-text);
+    border-radius: 5px;
 }
 
 @media (max-width:767px){
@@ -183,17 +261,25 @@ button {
     }
 
     .header_menu {
+        font-weight: 300;
+        font-size: 1.5em;
         position: fixed;
         top: -100%;
         left: 0;
-        height: 100%;
+        height: auto;
         width: 100%;
         overflow: auto;
-        background-color: #18b5a4;
+        background-color: var(--secondary-color);
+        border: 1px solid var(--secondary-color-light);
         z-index: 2;
-        padding: 60px 20px 0px 20px;
+        padding: 60px 20px 20px 20px;
         flex-direction: column;
         transition: all 0.3s ease 0s;
+    }
+    .header_menu a:hover {
+        color: var(--light-text);
+        text-decoration: underline;
+        text-underline-offset: 0.2em
     }
     .header_menu.active {
         top: 0;
@@ -206,20 +292,57 @@ button {
 
 }
 
-
-.activity-form input {
-    padding: 8px;
-    border: 1px solid var(--main-text);
-    border-radius: 5px;
+.actFilter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.activity-form fieldtext {
-    color: var(--main-text);
-}
-.activity-form legend {
-    padding: 5px;
+.activity-form {
+    background-color: white;
+    width: 100%;
 }
 .activity-form fieldset {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.activity-form .dateInput {
+    position: relative;
+    height: 36px;
+    width: 50%;
+    min-width: fit-content;
+    margin-bottom: 5px;
+}
+.activity-form .typeInput {
+    position: relative;
+    height: 36px;
+    width: 50%;
+    min-width: fit-content;
+    margin-bottom: 5px;
+}
+
+#start {
+    color: var(--text-lighter);
+}
+
+.activity-form input {
+    padding: 8px;
+    color: var(--text-lighter);
+    border: 1px solid var(--text-lighter);
+    border-radius: 5px;
+}
+
+.activity-form label {
+    padding: 5px;
+}
+.typeInput select {
+    color: var(--text-lighter);
+    font-size: 1em;
+    height: 36px;
+    padding: 0px;
+    border: 1px solid var(--text-lighter);
+    border-radius: 5px;
+    background-color: transparent;
 }
 
 .result-list {

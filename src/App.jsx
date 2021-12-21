@@ -43,12 +43,12 @@ function App() {
         //Проверяем срок токена
         if (!authInfo.isAuth) return; //Если не авторизованы - выходим, проверять нечего.
         let tokenExpired = isTokenExpired(authInfo.expires_at);
-        console.log('Токен просрочен?: ', tokenExpired);
+        //console.log('Токен просрочен?: ', tokenExpired);
         if (tokenExpired) {
-            console.log("Обновляю токен, refresh_token: ", authInfo.refresh_token)
+            //console.log("Обновляю токен, refresh_token: ", authInfo.refresh_token)
             refreshToken(authInfo.refresh_token)
                 .then(data => {
-                    console.log('Получены данные с сервера: ', data);
+                    //console.log('Получены данные с сервера: ', data);
                     changeAuthInfo({ ...authInfo, ...data});
                 })
                 .catch(error => console.log(error));

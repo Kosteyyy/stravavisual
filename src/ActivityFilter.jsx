@@ -9,7 +9,7 @@ export default function ActivityFilter({handleFormSubmit}) {
 
     const [before, setBefore] = useState(today); //{activityBefore, activityAfter}
     const [after, setAfter] = useState(monthAgo); //Month ago
-
+    const [type, setType] = useState('');
     function handleEndDate(e) {
         setBefore(e.target.value);
     }
@@ -18,13 +18,18 @@ export default function ActivityFilter({handleFormSubmit}) {
         setAfter(e.target.value);
     }
 
+    function onChangeType(e) {
+        setType(e.target.value);
+        }
+
     function handleSubmit(e) {
         e.preventDefault();
         // let dateBefore = (Date.parse(before) / 1000).toString();
         // let dateAfter = (Date.parse(after) / 1000).toString();
         let formData = {
             before: before,
-            after: after
+            after: after,
+            type: type
         }
         handleFormSubmit(formData);
         //console.log(`Получим данные между ${dateBefore} и ${dateAfter}`);
@@ -32,19 +37,38 @@ export default function ActivityFilter({handleFormSubmit}) {
     }
 
     return(
-        <form className='activity-form'>
-            <fieldset>
-                <legend>Дата начала</legend>
-                <input type="date" id="start" name="activity-after"
-                    value={after} onChange={handleStartDate}
-                    min="2018-01-01"></input>
-                <legend>Дата конца</legend>
-                <input type="date" id="end" name="activity-before"
-                    value={before} onChange={handleEndDate}
-                    min="2018-01-01"></input>
-            </fieldset>
-            <button type="submit" onClick={handleSubmit}>Найти</button>
+        <div className='actFilter component-card'>
+            <form className='activity-form'>
+                <fieldset>
+                    <div className="dateInput">
 
-        </form>
+                        <label htmlFor="start" className="label">С</label>
+                        <input type="date" id="start" name="activity-after"
+                            value={after} onChange={handleStartDate}
+                            min="2018-01-01"></input>
+                            
+                        <label htmlFor="end" className="label">до</label>
+                        <input type="date" id="end" name="activity-before"
+                            value={before} onChange={handleEndDate}
+                        min="2018-01-01"></input>                        
+                    </div>
+
+
+                <div className="typeInput">
+                    <label htmlFor="" className="label">Вид активности:</label>                    
+                    <select id="typeSelect" onChange={onChangeType}>
+                        <option value="">(Все)</option>
+                        <option value="Run">Бег</option>
+                        <option value="NordicSki">Лыжи</option>
+                        <option value="Ride">Велосипед</option>
+                        <option value="Swim">Плавание</option>
+                    </select>
+                </div>
+                </fieldset>
+
+                <button type="submit" onClick={handleSubmit}>Найти</button>
+
+            </form>
+        </div>
     )
 }
