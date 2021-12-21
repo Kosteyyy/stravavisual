@@ -55,7 +55,7 @@ export default function ActivityFilter({handleFormSubmit}) {
 
 
                 <div className="typeInput">
-                    <label htmlFor="" className="label">Вид активности:</label>                    
+                    <label htmlFor="typeSelect" className="label">Вид активности:</label>                    
                     <select id="typeSelect" onChange={onChangeType}>
                         <option value="">(Все)</option>
                         <option value="Run">Бег</option>

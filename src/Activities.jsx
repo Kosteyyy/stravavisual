@@ -38,6 +38,7 @@ export default function Activities({ activityList, setActivityList, accessToken 
         );
         //Добавляем поле stravavisualPlace к активности, которое идентифицирует место тренировки
         result.forEach(res => {
+            res.stravavisualCount = 1;
             let place = PLACES.find(place => isNear(res.start_latlng, place));
             if (place) {
                 res.stravavisualPlace = place.name;

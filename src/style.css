@@ -38,7 +38,7 @@ h1,h2,h3,h4,h5,h6{font-size: inherit;font-weight: inherit;}
     --header-link: white;
     --main-text: #888;
     --text-lighter: #888;
-    --tex--darker: #444;
+    --text--darker: #444;
     --light-text: #fff;
 }
 body {
@@ -84,6 +84,12 @@ body {
     padding: 5px;
     margin-bottom: 10px;
 }
+.component-card h1  {
+    color: var(--text--darker);
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
 .container {
     max-width: 800px;
     margin: 0px auto;
@@ -190,8 +196,8 @@ button:hover {
     width: 400px;
     height: 470px;
 }
-.my-chart h1 {
-    color: var(--tex--darker);
+.my-chart h1  {
+    color: var(--text--darker);
     font-size: 1.5em;
     margin-bottom: 10px;
 }
@@ -326,7 +332,8 @@ button:hover {
 }
 
 .activity-form input {
-    padding: 8px;
+    padding: 5px;
+    font-size: 1em;
     color: var(--text-lighter);
     border: 1px solid var(--text-lighter);
     border-radius: 5px;
@@ -350,3 +357,32 @@ button:hover {
     line-height: 1em;
 }
 
+.activity {
+    font-size: .8em;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+#resultList {
+    position: relative;
+}
+.component-card .toggleButton {
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+}
+
+.totalResults {
+    margin-bottom: 15px;
+}
+.totalResults svg {
+    color: var(--main-light);
+    margin-right: 10px;
+}
+.totalResults span {
+    /* float: right; */
+    font-weight: 400;
+}
+#resultList .resultTitle {
+    color: var(--text--darker);
+}
