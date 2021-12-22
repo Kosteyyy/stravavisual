@@ -434,8 +434,7 @@ span.activityIcon {
     margin-right: 10px;
 }
 .totalResults span {
-    /* float: right; */
-    font-weight: 400;
+    font-weight: 300;
 }
 #resultList .resultTitle {
     color: var(--text--darker);
