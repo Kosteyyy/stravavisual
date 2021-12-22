@@ -357,6 +357,7 @@ button:hover {
 
 #resultList {
     font-size: 1em;
+    position: relative;
 }
 #resultList ul {
     margin-bottom: 20px;
@@ -365,6 +366,8 @@ button:hover {
 
 .activity {
     position: relative;
+    display: flex;
+    align-items: center;
     font-size: .8em;
     padding: 10px;
     line-height: 1.25em;
@@ -374,17 +377,45 @@ button:hover {
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(92, 99, 105, .2);
 }
-
+.activity.fullView {
+    align-items: flex-start;
+}
 span.activityIcon {
     display: inline-block;
-    width: 25px;
-    color: var(--main-light);
+    font-size: 30px;
+    margin-right: 20px;
+    color: var(--main-color);
+    flex-grow: 0;
 }
+
+
+.activity ul {
+    flex-grow: 1;
+}
+.activity li {
+    display: flex;
+    width: 100%;
+}
+.activity.fullView .field {
+    flex-basis: 30%;
+    flex-grow: 1;
+    color: var(--text--darker);
+    text-align: right;
+    margin-right: 10px;
+}
+.activity.fullView .fieldData {
+    flex-basis: 40%;
+    flex-grow: 4;
+    flex-shrink: 1;
+    color: var(--text-lighter);
+    text-align: left;
+    margin-right: 10px;
+}
+
+
+
 .activity.fullView {
     background-color: #ebf7ff;
-}
-#resultList {
-    position: relative;
 }
 .component-card .toggleButton {
     color: var(--main-light);
@@ -422,5 +453,8 @@ span.activityIcon {
     }
     .activity-form .typeInput {
         height: fit-content;
+    }
+    .fullView span.activityIcon {
+        margin-right: 5px;
     }
 }  

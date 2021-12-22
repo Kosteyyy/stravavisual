@@ -33,7 +33,7 @@ export default function ResultList({resultList} = []) {
         <div id="resultList" className="component-card">
             <h1>Найдено: {resultList.length} {resultList.length!==0 && <span onClick={toggleShowList} className="toggleButton">{showList ? <FontAwesomeIcon icon={faAngleUp} /> : <FontAwesomeIcon icon={faAngleDown} />}</span>}</h1>
             {resultList.length!==0 && <ul className="totalResults">
-                <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Всего тренировок: </span><span>{totalCount}</span></li>
+                {/* <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Всего тренировок: </span><span>{totalCount}</span></li> */}
                 <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Общее время: </span><span>{totalTime}</span></li>
                 <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Расстояние: </span><span>{(totalDistance / 1000).toFixed(2)} км</span></li>
             </ul>}
@@ -52,7 +52,10 @@ function Activity({ activity }) {
         return (
             <div className="activity">
                 <span className="activityIcon" ><ActivityIcon activityType={activity.type} /></span>
+                <div className="actInfo">
                 {activity.start_date.split('T')[0]} - {activity.name} - {(activity.distance / 1000).toFixed(2)} км 
+                </div>
+                
                 <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleDown} /></span>
             </div>
         )
@@ -60,18 +63,17 @@ function Activity({ activity }) {
             return (
             <div className="activity fullView">
                 <span className="activityIcon" ><ActivityIcon activityType={activity.type} /></span>
-                {activity.start_date.split('T')[0]} - {activity.name} - {activity.stravavisualPlace} - {activity.start_latlng[0]}, {activity.start_latlng[1]} - 
-                {(activity.distance / 1000).toFixed(2)} км - {secToHMS(activity.moving_time)}
+                <ul>
+                    <li><div className="field">Дата:</div><div className="fieldData">{activity.start_date.split('T')[0]}</div></li>
+                    <li><div className="field">Название:</div><div className="fieldData">{activity.name}</div></li>
+                    <li><div className="field">Место:</div><div className="fieldData">{activity.stravavisualPlace}</div></li>
+                    <li><div className="field">Координаты старта <br/> (Д, Ш):</div><div className="fieldData">{activity.start_latlng[0]} , {activity.start_latlng[1]}</div></li>
+                    <li><div className="field">Время тренировки:</div><div className="fieldData">{secToHMS(activity.moving_time)}</div></li>
+                    <li><div className="field">Дистанция:</div><div className="fieldData">{(activity.distance / 1000).toFixed(2)} км </div></li>
+                </ul>
                 <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleUp} /></span>
             </div>
         )
     }
    
 }
-
-// return (
-//     <div className="activity">
-//         {activity.start_date.split('T')[0]} - {activity.name} - {activity.stravavisualPlace} - {activity.start_latlng[0]}, {activity.start_latlng[1]}
-//         <span onClick={toggleShowInfo} className="toggleButton">{showFullInfo ? <FontAwesomeIcon icon={faAngleUp} /> : <FontAwesomeIcon icon={faAngleDown} />}</span>
-//     </div>
-// )
