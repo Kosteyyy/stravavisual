@@ -85,9 +85,9 @@ body {
     margin-bottom: 10px;
 }
 .component-card h1  {
-    color: var(--text--darker);
+    color: var(--main-color);
     font-size: 1.5em;
-    margin-bottom: 10px;
+    margin: 10px 10px 15px 10px;
 }
 
 .container {
@@ -201,10 +201,7 @@ button:hover {
     font-size: 1.5em;
     margin-bottom: 10px;
 }
-.activity{
-    border: 1px solid var(--main-text);
-    border-radius: 5px;
-}
+
 
 @media (max-width:767px){
     body.lock {
@@ -352,24 +349,44 @@ button:hover {
     background-color: transparent;
 }
 
-.result-list {
+#resultList {
     font-size: 1em;
-    line-height: 1em;
+}
+#resultList ul {
+    margin-bottom: 20px;
+    line-height: 1.25em;
 }
 
 .activity {
+    position: relative;
     font-size: .8em;
-    padding: 5px;
-    margin-bottom: 5px;
+    padding: 10px;
+    line-height: 1.25em;
+    margin-bottom: 10px;
+    padding-right: 20px;
+    border: 0px solid var(--main-text);
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(92, 99, 105, .2);
 }
 
+span.activityIcon {
+    display: inline-block;
+    width: 25px;
+    color: var(--main-light);
+}
+.activity.fullView {
+    background-color: #ebf7ff;
+}
 #resultList {
     position: relative;
 }
 .component-card .toggleButton {
+    color: var(--main-light);
     position: absolute;
-    right: 20px;
+    right: 5px;
+    top: 0px;
     cursor: pointer;
+    padding: 5px;
 }
 
 .totalResults {

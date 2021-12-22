@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faCaretRight} from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer } from '@fortawesome/free-solid-svg-icons'
 
 function secToHMS(timeInSeconds) {
     let hours = Math.floor(timeInSeconds / 60 / 60);
     let minutes = Math.floor(timeInSeconds / 60) - (hours * 60);
     let seconds = timeInSeconds % 60;
-    return hours + ' ч ' + minutes + ' мин';
+    return hours + ' ч ' + minutes + ' мин ' + seconds + ' с ';
 
+}
+
+function ActivityIcon({activityType}) {
+    switch (activityType) {
+        case 'Run': return <FontAwesomeIcon icon={faRunning} />;
+        case 'NordicSki': return <FontAwesomeIcon icon={faSkiingNordic} />;
+        case 'Swim': return <FontAwesomeIcon icon={faSwimmer} />;
+        case 'Ride': return <FontAwesomeIcon icon={faBiking} />;
+        default: return ('');
+    }
 }
 
 export default function ResultList({resultList} = []) {
@@ -37,11 +47,31 @@ export default function ResultList({resultList} = []) {
 function Activity({ activity }) {
     const [showFullInfo, setShowFullInfo] = useState(false);
     const toggleShowInfo = () => {setShowFullInfo(!showFullInfo)};
-    return (
-        <div className="activity">
-            {activity.start_date.split('T')[0]} - {activity.name} - {activity.stravavisualPlace} - {activity.start_latlng[0]}, {activity.start_latlng[1]}
-            <span onClick={toggleShowInfo} className="toggleButton">{showFullInfo ? <FontAwesomeIcon icon={faAngleUp} /> : <FontAwesomeIcon icon={faAngleDown} />}</span>
-        </div>
 
-    )
+    if (!showFullInfo) {
+        return (
+            <div className="activity">
+                <span className="activityIcon" ><ActivityIcon activityType={activity.type} /></span>
+                {activity.start_date.split('T')[0]} - {activity.name} - {(activity.distance / 1000).toFixed(2)} км 
+                <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleDown} /></span>
+            </div>
+        )
+    } else {
+            return (
+            <div className="activity fullView">
+                <span className="activityIcon" ><ActivityIcon activityType={activity.type} /></span>
+                {activity.start_date.split('T')[0]} - {activity.name} - {activity.stravavisualPlace} - {activity.start_latlng[0]}, {activity.start_latlng[1]} - 
+                {(activity.distance / 1000).toFixed(2)} км - {secToHMS(activity.moving_time)}
+                <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleUp} /></span>
+            </div>
+        )
+    }
+   
 }
+
+// return (
+//     <div className="activity">
+//         {activity.start_date.split('T')[0]} - {activity.name} - {activity.stravavisualPlace} - {activity.start_latlng[0]}, {activity.start_latlng[1]}
+//         <span onClick={toggleShowInfo} className="toggleButton">{showFullInfo ? <FontAwesomeIcon icon={faAngleUp} /> : <FontAwesomeIcon icon={faAngleDown} />}</span>
+//     </div>
+// )

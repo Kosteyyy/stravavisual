@@ -16,7 +16,13 @@ function Mainpage({ authInfo }) {
     let { isAuth } = authInfo;
     let navigate = useNavigate();
 
-    useEffect(() => {if (!isAuth) navigate("/notauth");}, [isAuth])
+    useEffect(() => {
+        if (!isAuth) {
+            navigate("/notauth");
+        } else {
+            navigate("./activities")
+        }
+    }, [isAuth])
     
     return (
         <div>
