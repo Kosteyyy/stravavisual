@@ -23,7 +23,11 @@ export function AggregateDistanceToPlaces({activitiesList}) {
             setShowChart(false);
             return;
         }
+        
         let aggrobject = calcAggrData(activitiesList, "stravavisualPlace", "distance");
+        //Для агрегированного объекта надо поделить расстояние на 1000
+        //aggrobject имеет вид {"место": 11723, "место 2": 24003}
+        Object.keys(aggrobject).forEach(key => aggrobject[key] /= 1000);
         setAggrData(aggrobject);
     }, [activitiesList]);
 
