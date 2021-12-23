@@ -190,6 +190,8 @@ button:hover {
 
 #aggregate {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;;
     text-align: center;
 }
@@ -339,6 +341,7 @@ button:hover {
 
 .actFilter {
     display: flex;
+
     justify-content: center;
     align-items: center;
 }
@@ -352,22 +355,27 @@ button:hover {
     flex-wrap: wrap;
 }
 .activity-form .dateInput {
+    display: flex;
+    flex-wrap: wrap;
     position: relative;
-    height: 36px;
+    height: fit-content;
     -webkit-width: 40%;
     width: 50%;
     min-width: fit-content;
     margin-bottom: 5px;
 }
 .activity-form .typeInput {
+    flex-basis: 30%;
+    flex-grow: 1;
     position: relative;
     height: 36px;
-    -webkit-width: 40%;
-    width: 50%;
     min-width: fit-content;
     margin-bottom: 5px;
 }
-
+.activity-form input {
+    height: 36px;
+    margin-bottom: 5px;
+}
 #start {
     color: var(--text-lighter);
 }

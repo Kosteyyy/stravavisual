@@ -155,8 +155,8 @@ export function AggregateDistanceToPlaces({activitiesList}) {
     return(
         showChart ? 
         <div id="aggregate" className="component-card">
+            <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
             <div className="my-chart">
-                <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
                 <Pie data={chartData} />
                 <ShowRes data={aggrData} targetField={targetField} />
             </div>
