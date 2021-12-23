@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import URLSearchParams from 'url-search-params';
+import { useLocation } from "react-router-dom";
 
 import ActivityFilter from './ActivityFilter.jsx';
 import { PLACES } from "./constants.js";
@@ -9,13 +10,17 @@ import { AggregateDistanceToPlaces } from './Aggregate.jsx';
 
 
 
-export default function Activities({ activityList, setActivityList, accessToken }) { 
+export default function Activities(props) { 
+    let { activityList, setActivityList, accessToken } = props;
+    let currentLocation = useLocation();
     // console.log("rendering Activities");
-    const [queryParams, setQueryParams] = useState({}); //{after: "2021-11-20", before: "2021-12-20"}
+    const [queryParams, setQueryParams] = useState({}); //{after: "2021-11-23", before: "2021-12-23", type: "Ride"}
     const [activities, setActivities] = useState([]); //Сохраняю в состоянии поскольку они отфильтрованы, возможно, надо заменить 
     // на входящий список с фильтром. пока что параметры фильтра сбрасываются при навигации, поэтому приходится делать новый запрос
+    console.log("FUNCTION IN ACTIVITIES");
 
     async function getData(params, accessToken) {
+        console.log("ПОЛУЧАЮ ДАННЫЕ ПО ФИЛЬТРУ");
         //Готовит параметры запроса и получает постранично данные с сервера Страва
         let per_page = 30; 
         let page = 1;
@@ -70,21 +75,44 @@ export default function Activities({ activityList, setActivityList, accessToken 
         return result;
     }
 
+    function defineQueryParams() {
+        // console.log("location: ", location.search);
+        let params = new URLSearchParams(location.search);
+        console.log("location: ", currentLocation);
+        let queryObject = Object.assign({},
+            params.get('type') ? {'type': params.get('type')} : '',
+            params.get("before") ? { 'before': params.get('before')} : null, 
+            params.get("after") ? { 'after': params.get('after')} : null, 
+            );
+        // console.log(queryObject); 
+        setQueryParams(queryObject);
+    }
+
+    useEffect(() => {
+        defineQueryParams();
+    }, [currentLocation]);
+
     // При изменении фильтра загружаем активности
     useEffect(() => {
+        if (Object.keys(queryParams).length==0) return;
+        console.log("ДАННЫЕ ФИЛЬТРА ИЗМЕНИЛИСЬ, БУДУ ПОЛУЧАТЬ ДАННЫЕ И УСТАНОВЛЮ ИХ В МАССИВ");
         getData(queryParams, accessToken)
             .then(res => setActivityList(res))
             .catch(err => console.log(err));
-    }, [queryParams]);
+    }, [queryParams.before, queryParams.after]);
 
     // При изменении активностей применяем к ним фильтр и загружаем в стэйт
     useEffect(() => {
+        //Если массив пустой то тоже фильтруем потому что может быть на сервере ничего не нашли и он пустой
+        //А если пропустим, то отрендерится старый массив
+        console.log("МАССИВ ДАННЫХ ИЗМЕНИЛСЯ, ПРИМЕНЯЮ ФИЛЬТР");
+        console.log("queryParams", queryParams, "activityList: ", activityList);
         setActivities(activityList.filter((el => queryParams.type ? (el.type == queryParams.type) : true))); // Здесь ещё будет применён фильтр
-    }, [activityList]);
+    }, [activityList, queryParams]);
 
     return(
         <div id="activities" className="content">
-            <ActivityFilter handleFormSubmit={setQueryParams}/>
+            <ActivityFilter handleFormSubmit={defineQueryParams} queryParams={queryParams}/>
             {activities ? <AggregateDistanceToPlaces activitiesList={activities}/> : null}
             <ResultList resultList={activities} />
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}

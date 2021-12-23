@@ -71,7 +71,8 @@ function App() {
                     <Route path="map" element={<Map />} />
                     <Route path="notauth" element={<Unauthorized />} />
                     <Route path="activities" element={<Activities activityList={activityList} setActivityList={setActivityList} accessToken={authInfo.access_token} />} />
-                    <Route path="secret" element={<Secret />} />                    
+                    <Route path="secret" element={<Secret />} />   
+                    <Route path="*" element={<NotFound />} />                 
                 </Routes>
             </BrowserRouter>
         </>
@@ -83,6 +84,8 @@ const Secret = () => {
 const Map = () => {
     return <div>Здесь будут карты</div>
 }
-
+const NotFound = () => {
+    return <div>Page not found</div>
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));

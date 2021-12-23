@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const dateToYYYYMMDDString = date => date.toISOString().split('T')[0];
 
 //Собирает данные формы и отдает их в виде объекта в handleFormSubmit
-export default function ActivityFilter({handleFormSubmit}) {
+export default function ActivityFilter({ handleFormSubmit, queryParams }) {
     let today = dateToYYYYMMDDString(new Date());
     let monthAgo = dateToYYYYMMDDString(new Date( Date.now() - 30 * 24 * 60 * 60 *1000 ));
-
+    let navigate = useNavigate();
     const [before, setBefore] = useState(today); //{activityBefore, activityAfter}
     const [after, setAfter] = useState(monthAgo); //Month ago
     const [type, setType] = useState('');
+
+
+    useEffect(() => {
+        if (!queryParams.type) return
+        setType(queryParams.type);
+        setBefore(queryParams.before);
+        setAfter(queryParams.after);
+    }, [queryParams]);
+
     function handleEndDate(e) {
         setBefore(e.target.value);
     }
@@ -31,7 +41,10 @@ export default function ActivityFilter({handleFormSubmit}) {
             after: after,
             type: type
         }
-        handleFormSubmit(formData);
+        let queryString = `/activities?type=${type}&before=${before}&after=${after}`;
+        navigate(queryString);
+
+        //handleFormSubmit();
         //console.log(`Получим данные между ${dateBefore} и ${dateAfter}`);
         //console.log('formData: ', formData);
     }
@@ -56,7 +69,7 @@ export default function ActivityFilter({handleFormSubmit}) {
 
                 <div className="typeInput">
                     <label htmlFor="typeSelect" className="label">Вид активности:</label>                    
-                    <select id="typeSelect" onChange={onChangeType}>
+                    <select id="typeSelect" onChange={onChangeType} value={type}>
                         <option value="">(Все)</option>
                         <option value="Run">Бег</option>
                         <option value="NordicSki">Лыжи</option>

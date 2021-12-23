@@ -35,7 +35,7 @@ export default function ResultList({resultList} = []) {
             {resultList.length!==0 && <ul className="totalResults">
                 {/* <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Всего тренировок: </span><span>{totalCount}</span></li> */}
                 <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Общее время: </span><span>{totalTime}</span></li>
-                <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Расстояние: </span><span>{(totalDistance / 1000).toFixed(2)} км</span></li>
+                <li><FontAwesomeIcon icon={faCaretRight} /><span className="resultTitle">Дистанция: </span><span>{(totalDistance / 1000).toFixed(2)} км</span></li>
             </ul>}
 
 

@@ -48,7 +48,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     background-color: var(--main-bg-color);
     color: var(--main-text);
 }
@@ -292,11 +292,39 @@ button:hover {
     .my-chart {
         width: 95%;
         max-width: 370px;
-        height: 450px;
+        height: fit-content;
+        max-height: 450px;
     }
 
 }
 
+/* aggregate */
+#aggregate .dataList {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    line-height: 1.2em;
+}
+#aggregate li {
+    display: flex;
+    width: 100%;
+}
+#aggregate .field {
+    flex-basis: 50%;
+    flex-grow: 1;
+    color: var(--text--darker);
+    text-align: right;
+    margin-right: 10px;
+    font-weight: 400;
+}
+#aggregate .fieldData {
+    font-weight: 300;
+    flex-basis: 50%;
+    flex-grow: 4;
+    flex-shrink: 1;
+    color: var(--text-lighter);
+    text-align: left;
+    margin-right: 10px;
+}
   
 
 .actFilter {
@@ -359,10 +387,6 @@ button:hover {
     font-size: 1em;
     position: relative;
 }
-#resultList ul {
-    margin-bottom: 20px;
-    line-height: 1.25em;
-}
 
 .activity {
     position: relative;
@@ -391,6 +415,7 @@ span.activityIcon {
 
 .activity ul {
     flex-grow: 1;
+    margin-bottom: 0px;
 }
 .activity li {
     display: flex;
@@ -427,17 +452,17 @@ span.activityIcon {
 }
 
 .totalResults {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    line-height: 1.25em;
 }
 .totalResults svg {
     color: var(--main-light);
     margin-right: 10px;
 }
-.totalResults span {
-    font-weight: 300;
-}
+
 #resultList .resultTitle {
     color: var(--text--darker);
+    font-weight: 400;
 }
 
 @media (max-width:420px){

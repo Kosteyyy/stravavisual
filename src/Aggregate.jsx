@@ -3,10 +3,32 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+
+function ShowRes({ data }) {
+    // принимает данные в формате {"место": 11723, "место 2": 24003}
+    // и выводит из в виде ключ: значение.
+    if (Object.keys(data).length == 0) {
+        return
+    } else {
+        return (
+            <div className="dataList">
+                <ul>
+                    {Object.keys(data).map(
+                        (key, i) => {
+                            return <li key={i}><div className="field">{key}:</div><div className="fieldData">{data[key].toFixed(2)} км</div></li>
+                        }
+                    )}
+                </ul>
+            {/* <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleUp} /></span> */}
+        </div>
+        )
+    }
+}
+
 export function AggregateDistanceToPlaces({activitiesList}) {
-    const [aggrData, setAggrData] = useState([]);
+    const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false);
-    const [chartData, setChartData] = useState({})
+    const [chartData, setChartData] = useState({}); //объект данных для диаграммы
 
     function calcAggrData(data, keyField, targetField ) {
         //Аггрегирует в массиве объектов data данные по полю объектов keyField, суммируя поля targetField
@@ -17,6 +39,7 @@ export function AggregateDistanceToPlaces({activitiesList}) {
         })
         return result;
     }
+
 
     useEffect(() => {
         if (activitiesList.length == 0) { 
@@ -32,10 +55,10 @@ export function AggregateDistanceToPlaces({activitiesList}) {
     }, [activitiesList]);
 
     useEffect(() => {
-        if (aggrData.length == 0) return
+        if (Object.keys(aggrData).length == 0) return
         let labels = Object.keys(aggrData);
         let data = Object.keys(aggrData).map(key => {
-            return aggrData[key];
+            return Math.floor(aggrData[key] * 100)/ 100;
         })
         let readyData = {
             labels: labels,
@@ -71,8 +94,9 @@ export function AggregateDistanceToPlaces({activitiesList}) {
         showChart ? 
         <div id="aggregate" className="component-card">
             <div className="my-chart">
-                <h1>Распределение километража по месту</h1> 
+                <h1></h1> 
                 <Pie data={chartData} />
+                <ShowRes data={aggrData} />
             </div>
         </div>
             
