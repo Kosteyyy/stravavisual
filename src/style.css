@@ -195,13 +195,24 @@ button:hover {
 }
 .my-chart {
     width: 400px;
-    height: 470px;
+    height: fit-content;
 }
 .my-chart h1  {
     color: var(--text--darker);
     font-size: 1.5em;
     margin-bottom: 10px;
 }
+
+#selectChartData {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+}
+#selectChartData select {
+    margin-right: 5px;
+}
+
 
 
 @media (max-width:767px){
@@ -293,8 +304,7 @@ button:hover {
         width: 95%;
         max-width: 370px;
         height: fit-content;
-        max-height: 450px;
-    }
+     }
 
 }
 

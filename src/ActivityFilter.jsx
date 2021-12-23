@@ -54,16 +54,22 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
             <form className='activity-form'>
                 <fieldset>
                     <div className="dateInput">
+                        <div>
+                            <label htmlFor="start" className="label">С</label>
+                            <input type="date" id="start" name="activity-after"
+                                value={after} onChange={handleStartDate}
+                                min="2018-01-01"></input>                            
+                        </div>
+                        <div>
+                            <label htmlFor="end" className="label">до</label>
+                            <input type="date" id="end" name="activity-before"
+                                value={before} onChange={handleEndDate}
+                            min="2018-01-01"></input>                             
+                        </div>
 
-                        <label htmlFor="start" className="label">С</label>
-                        <input type="date" id="start" name="activity-after"
-                            value={after} onChange={handleStartDate}
-                            min="2018-01-01"></input>
+
                             
-                        <label htmlFor="end" className="label">до</label>
-                        <input type="date" id="end" name="activity-before"
-                            value={before} onChange={handleEndDate}
-                        min="2018-01-01"></input>                        
+                       
                     </div>
 
 

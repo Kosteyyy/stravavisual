@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer } from '@fortawesome/free-solid-svg-icons'
+import { secToHMS } from './functions.js';
 
-function secToHMS(timeInSeconds) {
-    let hours = Math.floor(timeInSeconds / 60 / 60);
-    let minutes = Math.floor(timeInSeconds / 60) - (hours * 60);
-    let seconds = timeInSeconds % 60;
-    return hours + ' ч ' + minutes + ' мин ' + seconds + ' с ';
-
-}
 
 function ActivityIcon({activityType}) {
     switch (activityType) {
