@@ -8,4 +8,12 @@ const PLACES = [
     {name: 'Одинцово', latlng: [55.69, 37.25]},
 ];
 
+const COLORS = {
+    "main-color": "#2176aeff",
+    "main-light": "#57b8ffff",
+    "secondary-color": "#ffb13cff",
+    "secondary-color-light": "#fcc873",
+    "secondary-dark": "#b66d0dff"
+}
+
 module.exports = { STRAVA_GET_CODE_LINK, PLACES };

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { ColorContext } from './Context';
 import ReactDOM from 'react-dom';
-import { VictoryPie } from "victory-pie";
 import { Link, Routes, Route, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./style.css";
@@ -66,7 +66,7 @@ function App() {
     }, []);
    
     return(
-        <>
+        <ColorContext.Provider value={{mainColor, setMainColor}}>
             <BrowserRouter>
                 <Header authInfo={authInfo} signOut={signOut} signIn={authAtStrava} color={mainColor}/>
                 <Routes>
@@ -79,7 +79,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />                 
                 </Routes>
             </BrowserRouter>
-        </>
+        </ColorContext.Provider>
     )
 }
 const Secret = () => {

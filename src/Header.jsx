@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ColorContext } from "./Context.js";
 import { Link } from 'react-router-dom';
 
 function setActiveClass() {
@@ -9,9 +10,11 @@ function setActiveClass() {
 }
 
 export default function Header({ authInfo, signOut, signIn, color }) {
+    const {mainColor} = useContext(ColorContext);
+    console.log("mainColor: ", mainColor);
 
     return (
-        <header className="header" style={{backgroundColor: color}}>
+        <header className="header" style={{backgroundColor: mainColor}}>
             <div className="container">
                 <div className="header_body">
                     <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn} textColor={color}/> 
