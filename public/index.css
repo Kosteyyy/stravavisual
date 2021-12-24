@@ -80,17 +80,25 @@ body {
 }
 .component-card {
     width: 100%;
-    border-radius: 5px;
+    border-radius: 15px;
     box-shadow: 0 0 5px rgba(92, 99, 105, .2);
     padding: 20px;
     margin-bottom: 10px;
 }
 .component-card h1  {
-    color: var(--main-color);
+    color: var(--text--darker);
+    text-align: left;
     font-size: 1.5em;
     margin: 10px 10px 15px 10px;
 }
-
+.component-card .toggleButton {
+    color: var(--main-light);
+    position: absolute;
+    right: 5px;
+    top: 0px;
+    cursor: pointer;
+    padding: 5px;
+}
 .container {
     max-width: 800px;
     margin: 0px auto;
@@ -189,11 +197,12 @@ button:hover {
 }
 
 #aggregate {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;;
     text-align: center;
+}
+#aggregate .chart-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .my-chart {
     width: 300px;
@@ -219,11 +228,12 @@ button:hover {
 }
 #selectChartData .toggle {
     font-size: 24px;
+    font-weight: 600;
     cursor: pointer;
     color: var(--main-text);
     position: absolute;
-    right: 20px;
-    top: -20px;
+    right: 0px;
+    top: -40px;
 }
 #selectChartData button {
     padding: 7px;
@@ -355,10 +365,9 @@ button:hover {
   
 /* Activity Filter Form */
 
-.actFilter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.actFilter h1 {
+    color: var(--text--darker);
+
 }
 .activity-form {
     background-color: white;
@@ -455,6 +464,7 @@ button:hover {
 #resultList {
     font-size: 1em;
     position: relative;
+    padding: 20px 10px 20px 10px;
 }
 
 .activity {
@@ -462,13 +472,11 @@ button:hover {
     display: flex;
     align-items: center;
     font-size: 1em;
-    padding: 10px;
+    padding: 10px 20px 10px 0px;
     line-height: 1.25em;
-    margin-bottom: 10px;
-    padding-right: 20px;
-    border: 0px solid var(--main-text);
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(92, 99, 105, .2);
+    border-top: 1px solid var(--text-lighter);
+    /* border-radius: 5px; */
+    /* box-shadow: 0 0 5px rgba(92, 99, 105, .2); */
     /* max-height: 100px; */
     /* transition: all 2s; */
 }
@@ -483,6 +491,10 @@ span.activityIcon {
     margin-right: 20px;
     color: var(--main-color);
     flex-grow: 0;
+}
+.activity .toggleButton {
+    position: absolute;
+    right: 0px;
 }
 
 
@@ -513,14 +525,7 @@ span.activityIcon {
     margin-top: 10px;
 } */
 
-.component-card .toggleButton {
-    color: var(--main-light);
-    position: absolute;
-    right: 5px;
-    top: 0px;
-    cursor: pointer;
-    padding: 5px;
-}
+
 
 .totalResults {
     margin-bottom: 20px;

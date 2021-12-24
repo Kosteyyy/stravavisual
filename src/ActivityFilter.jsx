@@ -51,6 +51,7 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
 
     return(
         <div className='actFilter component-card'>
+            <h1>Фильтр</h1>
             <form className='activity-form'>
                 <fieldset>
                     <div className="dateInput">
