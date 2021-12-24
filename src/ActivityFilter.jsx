@@ -54,13 +54,13 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
             <form className='activity-form'>
                 <fieldset>
                     <div className="dateInput">
-                        <div>
-                            <label htmlFor="start" className="label">С</label>
+                        <div className="dateInputBlock">
+                            <label htmlFor="start" className="label">с</label>
                             <input type="date" id="start" name="activity-after"
                                 value={after} onChange={handleStartDate}
                                 min="2018-01-01"></input>                            
                         </div>
-                        <div>
+                        <div className="dateInputBlock">
                             <label htmlFor="end" className="label">до</label>
                             <input type="date" id="end" name="activity-before"
                                 value={before} onChange={handleEndDate}
@@ -70,7 +70,7 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
 
 
                 <div className="typeInput">
-                    <label htmlFor="typeSelect" className="label">Вид активности:</label>                    
+                    <label htmlFor="typeSelect" className="label">вид</label>                    
                     <select id="typeSelect" onChange={onChangeType} value={type}>
                         <option value="">(Все)</option>
                         <option value="Бег">Бег</option>
