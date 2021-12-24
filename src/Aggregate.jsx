@@ -173,8 +173,8 @@ export function AggregateDistanceToPlaces({activitiesList}) {
             <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
             <div className="my-chart">
                 <Pie data={chartData} />
-                <ShowRes data={aggrData} targetField={targetField} />
             </div>
+            <ShowRes data={aggrData} targetField={targetField} />
         </div>
             
         : null

@@ -212,6 +212,7 @@ button:hover {
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 20px;
+    margin-top: 15px;
 }
 #selectChartData select {
     margin-right: 5px;
@@ -222,7 +223,7 @@ button:hover {
     color: var(--main-text);
     position: absolute;
     right: 20px;
-    top: -10px;
+    top: -20px;
 }
 #selectChartData button {
     padding: 7px;
@@ -317,9 +318,13 @@ button:hover {
         top: 0;
     }
 
+    .activity-form {
+        flex-direction: column;
+    }
+
     .my-chart {
         width: 95%;
-        max-width: 300px;
+        max-width: 250px;
         height: fit-content;
      }
 
@@ -327,6 +332,7 @@ button:hover {
 
 /* aggregate */
 #aggregate .dataList {
+    width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
     line-height: 1.2em;
@@ -354,13 +360,14 @@ button:hover {
 
 .actFilter {
     display: flex;
-
     justify-content: center;
     align-items: center;
 }
 .activity-form {
     background-color: white;
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 .activity-form fieldset {
     width: 100%;
@@ -372,40 +379,60 @@ button:hover {
     flex-wrap: wrap;
     position: relative;
     height: fit-content;
-    -webkit-width: 40%;
-    width: 50%;
+    flex-basis: 40%;
     min-width: fit-content;
     margin-bottom: 5px;
 }
 .activity-form .typeInput {
-    flex-basis: 30%;
+    flex-basis: 20%;
     flex-grow: 1;
     position: relative;
     height: 36px;
     min-width: fit-content;
     margin-bottom: 5px;
 }
-.activity-form input {
+
+/* .activity-form input {
     height: 36px;
     margin-bottom: 5px;
-}
-#start {
-    color: var(--text-lighter);
-}
-
-.activity-form input {
     padding: 5px;
     font-size: 1em;
     color: var(--text-lighter);
     border: 1px solid var(--text-lighter);
     border-radius: 5px;
-}
+} */
+.activity-form input[type="date"] {
+    height: 36px;
+    background-color: var(--main-color);
+    padding: 5px 0 5px 5px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+  
+  .activity-form ::-webkit-datetime-edit-fields-wrapper {
+    padding: 5px 0px 5px 5px;
+  }
+  .activity-form ::-webkit-calendar-picker-indicator {
+    background-color: #ffffff;
+    padding: 5px;
+    margin: 0px;
+    transform: translate(-10px);
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-left: 0px;
+  }
 
 .activity-form label {
     padding: 5px;
 }
 .activity-form button {
     padding: 7px;
+    margin-top: 0px;
 }
 
 .typeInput select {
