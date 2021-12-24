@@ -52,7 +52,7 @@ export default function Activities(props) {
         } while (
             resultChunk.length == per_page
         );
-        setLoading(false);
+
         //Добавляем поле stravavisualPlace к активности, которое идентифицирует место тренировки
         result.forEach(res => {
             res.stravavisualCount = 1;
@@ -64,7 +64,7 @@ export default function Activities(props) {
             }
             res.type = translateType(res.type);
         });
-
+        setLoading(false);
         return result;
     }
 

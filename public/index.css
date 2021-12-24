@@ -36,8 +36,8 @@ h1,h2,h3,h4,h5,h6{font-size: inherit;font-weight: inherit;}
     --button-text: #fff;
     --main-bg-color: #fff;
     --header-link: white;
-    --main-text: #888;
-    --text-lighter: #888;
+    --main-text: rgb(97, 97, 97);
+    --text-lighter: #bbb;
     --text--darker: #444;
     --light-text: #fff;
 }
@@ -82,7 +82,7 @@ body {
     width: 100%;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(92, 99, 105, .2);
-    padding: 5px;
+    padding: 20px;
     margin-bottom: 10px;
 }
 .component-card h1  {
@@ -377,7 +377,6 @@ button:hover {
     display: flex;
     position: relative;
     height: fit-content;
-    flex-basis: 40%;
     min-width: fit-content;
     margin-bottom: 15px;
 }
@@ -394,7 +393,7 @@ button:hover {
     pointer-events: none;
     border: none;
     background-color: #fff;
-    color: var(--main-text);
+    color: var(--text-lighter);
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     transform: translateY(-50%);
@@ -416,7 +415,7 @@ button:hover {
     cursor: pointer;
     color: var(--main-text);
     font-size: 1em;
-    border: 1px solid var(--main-text);
+    border: 1px solid var(--text-lighter);
     outline: none;
     border-radius: 5px;
   }
@@ -443,7 +442,7 @@ button:hover {
 }
 
 .typeInput select {
-    color: var(--text-lighter);
+    color: var(--main-text);
     font-size: 1em;
     height: 36px;
     padding: 0px 10px 0px 10px;
@@ -537,22 +536,33 @@ span.activityIcon {
     font-weight: 400;
 }
 
-/* @media (max-width:420px){
+@media (max-width:420px){
+    .activity-form button {
+       width: 100%;
+       margin-right: 0px;
+    }
+    .activity-form fieldset {
+        width: 100%;
+    }
+    .activity-form .typeInput select {
+       width: 100%;
+    }
     .activity-form .dateInput {
-        height: fit-content;
-        margin-bottom: 5px;
+        width: 100%;
+        justify-content: space-between;
     }
-    .activity-form input {
-        margin-top: 5px;
-        margin-bottom: 5px;
+    .activity-form .dateInputBlock {
+        width: 48%;
+        padding-right: 0px;
     }
-    .activity-form .typeInput {
-        height: fit-content;
+    .activity-form .dateInputBlock input {
+        width: 100%;
+
     }
     .fullView span.activityIcon {
         margin-right: 5px;
     }
-}   */
+}  
 
 
 
