@@ -8,13 +8,13 @@ function setActiveClass() {
 
 }
 
-export default function Header({ authInfo, signOut, signIn }) {
+export default function Header({ authInfo, signOut, signIn, color }) {
 
     return (
         <header className="header">
             <div className="container">
                 <div className="header_body">
-                    <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn}/> 
+                    <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn} textColor={color}/> 
                     <div className="header_burger" onClick={setActiveClass}>
                         <span></span>
                     </div>
@@ -33,18 +33,18 @@ const Avatar = ({link}) => {
     )
 }
 
-const UserName = ({firstname, lastname}) => {
-    return <span className="header_username">{firstname || ''} {lastname || ''}</span>
+const UserName = ({firstname, lastname, mainColor}) => {
+    return <span className="header_username" style={{color: mainColor}}>{firstname || ''} {lastname || ''}</span>
 }
 
 
-function HeaderAuthInfo({ authInfo, signOut, signIn }) {
+function HeaderAuthInfo({ authInfo, signOut, signIn, textColor }) {
     return(
         <div className="header_userinfo">
             {authInfo.isAuth ? 
                 <>
                     <Avatar link={authInfo.athlete.profile} />
-                    <UserName firstname={authInfo.athlete.firstname} lastname={authInfo.athlete.lastname} /> 
+                    <UserName firstname={authInfo.athlete.firstname} lastname={authInfo.athlete.lastname} mainColor={textColor} /> 
                     <button onClick={signOut}>Выйти</button>
                 </>
                 : <button onClick={signIn}>Войти</button>}

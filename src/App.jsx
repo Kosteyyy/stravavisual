@@ -35,7 +35,7 @@ function Mainpage({ authInfo }) {
 function App() {
     const [authInfo, setAuthInfo] = useState(loadJSON("StravaAuthInfo") || { "isAuth": false }); // При загрузке компонента читаем данные из хранилища. Если их нет - неавторизованы
     const [activityList, setActivityList] = useState([]);
-
+    const [mainColor, setMainColor] = useState('white');
     function changeAuthInfo(info) {
         setAuthInfo(info);
         saveJSON("StravaAuthInfo", info);
@@ -45,6 +45,10 @@ function App() {
         changeAuthInfo({ "isAuth": false });
     }
     
+    useEffect(() => setTimeout(() => {
+        setMainColor('white');
+    }, 5000), []);
+
     useEffect(() => {
         //Проверяем срок токена
         if (!authInfo.isAuth) return; //Если не авторизованы - выходим, проверять нечего.
@@ -64,7 +68,7 @@ function App() {
     return(
         <>
             <BrowserRouter>
-                <Header authInfo={authInfo} signOut={signOut} signIn={authAtStrava}/>
+                <Header authInfo={authInfo} signOut={signOut} signIn={authAtStrava} color={mainColor}/>
                 <Routes>
                     <Route path="/" element={<Mainpage authInfo={authInfo} /> } /> 
                     <Route path="auth" element={<Authorization authInfo={authInfo} handleData={changeAuthInfo}/>} />

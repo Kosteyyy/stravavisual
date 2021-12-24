@@ -98,7 +98,7 @@ body {
     top: 0px;
     cursor: pointer;
     padding: 5px;
-}
+} 
 .container {
     max-width: 800px;
     margin: 0px auto;
@@ -143,6 +143,7 @@ button:hover {
     background-color: var(--main-color);
     z-index: 3;
 }
+
 .header_body {
     position: relative;
     display: flex;
@@ -325,8 +326,8 @@ button:hover {
         text-underline-offset: 0.2em
     }
     .header_menu.active {
-        top: 0;
-    }
+        top: 0px;
+     }
 
     .my-chart {
         width: 95%;
