@@ -11,7 +11,7 @@ function setActiveClass() {
 export default function Header({ authInfo, signOut, signIn, color }) {
 
     return (
-        <header className="header">
+        <header className="header" style={{backgroundColor: color}}>
             <div className="container">
                 <div className="header_body">
                     <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn} textColor={color}/> 
@@ -33,8 +33,8 @@ const Avatar = ({link}) => {
     )
 }
 
-const UserName = ({firstname, lastname, mainColor}) => {
-    return <span className="header_username" style={{color: mainColor}}>{firstname || ''} {lastname || ''}</span>
+const UserName = ({firstname, lastname}) => {
+    return <span className="header_username">{firstname || ''} {lastname || ''}</span>
 }
 
 

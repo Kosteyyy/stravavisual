@@ -35,7 +35,7 @@ function Mainpage({ authInfo }) {
 function App() {
     const [authInfo, setAuthInfo] = useState(loadJSON("StravaAuthInfo") || { "isAuth": false }); // При загрузке компонента читаем данные из хранилища. Если их нет - неавторизованы
     const [activityList, setActivityList] = useState([]);
-    const [mainColor, setMainColor] = useState('white');
+    const [mainColor, setMainColor] = useState('#2176aeff');
     function changeAuthInfo(info) {
         setAuthInfo(info);
         saveJSON("StravaAuthInfo", info);
@@ -46,7 +46,7 @@ function App() {
     }
     
     useEffect(() => setTimeout(() => {
-        setMainColor('white');
+        setMainColor('red');
     }, 5000), []);
 
     useEffect(() => {
