@@ -2,17 +2,27 @@ import React, { useState, useEffect } from "react";
 import URLSearchParams from 'url-search-params';
 import { useLocation } from "react-router-dom";
 
+
 import ActivityFilter from './ActivityFilter.jsx';
 import { PLACES } from "./constants.js";
 import ResultList from './ResultList.jsx';
 import { isNear } from './functions.js';
 import { AggregateDistanceToPlaces } from './Aggregate.jsx';
+import Loading from "./Loading.jsx";
 
-
+function translateType(type) {
+    switch(type) {
+        case 'Run': return 'Бег';
+        case 'NordicSki': return 'Лыжи';
+        case 'Ride': return 'Велосипед';
+        case 'Swim': return 'Плавание';
+    }
+}
 
 export default function Activities(props) { 
     let { activityList, setActivityList, accessToken } = props;
     let currentLocation = useLocation();
+    const [loading, setLoading] = useState(false);
     // console.log("rendering Activities");
     const [queryParams, setQueryParams] = useState({}); //{after: "2021-11-23", before: "2021-12-23", type: "Ride"}
     const [activities, setActivities] = useState([]); //Сохраняю в состоянии поскольку они отфильтрованы, возможно, надо заменить 
@@ -26,6 +36,7 @@ export default function Activities(props) {
         let page = 1;
         let result = [];
         let resultChunk = [];
+        setLoading(true);
         do {
             let addParams = {
                 per_page: per_page.toString(),
@@ -41,6 +52,7 @@ export default function Activities(props) {
         } while (
             resultChunk.length == per_page
         );
+        setLoading(false);
         //Добавляем поле stravavisualPlace к активности, которое идентифицирует место тренировки
         result.forEach(res => {
             res.stravavisualCount = 1;
@@ -50,6 +62,7 @@ export default function Activities(props) {
             } else {
                 res.stravavisualPlace = 'Неизвестно';
             }
+            res.type = translateType(res.type);
         });
 
         return result;
@@ -113,8 +126,9 @@ export default function Activities(props) {
     return(
         <div id="activities" className="content">
             <ActivityFilter handleFormSubmit={defineQueryParams} queryParams={queryParams}/>
-            {activities ? <AggregateDistanceToPlaces activitiesList={activities}/> : null}
-            <ResultList resultList={activities} />
+            {loading && <Loading />}
+            {activities && !loading ? <AggregateDistanceToPlaces activitiesList={activities}/> : null}
+            {!loading && <ResultList resultList={activities} />}
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>
      )

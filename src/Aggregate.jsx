@@ -5,6 +5,7 @@ import { secToHMS } from './functions.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
+
 function ShowRes({ data, targetField }) {
     // принимает данные в формате {"место": 11723, "место 2": 24003}
     // и выводит иx в рендер виде ключ: значение.
@@ -44,6 +45,11 @@ function ShowRes({ data, targetField }) {
 function SelectChartData({ setKeyField, setTargetField }) {
     const [keyValue, setKeyValue] = useState('stravavisualPlace');
     const [targetValue, setTargetValue] = useState('distance');
+    const [showForm, setShowForm] = useState(false);
+
+    function toggleShowForm() {
+        setShowForm(!showForm);
+    }
 
     function handleKeyChange(e) {
         setKeyValue(e.target.value);
@@ -57,27 +63,36 @@ function SelectChartData({ setKeyField, setTargetField }) {
         setTargetField(targetValue);
     }
 
+    // if (!showForm) return (
+    //     <div><span onClick={toggleShowForm}>...</span></div>
+    // )
     return (
-        <div id="selectChartData">
+        <>
+            {showForm && <div id="selectChartData">
+
                 <div className="typeInput">
-                    {/* <label htmlFor="typeSelect" className="label">Поле 1:</label>                     */}
-                    <select id="keySelect" onChange={handleKeyChange} value={keyValue}>
-                        <option value="stravavisualPlace">Место</option>
-                        <option value="type">Вид тренировки</option>
-                    </select>
-                </div>
-                <div className="typeInput">
-                    {/* <label htmlFor="typeSelect" className="label">Поле 2</label>                     */}
-                    <select id="targetSelect" onChange={handleTargetChange} value={targetValue}>
-                        <option value="distance">Дистанция</option>
-                        <option value="stravavisualCount">Количество</option>
-                        <option value="moving_time">Время</option>
-                    </select>
-                </div>
-                <button onClick={handleClick}>
-                    Установить
-                </button>
-        </div>
+                        {/* <label htmlFor="typeSelect" className="label">Поле 1:</label>                     */}
+                        <select id="keySelect" onChange={handleKeyChange} value={keyValue}>
+                            <option value="stravavisualPlace">Место</option>
+                            <option value="type">Вид активности</option>
+                        </select>
+                    </div>
+                    <div className="typeInput">
+                        {/* <label htmlFor="typeSelect" className="label">Поле 2</label>                     */}
+                        <select id="targetSelect" onChange={handleTargetChange} value={targetValue}>
+                            <option value="distance">Дистанция</option>
+                            <option value="stravavisualCount">Количество</option>
+                            <option value="moving_time">Время</option>
+                        </select>
+                    </div>
+                    <button onClick={handleClick}>
+                        Применить
+                    </button>
+                    <span className="toggle" onClick={toggleShowForm}>...</span>
+            </div>}
+            {!showForm && <div id="selectChartData"><span className="toggle" onClick={toggleShowForm}>...</span></div>}
+        </>
+        
     
     )
 

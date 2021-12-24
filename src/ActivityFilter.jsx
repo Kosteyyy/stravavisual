@@ -66,10 +66,6 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
                                 value={before} onChange={handleEndDate}
                             min="2018-01-01"></input>                             
                         </div>
-
-
-                            
-                       
                     </div>
 
 
@@ -77,10 +73,10 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
                     <label htmlFor="typeSelect" className="label">Вид активности:</label>                    
                     <select id="typeSelect" onChange={onChangeType} value={type}>
                         <option value="">(Все)</option>
-                        <option value="Run">Бег</option>
-                        <option value="NordicSki">Лыжи</option>
-                        <option value="Ride">Велосипед</option>
-                        <option value="Swim">Плавание</option>
+                        <option value="Бег">Бег</option>
+                        <option value="Лыжи">Лыжи</option>
+                        <option value="Велосипед">Велосипед</option>
+                        <option value="Плавание">Плавание</option>
                     </select>
                 </div>
                 </fieldset>

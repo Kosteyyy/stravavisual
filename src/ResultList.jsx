@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer } from '@fortawesome/free-solid-svg-icons';
 import { secToHMS } from './functions.js';
 
 
 function ActivityIcon({activityType}) {
     switch (activityType) {
-        case 'Run': return <FontAwesomeIcon icon={faRunning} />;
-        case 'NordicSki': return <FontAwesomeIcon icon={faSkiingNordic} />;
-        case 'Swim': return <FontAwesomeIcon icon={faSwimmer} />;
-        case 'Ride': return <FontAwesomeIcon icon={faBiking} />;
+        case 'Бег': return <FontAwesomeIcon icon={faRunning} />;
+        case 'Лыжи': return <FontAwesomeIcon icon={faSkiingNordic} />;
+        case 'Плавание': return <FontAwesomeIcon icon={faSwimmer} />;
+        case 'Велосипед': return <FontAwesomeIcon icon={faBiking} />;
         default: return ('');
     }
 }

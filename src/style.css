@@ -48,7 +48,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     background-color: var(--main-bg-color);
     color: var(--main-text);
 }
@@ -196,7 +196,7 @@ button:hover {
     text-align: center;
 }
 .my-chart {
-    width: 400px;
+    width: 300px;
     height: fit-content;
 }
 .my-chart h1  {
@@ -206,6 +206,8 @@ button:hover {
 }
 
 #selectChartData {
+    width: 100%;
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -213,6 +215,19 @@ button:hover {
 }
 #selectChartData select {
     margin-right: 5px;
+}
+#selectChartData .toggle {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--main-text);
+    position: absolute;
+    right: 20px;
+    top: -10px;
+}
+#selectChartData button {
+    padding: 7px;
+    margin-left: 0px
+
 }
 
 
@@ -304,7 +319,7 @@ button:hover {
 
     .my-chart {
         width: 95%;
-        max-width: 370px;
+        max-width: 300px;
         height: fit-content;
      }
 
@@ -326,10 +341,8 @@ button:hover {
     color: var(--text--darker);
     text-align: right;
     margin-right: 10px;
-    font-weight: 400;
 }
 #aggregate .fieldData {
-    font-weight: 300;
     flex-basis: 50%;
     flex-grow: 4;
     flex-shrink: 1;
@@ -391,6 +404,10 @@ button:hover {
 .activity-form label {
     padding: 5px;
 }
+.activity-form button {
+    padding: 7px;
+}
+
 .typeInput select {
     color: var(--text-lighter);
     font-size: 1em;
@@ -410,7 +427,7 @@ button:hover {
     position: relative;
     display: flex;
     align-items: center;
-    font-size: .8em;
+    font-size: 1em;
     padding: 10px;
     line-height: 1.25em;
     margin-bottom: 10px;
@@ -418,9 +435,13 @@ button:hover {
     border: 0px solid var(--main-text);
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(92, 99, 105, .2);
+    /* max-height: 100px; */
+    /* transition: all 2s; */
 }
 .activity.fullView {
     align-items: flex-start;
+    background-color: #ebf7ff;
+    /* max-height: 200px; */
 }
 span.activityIcon {
     display: inline-block;
@@ -454,12 +475,10 @@ span.activityIcon {
     text-align: left;
     margin-right: 10px;
 }
+/* .actInfo {
+    margin-top: 10px;
+} */
 
-
-
-.activity.fullView {
-    background-color: #ebf7ff;
-}
 .component-card .toggleButton {
     color: var(--main-light);
     position: absolute;
