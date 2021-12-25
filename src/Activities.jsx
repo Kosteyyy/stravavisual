@@ -20,7 +20,7 @@ function translateType(type) {
 }
 
 export default function Activities(props) { 
-    let { activityList, setActivityList, accessToken } = props;
+    let { activityList, setActivityList, accessToken, chartColors } = props;
     let currentLocation = useLocation();
     const [loading, setLoading] = useState(false);
     // console.log("rendering Activities");
@@ -127,7 +127,7 @@ export default function Activities(props) {
         <div id="activities" className="content">
             <ActivityFilter handleFormSubmit={defineQueryParams} queryParams={queryParams}/>
             {loading && <Loading />}
-            {activities && !loading ? <AggregateDistanceToPlaces activitiesList={activities}/> : null}
+            {activities && !loading ? <AggregateDistanceToPlaces activitiesList={activities} chartColors={chartColors}/> : null}
             {!loading && <ResultList resultList={activities} />}
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>

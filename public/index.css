@@ -315,19 +315,25 @@ button:hover {
         width: 100%;
         overflow: auto;
         background-color: var(--secondary-color);
-        border: 1px solid var(--secondary-color-light);
+        border: 1px solid var(--text-lighter);
         z-index: 2;
         padding: 10px 20px 20px 20px;
         flex-direction: column;
         transition: all 0.3s ease 0s;
     }
-    .header_menu a:hover {
+    .header_menu a {
         color: var(--light-text);
-        text-decoration: underline;
+        border-bottom: 1px solid var(--light-text);
+    }
+
+    .header_menu a:hover {
+        color: var(--main-color);
+        text-decoration: none;
         text-underline-offset: 0.2em
     }
     .header_menu.active {
         left: 0px;
+        color: var(--light-text);
      }
 
     .my-chart {
@@ -581,6 +587,12 @@ span.activityIcon {
     margin: 20px;
 }
 
+#colorSettings {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--text-lighter);
+}
+
 #settings h1 {
     font-size: 1.5em;
     margin-bottom: 20px;
@@ -595,6 +607,38 @@ span.activityIcon {
 }
 .inputColorBlock input {
     width: 20%;
+    cursor: pointer;
+}
+.inputColorBlock input:disabled {
+    opacity: 50%;
+    cursor: default;
+}
+#colorSettings .checkBoxInput {
+    padding: 10px;
+}
+#colorSettings input {
+    margin-right: 10px;
+}
+#chartColorSettings {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--text-lighter);
 }
 
+.chartColorPicker {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.colorPalette {
+    display: flex;
+    width: fit-content;
+    max-width: 70%;
+    margin-right: 20px;
+}
+.colorSample {
+    width: 40px;
+    min-width: 10px;
+    height: 30px;
+}
 

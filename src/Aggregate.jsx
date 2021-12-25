@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { secToHMS } from './functions.js';
+import { secToHMS, shuffle } from './functions.js';
 import { ColorContext } from "./Context.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -100,7 +100,7 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
 }
 
-export function AggregateDistanceToPlaces({activitiesList}) {
+export function AggregateDistanceToPlaces({activitiesList, chartColors}) {
     const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
     const [chartData, setChartData] = useState({}); //объект данных для диаграммы
@@ -145,22 +145,8 @@ export function AggregateDistanceToPlaces({activitiesList}) {
               {
                 label: "# of Votes",
                 data: data,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(54, 162, 235, 0.2)",
-                  "rgba(255, 206, 86, 0.2)",
-                  "rgba(75, 192, 192, 0.2)",
-                  "rgba(153, 102, 255, 0.2)",
-                  "rgba(255, 159, 64, 0.2)"
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(153, 102, 255, 1)",
-                  "rgba(255, 159, 64, 1)"
-                ],
+                backgroundColor: shuffle(chartColors),
+                borderColor: chartColors,
                 borderWidth: 1
               }
             ]

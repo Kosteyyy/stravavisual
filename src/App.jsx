@@ -37,7 +37,7 @@ function App() {
     const [authInfo, setAuthInfo] = useState(loadJSON("StravaAuthInfo") || { "isAuth": false }); // При загрузке компонента читаем данные из хранилища. Если их нет - неавторизованы
     const [activityList, setActivityList] = useState([]);
     const [appColors, setAppColors] = useState(loadJSON("StravavisualAppColors") || COLORS);
-
+    const [chartColors, setChartColors] = useState(loadJSON("StravavisualChartColors") || ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']);
     function changeAuthInfo(info) {
         setAuthInfo(info);
         saveJSON("StravaAuthInfo", info);
@@ -46,7 +46,10 @@ function App() {
     function signOut() {
         changeAuthInfo({ "isAuth": false });
     }
-
+    function saveChartColors(colors) {
+        setChartColors(colors);
+        saveJSON("StravavisualChartColors", colors);
+    }
     function saveAppColors(colors) {
         setAppColors(colors);
         saveJSON("StravavisualAppColors", colors);
@@ -81,9 +84,13 @@ function App() {
                     <Route path="auth" element={<Authorization authInfo={authInfo} handleData={changeAuthInfo}/>} />
                     <Route path="map" element={<Map />} />
                     <Route path="notauth" element={<Unauthorized />} />
-                    <Route path="activities" element={<Activities activityList={activityList} setActivityList={setActivityList} accessToken={authInfo.access_token} />} />
+                    <Route path="activities" element={<Activities 
+                        activityList={activityList}
+                        setActivityList={setActivityList}
+                        accessToken={authInfo.access_token}
+                        chartColors={chartColors} />} />
                     <Route path="secret" element={<Secret />} />  
-                    <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} />} />  
+                    <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} setChartColors={saveChartColors} />} />  
                     <Route path="*" element={<NotFound />} />                 
                 </Routes>
             </BrowserRouter>

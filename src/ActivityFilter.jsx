@@ -9,9 +9,9 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
     let today = dateToYYYYMMDDString(new Date());
     let monthAgo = dateToYYYYMMDDString(new Date( Date.now() - 30 * 24 * 60 * 60 *1000 ));
     let navigate = useNavigate();
-    const [before, setBefore] = useState(today); //{activityBefore, activityAfter}
-    const [after, setAfter] = useState(monthAgo); //Month ago
-    const [type, setType] = useState('');
+    const [before, setBefore] = useState(queryParams.before || today); //{activityBefore, activityAfter}
+    const [after, setAfter] = useState(queryParams.after || monthAgo); //Month ago
+    const [type, setType] = useState(queryParams.type || '');
     const {appColors} = useContext(ColorContext);
 
 
