@@ -13,7 +13,7 @@ function ShowRes({ data, targetField }) {
     function formatFieldData(data, targetField) {
         switch(targetField) {
             case 'distance':
-                console.log("distance");
+                //console.log("distance");
                 return (data.toFixed(2) + ' км');
             case 'moving_time':
                 return secToHMS(data);
@@ -145,9 +145,10 @@ export function AggregateDistanceToPlaces({activitiesList, chartColors}) {
               {
                 label: "# of Votes",
                 data: data,
-                backgroundColor: shuffle(chartColors),
-                borderColor: chartColors,
-                borderWidth: 1
+                backgroundColor: chartColors,                
+                // backgroundColor: shuffle(chartColors),
+                // borderColor: chartColors,
+                // borderWidth: 1
               }
             ]
           };

@@ -5,22 +5,27 @@ import { ColorContext } from "./Context.js";
 const dateToYYYYMMDDString = date => date.toISOString().split('T')[0];
 
 //Собирает данные формы и отдает их в виде объекта в handleFormSubmit
-export default function ActivityFilter({ handleFormSubmit, queryParams }) {
+export default function ActivityFilter({ handleFormSubmit, filterParams }) {
     let today = dateToYYYYMMDDString(new Date());
     let monthAgo = dateToYYYYMMDDString(new Date( Date.now() - 30 * 24 * 60 * 60 *1000 ));
     let navigate = useNavigate();
-    const [before, setBefore] = useState(queryParams.before || today); //{activityBefore, activityAfter}
-    const [after, setAfter] = useState(queryParams.after || monthAgo); //Month ago
-    const [type, setType] = useState(queryParams.type || '');
-    const {appColors} = useContext(ColorContext);
 
+    const [dateBefore, setBefore] = useState(today); //{activityBefore, activityAfter}
+    const [dateAfter, setAfter] = useState(monthAgo); //Month ago
+    const [type, setType] = useState('');
+    const {appColors} = useContext(ColorContext);
+    //console.log("ActivityFilter: filterParams=", filterParams);
 
     useEffect(() => {
-        if (!queryParams.type) return
-        setType(queryParams.type);
-        setBefore(queryParams.before);
-        setAfter(queryParams.after);
-    }, [queryParams]);
+        //console.log("im in useEffect");
+        if (Object.keys(filterParams).length==0) return;
+        //console.log("setting state to filterParams");
+        if (filterParams.type == "undefined") {
+            setType('');
+        } else if (filterParams.type!==undefined && filterParams.type!==type) setType(filterParams.type);
+        if (filterParams.before && filterParams.before!==dateBefore) setBefore(filterParams.before);
+        if (filterParams.after && filterParams.after!==dateAfter) setAfter(filterParams.after);
+    }, [filterParams]);
 
     function handleEndDate(e) {
         setBefore(e.target.value);
@@ -32,25 +37,26 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
 
     function onChangeType(e) {
         setType(e.target.value);
+        //console.log("value of select ", e.target.value);
         }
 
     function handleSubmit(e) {
         e.preventDefault();
         // let dateBefore = (Date.parse(before) / 1000).toString();
         // let dateAfter = (Date.parse(after) / 1000).toString();
-        let formData = {
-            before: before,
-            after: after,
-            type: type
-        }
-        let queryString = `/activities?type=${type}&before=${before}&after=${after}`;
+        // let formData = {
+        //     before: before,
+        //     dateAfter: after,
+        //     type: type
+        // }
+        let queryString = `/activities?type=${type}&before=${dateBefore}&after=${dateAfter}`;
         navigate(queryString);
 
         //handleFormSubmit();
         //console.log(`Получим данные между ${dateBefore} и ${dateAfter}`);
         //console.log('formData: ', formData);
     }
-
+    //console.log(`ActivityFilter: Render after=${dateAfter} before=${dateBefore} type=${type}`);
     return(
         <div className='actFilter component-card'>
             <h1>Фильтр</h1>
@@ -60,13 +66,13 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
                         <div className="dateInputBlock">
                             <label htmlFor="start" className="label">с</label>
                             <input type="date" id="start" name="activity-after"
-                                value={after} onChange={handleStartDate}
+                                value={dateAfter} onChange={handleStartDate}
                                 min="2018-01-01"></input>                            
                         </div>
                         <div className="dateInputBlock">
                             <label htmlFor="end" className="label">до</label>
                             <input type="date" id="end" name="activity-before"
-                                value={before} onChange={handleEndDate}
+                                value={dateBefore} onChange={handleEndDate}
                             min="2018-01-01"></input>                             
                         </div>
                     </div>
