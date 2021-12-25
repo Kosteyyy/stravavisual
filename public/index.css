@@ -511,7 +511,7 @@ span.activityIcon {
     display: inline-block;
     font-size: 30px;
     margin-right: 20px;
-    color: var(--main-color);
+    /* color: var(--main-color); */
     flex-grow: 0;
 }
 .activity .toggleButton {
@@ -574,5 +574,27 @@ span.activityIcon {
     }
 }  
 
+/* Настройки Settings */
+
+#settings {
+    width: 100%;
+    margin: 20px;
+}
+
+#settings h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+.inputColorBlock {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.inputColorBlock label {
+    width: 50%;
+}
+.inputColorBlock input {
+    width: 20%;
+}
 
 

@@ -9,15 +9,14 @@ function setActiveClass() {
 
 }
 
-export default function Header({ authInfo, signOut, signIn, color }) {
-    const {mainColor} = useContext(ColorContext);
-    console.log("mainColor: ", mainColor);
+export default function Header({ authInfo, signOut, signIn}) {
+    const {appColors} = useContext(ColorContext);
 
     return (
-        <header className="header" style={{backgroundColor: mainColor}}>
+        <header className="header" style={{backgroundColor: appColors.mainColor}}>
             <div className="container">
                 <div className="header_body">
-                    <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn} textColor={color}/> 
+                    <HeaderAuthInfo authInfo={authInfo} signOut={signOut} signIn={signIn} /> 
                     <div className="header_burger" onClick={setActiveClass}>
                         <span></span>
                     </div>
@@ -41,13 +40,13 @@ const UserName = ({firstname, lastname}) => {
 }
 
 
-function HeaderAuthInfo({ authInfo, signOut, signIn, textColor }) {
+function HeaderAuthInfo({ authInfo, signOut, signIn }) {
     return(
         <div className="header_userinfo">
             {authInfo.isAuth ? 
                 <>
                     <Avatar link={authInfo.athlete.profile} />
-                    <UserName firstname={authInfo.athlete.firstname} lastname={authInfo.athlete.lastname} mainColor={textColor} /> 
+                    <UserName firstname={authInfo.athlete.firstname} lastname={authInfo.athlete.lastname} /> 
                     <button onClick={signOut}>Выйти</button>
                 </>
                 : <button onClick={signIn}>Войти</button>}
@@ -60,8 +59,8 @@ const Nav = () => {
     return(
         <nav className="header_menu">   
             <Link onClick={setActiveClass} to="/">Главная</Link>{" "}
-            <Link onClick={setActiveClass} to="map">Места</Link>{" "}
             <Link onClick={setActiveClass} to="activities">Тренировки</Link> 
+            <Link onClick={setActiveClass} to="settings">Настройки</Link>{" "}
         </nav>
     )
 }

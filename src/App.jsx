@@ -4,13 +4,14 @@ import ReactDOM from 'react-dom';
 import { Link, Routes, Route, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./style.css";
-import { STRAVA_GET_CODE_LINK, PLACES } from './constants';
+import { STRAVA_GET_CODE_LINK, PLACES, COLORS } from './constants';
 import { loadJSON, saveJSON, isTokenExpired, authAtStrava, refreshToken } from './functions.js';
 
 import Header from './Header.jsx';
 import Unauthorized from './Unauthorized.jsx';
 import Authorization from './Authorization.jsx';
 import Activities from './Activities.jsx';
+import Settings from './Settings.jsx';
 
 function Mainpage({ authInfo }) {
     let { isAuth } = authInfo;
@@ -35,7 +36,8 @@ function Mainpage({ authInfo }) {
 function App() {
     const [authInfo, setAuthInfo] = useState(loadJSON("StravaAuthInfo") || { "isAuth": false }); // При загрузке компонента читаем данные из хранилища. Если их нет - неавторизованы
     const [activityList, setActivityList] = useState([]);
-    const [mainColor, setMainColor] = useState('#2176aeff');
+    const [appColors, setAppColors] = useState(loadJSON("StravavisualAppColors") || COLORS);
+
     function changeAuthInfo(info) {
         setAuthInfo(info);
         saveJSON("StravaAuthInfo", info);
@@ -44,10 +46,15 @@ function App() {
     function signOut() {
         changeAuthInfo({ "isAuth": false });
     }
+
+    function saveAppColors(colors) {
+        setAppColors(colors);
+        saveJSON("StravavisualAppColors", colors);
+    }
     
-    useEffect(() => setTimeout(() => {
-        setMainColor('red');
-    }, 5000), []);
+    // useEffect(() => setTimeout(() => {
+    //     setAppColors({...appColors, "mainColor": "red"});
+    // }, 5000), []);
 
     useEffect(() => {
         //Проверяем срок токена
@@ -66,16 +73,17 @@ function App() {
     }, []);
    
     return(
-        <ColorContext.Provider value={{mainColor, setMainColor}}>
+        <ColorContext.Provider value={{appColors}}>
             <BrowserRouter>
-                <Header authInfo={authInfo} signOut={signOut} signIn={authAtStrava} color={mainColor}/>
+                <Header authInfo={authInfo} signOut={signOut} signIn={authAtStrava}/>
                 <Routes>
                     <Route path="/" element={<Mainpage authInfo={authInfo} /> } /> 
                     <Route path="auth" element={<Authorization authInfo={authInfo} handleData={changeAuthInfo}/>} />
                     <Route path="map" element={<Map />} />
                     <Route path="notauth" element={<Unauthorized />} />
                     <Route path="activities" element={<Activities activityList={activityList} setActivityList={setActivityList} accessToken={authInfo.access_token} />} />
-                    <Route path="secret" element={<Secret />} />   
+                    <Route path="secret" element={<Secret />} />  
+                    <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} />} />  
                     <Route path="*" element={<NotFound />} />                 
                 </Routes>
             </BrowserRouter>

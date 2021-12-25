@@ -9,11 +9,19 @@ const PLACES = [
 ];
 
 const COLORS = {
-    "main-color": "#2176aeff",
-    "main-light": "#57b8ffff",
-    "secondary-color": "#ffb13cff",
-    "secondary-color-light": "#fcc873",
-    "secondary-dark": "#b66d0dff"
+    "mainColor": "#2176ae",
+    "mainLight": "#57b8ff",
+    "secondaryColor": "#ffb13c",
+    "secondaryColorLight": "#fcc873",
+    "secondaryDark": "#b66d0d"
 }
 
-module.exports = { STRAVA_GET_CODE_LINK, PLACES };
+// const COLORS = {
+//     "mainColor": "red",
+//     "mainLight": "pink",
+//     "secondaryColor": "green",
+//     "secondaryColorLight": "blue",
+//     "secondaryDark": "lime"
+// }
+
+module.exports = { STRAVA_GET_CODE_LINK, PLACES, COLORS };

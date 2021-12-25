@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ColorContext } from "./Context.js";
 
 const dateToYYYYMMDDString = date => date.toISOString().split('T')[0];
 
@@ -11,6 +12,7 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
     const [before, setBefore] = useState(today); //{activityBefore, activityAfter}
     const [after, setAfter] = useState(monthAgo); //Month ago
     const [type, setType] = useState('');
+    const {appColors} = useContext(ColorContext);
 
 
     useEffect(() => {
@@ -82,7 +84,7 @@ export default function ActivityFilter({ handleFormSubmit, queryParams }) {
                 </div>
                 </fieldset>
 
-                <button type="submit" onClick={handleSubmit}>Найти</button>
+                <button  style={{backgroundColor: appColors.secondaryColor}} type="submit" onClick={handleSubmit}>Найти</button>
 
             </form>
         </div>
