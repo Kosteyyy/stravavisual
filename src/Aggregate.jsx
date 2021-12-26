@@ -158,7 +158,7 @@ export function AggregateDistanceToPlaces({activitiesList, chartColors}) {
     return(
         showChart ? 
         <div id="aggregate" className="component-card">
-            <h1>Анализ</h1>
+            {/* <h1>Анализ</h1> */}
             <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
             <div className="chart-container">
                 <div className="my-chart">
