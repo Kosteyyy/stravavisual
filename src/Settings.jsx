@@ -106,7 +106,7 @@ function ChartColorSettings({ setColors }) {
         <div id="chartColorSettings">
                 <h1>Цвета диаграммы</h1>
                 {CHART_COLORS.map(
-                    (color, i) => <ChartColorPicker color={color} key={i} index={i} checkedIndex={checkedIndex} handleInput={handleInput}/>
+                    (color, i) => <ChartColorPicker color={color.colors} key={i} index={i} checkedIndex={checkedIndex} handleInput={handleInput}/>
                 )}
         </div>
     )

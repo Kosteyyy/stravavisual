@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Link, Routes, Route, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./style.css";
-import { STRAVA_GET_CODE_LINK, PLACES, COLORS } from './constants';
+import { STRAVA_GET_CODE_LINK, PLACES, COLORS, CHART_COLORS } from './constants';
 import { loadJSON, saveJSON, isTokenExpired, authAtStrava, refreshToken, isNear } from './functions.js';
 
 import Header from './Header.jsx';
@@ -37,7 +37,7 @@ function App() {
     const [authInfo, setAuthInfo] = useState(loadJSON("StravaAuthInfo") || { "isAuth": false }); // При загрузке компонента читаем данные из хранилища. Если их нет - неавторизованы
     const [activityList, setActivityList] = useState([]);
     const [appColors, setAppColors] = useState(loadJSON("StravavisualAppColors") || COLORS);
-    const [chartColors, setChartColors] = useState(loadJSON("StravavisualChartColors") || ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']);
+    const [chartColors, setChartColors] = useState(loadJSON("StravavisualChartColors") || CHART_COLORS[0]);
     const [trainingPlaces, setTrainingPlaces] = useState(loadJSON("StravaTrainingPlaces") || PLACES); // Массив элементов вида     {name: 'Одинцово', latlng: [55.69, 37.25]}
 
     function saveTrainingPlaces(places) {

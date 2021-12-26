@@ -145,10 +145,9 @@ export function AggregateDistanceToPlaces({activitiesList, chartColors}) {
               {
                 label: "# of Votes",
                 data: data,
-                backgroundColor: chartColors,                
-                // backgroundColor: shuffle(chartColors),
-                // borderColor: chartColors,
-                // borderWidth: 1
+                backgroundColor: chartColors.colors,                
+                borderColor: chartColors.borders,
+                borderWidth: 1
               }
             ]
           };
