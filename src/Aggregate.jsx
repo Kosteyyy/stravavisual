@@ -7,9 +7,16 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 
-function ShowRes({ data, targetField }) {
+function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove }) {
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
+    const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
+ 
     // принимает данные в формате {"место": 11723, "место 2": 24003}
     // и выводит иx в рендер виде ключ: значение.
+    useEffect(() => {
+        if (Object.keys(actFilter).length == 0 && isFilterApplied) removeFilter();
+    }, [actFilter]);
+
     function formatFieldData(data, targetField) {
         switch(targetField) {
             case 'distance':
@@ -25,6 +32,30 @@ function ShowRes({ data, targetField }) {
         }
     }
 
+    function handleClick(fieldText) {
+        if (!isFilterApplied || fieldText !== filter.filterValue) {
+            let filterObject = {};
+            filterObject[keyField] = fieldText;
+            filterAdd(filterObject);
+            setFilter({filterKey: keyField, filterValue: fieldText});
+            setIsFilterApplied(true);
+        } else {
+            removeFilter();
+        }
+    }
+
+    function removeFilter() {
+        if (!isFilterApplied) return;
+        filterRemove(filter.filterKey);
+        setIsFilterApplied(false);
+        setFilter({filterKey: "", filterValue: ""});
+    }
+
+    useEffect(() => {
+        if (!isFilterApplied) return;
+        if (keyField !== filter.filterKey) removeFilter();
+    }, [keyField]);
+
     if (Object.keys(data).length == 0) {
         return
     } else {
@@ -33,11 +64,12 @@ function ShowRes({ data, targetField }) {
                 <ul>
                     {Object.keys(data).map(
                         (key, i) => {
-                            return <li key={i}><div className="field">{key}:</div><div className="fieldData">{formatFieldData(data[key], targetField)}</div></li>
+                            return <li key={i}><div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>{key}:</div><div className="fieldData">{formatFieldData(data[key], targetField)}</div></li>
                         }
                     )}
                 </ul>
             {/* <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleUp} /></span> */}
+            {isFilterApplied && <button onClick={removeFilter}>Сбросить</button>}
         </div>
         )
     }
@@ -100,12 +132,13 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
 }
 
-export function AggregateDistanceToPlaces({activitiesList, chartColors}) {
+export function AggregateDistanceToPlaces({activitiesList, chartColors, filter, filterAdd, filterRemove}) {
     const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
     const [chartData, setChartData] = useState({}); //объект данных для диаграммы
     const [keyField, setKeyField] = useState('stravavisualPlace');
     const [targetField, setTargetField] = useState('distance');
+
 
     function calcAggrData(data, keyField, targetField ) {
         //Аггрегирует в массиве объектов data данные по полю объектов keyField, суммируя поля targetField
@@ -165,7 +198,7 @@ export function AggregateDistanceToPlaces({activitiesList, chartColors}) {
                     <Pie data={chartData} />
                 </div>
             </div>
-            <ShowRes data={aggrData} targetField={targetField} />
+            <ShowRes data={aggrData} targetField={targetField} keyField={keyField} actFilter={filter} filterAdd={filterAdd} filterRemove={filterRemove}/>
         </div>
             
         : null

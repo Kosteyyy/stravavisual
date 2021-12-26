@@ -49,10 +49,11 @@ export default function ActivityFilter({ handleFormSubmit, filterParams }) {
         //     dateAfter: after,
         //     type: type
         // }
+        handleFormSubmit();
         let queryString = `/activities?type=${type}&before=${dateBefore}&after=${dateAfter}`;
         navigate(queryString);
 
-        //handleFormSubmit();
+        
         //console.log(`Получим данные между ${dateBefore} и ${dateAfter}`);
         //console.log('formData: ', formData);
     }

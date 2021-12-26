@@ -15,6 +15,7 @@ function translateType(type) {
         case 'NordicSki': return 'Лыжи';
         case 'Ride': return 'Велосипед';
         case 'Swim': return 'Плавание';
+        default: return type;
     }
 }
 
@@ -22,11 +23,40 @@ export default function Activities(props) {
     let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace } = props;
     let currentLocation = useLocation();
     const [loading, setLoading] = useState(false);
+    const [filter, setFilter] = useState({});
     // console.log("rendering Activities");
     const [queryParams, setQueryParams] = useState({}); //{after: "2021-11-23", before: "2021-12-23", type: "Ride"}
     const [activities, setActivities] = useState([]); //Сохраняю в состоянии поскольку они отфильтрованы, возможно, надо заменить 
     // на входящий список с фильтром. пока что параметры фильтра сбрасываются при навигации, поэтому приходится делать новый запрос
     //console.log("ACTIVITIES: queryParams: ", queryParams, "loading: ", loading, "Activities.length: ", activities.length);
+
+    function filterAdd(object) {
+        setFilter({...filter, ...object});
+    }
+
+    function filterRemove(key) {
+        let newFilter = {...filter};
+        delete newFilter[key];
+        setFilter(newFilter);
+    }
+
+    function applyFilter(dataArr, filter) {
+        return dataArr.filter((data) => {
+            let pass=true;
+            if (Object.keys(filter).length == 0) return true;
+            Object.keys(filter).forEach(
+                (key) => {
+                    pass = pass && (data[key] == filter[key]);
+                }
+            );
+            return pass;
+        })
+    }
+
+    // useState(() => {
+    //     filterAdd({"stravavisualPlace" : "Митино ФОК"});
+    //     filterRemove('stravavisualPlace');
+    // }, []);
 
     async function getData(params, accessToken) {
         //console.log("ПОЛУЧАЮ ДАННЫЕ ПО ФИЛЬТРУ");
@@ -90,6 +120,7 @@ export default function Activities(props) {
     }
 
     function defineQueryParams() {
+        setFilter({}); // сбрасываем прочие фильтры кроме queryParams
         // console.log("location: ", location.search);
         let params = new URLSearchParams(location.search);
         //console.log("Define queryParams. location: ", currentLocation);
@@ -126,15 +157,22 @@ export default function Activities(props) {
         //А если пропустим, то отрендерится старый массив
         //console.log("МАССИВ ДАННЫХ ИЛИ ПАРАМЕТРЫ ПОИСКА ИЗМЕНИЛИСЬ, ПРИМЕНЯЮ ФИЛЬТР. РЕРЕНДЕР");
         //console.log("queryParams", queryParams, "activityList: ", activityList);
-        setActivities(activityList.filter((el => queryParams.type ? (el.type == queryParams.type) : true))); // Здесь ещё будет применён фильтр
-    }, [activityList, queryParams]);
+        let filteredActivities = activityList.filter((el => queryParams.type ? (el.type == queryParams.type) : true));
+        // console.log("useEffect 3: filter=", filter, filteredActivities);
+        setActivities(applyFilter(filteredActivities, filter)); // Здесь ещё будет применён фильтр
+    }, [activityList, queryParams, filter]);
 
     //console.log("Рендерю ACTIVITIES компонент.")
     return(
         <div id="activities" className="content">
             <ActivityFilter handleFormSubmit={defineQueryParams} filterParams={queryParams}/>
             {loading && <Loading />}
-            {activities.length !== 0 && !loading ? <AggregateDistanceToPlaces activitiesList={activities} chartColors={chartColors}/> : null}
+            {activities.length !== 0 && !loading ? <AggregateDistanceToPlaces 
+                activitiesList={activities}
+                chartColors={chartColors}
+                filter={filter}
+                filterAdd={filterAdd}
+                filterRemove={filterRemove}/> : null}
             {!loading && <ResultList resultList={activities} trainingPlaces={trainingPlaces} addTrainingPlace={addTrainingPlace}/>}
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>

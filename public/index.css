@@ -351,6 +351,9 @@ button:hover {
     margin-bottom: 20px;
     line-height: 1.2em;
 }
+#aggregate ul {
+    margin-bottom: 10px;
+}
 #aggregate li {
     display: flex;
     width: 100%;
@@ -369,6 +372,12 @@ button:hover {
     color: var(--main-text);
     text-align: left;
     margin-right: 10px;
+}
+.dataList .field {
+    cursor: pointer;
+}
+#aggregate .field.filter {
+    color: red;
 }
   
 /* Activity Filter Form */
