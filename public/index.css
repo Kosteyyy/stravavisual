@@ -469,7 +469,6 @@ button:hover {
     background-color: transparent;
 }
 
-
 /* resultList */
 
 
@@ -546,6 +545,26 @@ span.activityIcon {
     color: var(--main-text);
     text-align: left;
     margin-right: 10px;
+}
+
+.toggleTextInput {
+    display: flex;
+}
+.toggleTextInput p {
+    margin-right: 10px;
+}
+.toggleTextInput svg {
+    cursor: pointer;
+}
+.toggleTextInput input {
+    margin-right: 10px;
+    font-size: 1em;
+    padding: 5px;
+    border-radius: 5px;
+    color: var(--main-text);
+}
+.coords {
+    font-size: .8em;
 }
 /* .actInfo {
     margin-top: 10px;

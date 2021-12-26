@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 import { secToHMS } from './functions.js';
 import { ColorContext } from "./Context.js";
 
@@ -16,7 +16,7 @@ function ActivityIcon({activityType}) {
     }
 }
 
-export default function ResultList({resultList} = []) {
+export default function ResultList({resultList = [], addTrainingPlace }) {
     const [showList, setShowList] = useState(false);
     const toggleShowList = () => {setShowList(!showList)};
     let totalCount, totalTime, totalDistance;
@@ -37,12 +37,43 @@ export default function ResultList({resultList} = []) {
             </ul>}
 
 
-             { showList ? resultList.map((res, i) => <Activity activity={res} key={i} />) : null }
+             { showList ? resultList.map((res, i) => <Activity activity={res} key={i} addTrainingPlace={addTrainingPlace}/>) : null }
         </div>
     )
 }
+function ToggleTextInput({ text, addTrainingPlace, activity }) {
+    const [editMode, setEditMode] = useState(false);
+    const {appColors} = useContext(ColorContext);
+    const [inputText, setInputText] = useState(text);
 
-function Activity({ activity }) {
+    function handleInputChange(e) {
+        setInputText(e.target.value);
+    }
+    function handleSave() {
+        let place = {name: inputText, latlng: activity.start_latlng};
+        console.log(place);
+        addTrainingPlace(place);
+        setEditMode(false);
+    }
+    
+    if (!editMode) return (
+        <span className="toggleTextInput"><p>{text}</p><span><FontAwesomeIcon icon={faEdit} onClick={()=>{setEditMode(true)}} style={{color: appColors.mainLight}}/></span></span>
+    )
+    return(
+        <div>
+            <div className="toggleTextInput">
+                <input type={text} placeholder={text} value={inputText} onChange={handleInputChange}/>
+                <span>
+                    <FontAwesomeIcon icon={faSave} onClick={handleSave} style={{color: appColors.mainLight}}/> 
+                </span>
+                
+            </div>
+            <div className="coords">Координаты {activity.start_latlng[0]} , {activity.start_latlng[1]}</div>
+        </div>
+        
+    )
+}
+function Activity({ activity, addTrainingPlace }) {
     const [showFullInfo, setShowFullInfo] = useState(false);
     const toggleShowInfo = () => {setShowFullInfo(!showFullInfo)};
     const {appColors} = useContext(ColorContext);
@@ -65,8 +96,8 @@ function Activity({ activity }) {
                 <ul>
                     <li><div className="field">Дата:</div><div className="fieldData">{activity.start_date.split('T')[0]}</div></li>
                     <li><div className="field">Название:</div><div className="fieldData">{activity.name}</div></li>
-                    <li><div className="field">Место:</div><div className="fieldData">{activity.stravavisualPlace}</div></li>
-                    <li><div className="field">Координаты старта <br/> (Д, Ш):</div><div className="fieldData">{activity.start_latlng[0]} , {activity.start_latlng[1]}</div></li>
+                    <li><div className="field">Место:</div><div className="fieldData"><ToggleTextInput text={activity.stravavisualPlace} addTrainingPlace={addTrainingPlace} activity={activity}/></div></li>
+                    {/* <li><div className="field">Координаты старта <br/> (Д, Ш):</div><div className="fieldData">{activity.start_latlng[0]} , {activity.start_latlng[1]}</div></li> */}
                     <li><div className="field">Время тренировки:</div><div className="fieldData">{secToHMS(activity.moving_time)}</div></li>
                     <li><div className="field">Дистанция:</div><div className="fieldData">{(activity.distance / 1000).toFixed(2)} км </div></li>
                 </ul>

@@ -5,7 +5,7 @@ import { Link, Routes, Route, BrowserRouter, useLocation, useNavigate } from 're
 import axios from 'axios';
 import "./style.css";
 import { STRAVA_GET_CODE_LINK, PLACES, COLORS } from './constants';
-import { loadJSON, saveJSON, isTokenExpired, authAtStrava, refreshToken } from './functions.js';
+import { loadJSON, saveJSON, isTokenExpired, authAtStrava, refreshToken, isNear } from './functions.js';
 
 import Header from './Header.jsx';
 import Unauthorized from './Unauthorized.jsx';
@@ -38,6 +38,34 @@ function App() {
     const [activityList, setActivityList] = useState([]);
     const [appColors, setAppColors] = useState(loadJSON("StravavisualAppColors") || COLORS);
     const [chartColors, setChartColors] = useState(loadJSON("StravavisualChartColors") || ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']);
+    const [trainingPlaces, setTrainingPlaces] = useState(loadJSON("StravaTrainingPlaces") || PLACES); // Массив элементов вида     {name: 'Одинцово', latlng: [55.69, 37.25]}
+
+    function saveTrainingPlaces(places) {
+        setTrainingPlaces(places);
+        saveJSON("StravaTrainingPlaces", places);
+    }
+
+    function addTrainingPlace(place) {
+        let newPlaces = [...trainingPlaces];
+        let isPlaceNew = true;
+        newPlaces.forEach((el) => {
+            if (el.latlng[0] == place.latlng[0] && el.latlng[1] == place.latlng[1]) {
+                el.name = place.name; 
+                isPlaceNew = false;
+            }
+        });
+        if (isPlaceNew) newPlaces.push(place);
+        saveTrainingPlaces(newPlaces);
+
+        let newActivities = [...activityList];
+        newActivities.forEach(activity => {
+            if(isNear(activity.start_latlng, place)) {
+                activity.stravavisualPlace = place.name;
+            }
+        });
+        setActivityList(newActivities);
+    }
+
     function changeAuthInfo(info) {
         setAuthInfo(info);
         saveJSON("StravaAuthInfo", info);
@@ -88,7 +116,9 @@ function App() {
                         activityList={activityList}
                         setActivityList={setActivityList}
                         accessToken={authInfo.access_token}
-                        chartColors={chartColors} />} />
+                        chartColors={chartColors}
+                        trainingPlaces={trainingPlaces}
+                        addTrainingPlace={addTrainingPlace} />} />
                     <Route path="secret" element={<Secret />} />  
                     <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} setChartColors={saveChartColors} />} />  
                     <Route path="*" element={<NotFound />} />                 

@@ -20,7 +20,7 @@ function translateType(type) {
 }
 
 export default function Activities(props) { 
-    let { activityList, setActivityList, accessToken, chartColors } = props;
+    let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace } = props;
     let currentLocation = useLocation();
     const [loading, setLoading] = useState(false);
     // console.log("rendering Activities");
@@ -57,7 +57,7 @@ export default function Activities(props) {
         //Добавляем поле stravavisualPlace к активности, которое идентифицирует место тренировки
         result.forEach(res => {
             res.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
-            let place = PLACES.find(place => isNear(res.start_latlng, place));
+            let place = trainingPlaces.find(place => isNear(res.start_latlng, place));
             if (place) {
                 res.stravavisualPlace = place.name;
             } else {
@@ -136,7 +136,7 @@ export default function Activities(props) {
             <ActivityFilter handleFormSubmit={defineQueryParams} filterParams={queryParams}/>
             {loading && <Loading />}
             {activities.length !== 0 && !loading ? <AggregateDistanceToPlaces activitiesList={activities} chartColors={chartColors}/> : null}
-            {!loading && <ResultList resultList={activities} />}
+            {!loading && <ResultList resultList={activities} trainingPlaces={trainingPlaces} addTrainingPlace={addTrainingPlace}/>}
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>
      )

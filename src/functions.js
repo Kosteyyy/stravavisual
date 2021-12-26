@@ -13,7 +13,7 @@ export function secToHMS(timeInSeconds) {
 export const saveJSON = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 
 // Если точка ближе радиуса от места возвращает true
-export function isNear(latlng, place, radius=0.04) {
+export function isNear(latlng, place, radius=0.02) {
     let dist = Math.sqrt(Math.pow(latlng[0]-place.latlng[0], 2) + Math.pow(latlng[1]-place.latlng[1], 2));
     return (dist < radius);
 }
