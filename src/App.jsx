@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ColorContext } from './Context';
 import ReactDOM from 'react-dom';
-import { Link, Routes, Route, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Routes, Route, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import "./style.css";
-import { STRAVA_GET_CODE_LINK, PLACES, COLORS, CHART_COLORS } from './constants';
+import { PLACES, COLORS, CHART_COLORS } from './constants';
 import { loadJSON, saveJSON, isTokenExpired, authAtStrava, refreshToken, isNear } from './functions.js';
 
 import Header from './Header.jsx';

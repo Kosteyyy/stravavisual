@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 import { secToHMS } from './functions.js';
@@ -45,24 +45,29 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     const [editMode, setEditMode] = useState(false);
     const {appColors} = useContext(ColorContext);
     const [inputText, setInputText] = useState(text);
+    const InputRef = useRef(null);
 
     function handleInputChange(e) {
         setInputText(e.target.value);
     }
     function handleSave() {
         let place = {name: inputText, latlng: activity.start_latlng};
-        console.log(place);
         addTrainingPlace(place);
         setEditMode(false);
     }
     
+    useEffect(() => {
+        if (!editMode) return;
+        InputRef.current.focus();
+    }, [editMode]);
+
     if (!editMode) return (
         <span className="toggleTextInput"><p>{text}</p><span><FontAwesomeIcon icon={faEdit} onClick={()=>{setEditMode(true)}} style={{color: appColors.mainLight}}/></span></span>
     )
     return(
         <div>
             <div className="toggleTextInput">
-                <input type={text} placeholder={text} value={inputText} onChange={handleInputChange}/>
+                <input type={text} placeholder={text} value={inputText} ref={InputRef} onChange={handleInputChange}/>
                 <span>
                     <FontAwesomeIcon icon={faSave} onClick={handleSave} style={{color: appColors.mainLight}}/> 
                 </span>
@@ -83,7 +88,7 @@ function Activity({ activity, addTrainingPlace }) {
             <div className="activity"  style={{borderColor: appColors.mainColor}}>
                 <span className="activityIcon" style={{color: appColors.mainColor}}><ActivityIcon activityType={activity.type} /></span>
                 <div className="actInfo">
-                {activity.start_date.split('T')[0]} - {activity.name} - {(activity.distance / 1000).toFixed(2)} км 
+                {activity.start_date.split('T')[0]} - {activity.name} - {(activity.distance / 1000).toFixed(2)} км - <ToggleTextInput text={activity.stravavisualPlace} addTrainingPlace={addTrainingPlace} activity={activity}/>
                 </div>
                 
                 <span onClick={toggleShowInfo} className="toggleButton"><FontAwesomeIcon icon={faAngleDown}  style={{color: appColors.mainLight}}/></span>

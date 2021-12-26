@@ -562,6 +562,7 @@ span.activityIcon {
     padding: 5px;
     border-radius: 5px;
     color: var(--main-text);
+    border: 1px solid var(--main-text);
 }
 .coords {
     font-size: .8em;

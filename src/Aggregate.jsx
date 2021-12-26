@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { secToHMS, shuffle } from './functions.js';
+import { secToHMS } from './functions.js';
 import { ColorContext } from "./Context.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 

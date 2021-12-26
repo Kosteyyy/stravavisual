@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 
 
 import ActivityFilter from './ActivityFilter.jsx';
-import { PLACES } from "./constants.js";
 import ResultList from './ResultList.jsx';
 import { isNear } from './functions.js';
 import { AggregateDistanceToPlaces } from './Aggregate.jsx';
