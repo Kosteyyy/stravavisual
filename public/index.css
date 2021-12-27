@@ -573,6 +573,14 @@ span.activityIcon {
     color: var(--main-text);
     border: 1px solid var(--main-text);
 }
+.toggleTextInput span {
+    margin-right: 5px;
+    font-size: 1.2em;
+}
+.toggleTextInput.edit span {
+    font-size: 1.4em;
+    font-weight: 300;
+}
 .coords {
     font-size: .8em;
 }

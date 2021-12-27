@@ -60,7 +60,7 @@ function placesCouner() {
     console.log("newPlaceCount=", newPlacesCount);
 }
 
-data = {"1": 5, "2": 7, "3": 1, "4": 2, "5": 4, "6": 2};
+data = {"1": 5, "2": 0.00, "3": 1, "4": 2, "5": 4, "6": 2};
 
 function shorten(dataObject, length) {
   //укорачивает объект до length неизмененных значений и одного суммарного из остатков
@@ -78,4 +78,11 @@ function shorten(dataObject, length) {
   return resultObject;
 }
 
-shorten(data, 4);
+function deleteZero(object) {
+  Object.keys(data).forEach(key => {
+    if (data[key] == 0) delete data[key];
+  })
+  console.log(data);
+}
+
+deleteZero(data);

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer, faEdit, faSave, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { secToHMS } from './functions.js';
 import { ColorContext } from "./Context.js";
 
@@ -50,6 +50,7 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     function handleInputChange(e) {
         setInputText(e.target.value);
     }
+
     function handleSave() {
         let place = {name: inputText, latlng: activity.start_latlng};
         addTrainingPlace(place);
@@ -63,14 +64,17 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     }, [editMode]);
 
     if (!editMode) return (
-        <span className="toggleTextInput"><p>{text}</p><span><FontAwesomeIcon icon={faEdit} onClick={()=>{setEditMode(true)}} style={{color: appColors.mainLight}}/></span></span>
+        <span className="toggleTextInput"><p>{text}</p><span><FontAwesomeIcon icon={faEdit} onClick={()=>{setEditMode(true)}} style={{color: appColors.mainColor}}/></span></span>
     )
     return(
         <div>
-            <div className="toggleTextInput">
-                <input type={text} placeholder={text} value={inputText} ref={InputRef} onBlur={() => {}} onChange={handleInputChange}/>
+            <div className="toggleTextInput edit">
+                <input type={text} placeholder={text} value={inputText} ref={InputRef} onChange={handleInputChange}/>
                 <span>
-                    <FontAwesomeIcon icon={faSave} onClick={handleSave} style={{color: appColors.mainLight}}/> 
+                    <FontAwesomeIcon icon={faSave} onClick={handleSave} style={{color: appColors.mainColor}}/> 
+                </span>
+                <span>
+                    <FontAwesomeIcon icon={faWindowClose} onClick={() => {setEditMode(false)}} style={{color: appColors.mainColor}}/> 
                 </span>
                 
             </div>
@@ -98,7 +102,7 @@ function Activity({ activity, addTrainingPlace }) {
     } else {
             return (
             <div className="activity fullView">
-                <span className="activityIcon" ><ActivityIcon activityType={activity.type} /></span>
+                <span className="activityIcon" style={{color: appColors.mainColor}} ><ActivityIcon activityType={activity.type}/></span>
                 <ul>
                     <li><div className="field">Дата:</div><div className="fieldData">{activity.start_date.split('T')[0]}</div></li>
                     <li><div className="field">Название:</div><div className="fieldData">{activity.name}</div></li>

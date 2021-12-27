@@ -154,9 +154,17 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
                 result[key] = Math.floor(result[key]/10)/100;
             }
         });
-
+        result = deleteZero(result);
         return result;
     }
+    function deleteZero(data) {
+        //Удаляет из объекта значение ключ-значение, значение которого ноль.
+        let newData = {...data};
+        Object.keys(newData).forEach(key => {
+          if (newData[key] == 0) delete newData[key];
+        })
+        return newData;
+      }
 
     function shorten(dataObject, length) {
         //укорачивает объект до length неизмененных значений и одного суммарного из остатков
@@ -207,6 +215,15 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
         setShowChart(true);
     }, [aggrData]);
 
+    const legend = {
+        display: true,
+        position: "bottom",
+        // labels: {
+        //   fontColor: "#323130",
+        //   fontSize: 14
+        // }
+      };
+
     return(
         showChart ? 
         <div id="aggregate" className="component-card">
@@ -214,7 +231,7 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
             <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
             <div className="chart-container">
                 <div className="my-chart">
-                    <Pie data={chartData} />
+                    <Pie data={chartData} legend={legend} />
                 </div>
             </div>
             <ShowRes data={aggrData} targetField={targetField} keyField={keyField} actFilter={filter} filterAdd={filterAdd} filterRemove={filterRemove}/>
