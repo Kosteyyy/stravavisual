@@ -20,7 +20,7 @@ function translateType(type) {
 }
 
 export default function Activities(props) { 
-    let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace } = props;
+    let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace, saveTrainingPlaces } = props;
     let currentLocation = useLocation();
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState({});
@@ -31,17 +31,20 @@ export default function Activities(props) {
     //console.log("ACTIVITIES: queryParams: ", queryParams, "loading: ", loading, "Activities.length: ", activities.length);
 
     function filterAdd(object) {
+        //Добавляет к фильтру объект
         setFilter({...filter, ...object});
     }
 
     function filterRemove(key) {
+        //Удаляет из фильтра ключ фильтрования
         let newFilter = {...filter};
         delete newFilter[key];
         setFilter(newFilter);
     }
 
-    function applyFilter(dataArr, filter) {
-        return dataArr.filter((data) => {
+    function applyFilter(dataArray, filter) {
+        //Применяет фильтр вида {prop1: v1, prop2: v2} к массиву объектов
+        return dataArray.filter((data) => {
             let pass=true;
             if (Object.keys(filter).length == 0) return true;
             Object.keys(filter).forEach(
@@ -57,6 +60,33 @@ export default function Activities(props) {
     //     filterAdd({"stravavisualPlace" : "Митино ФОК"});
     //     filterRemove('stravavisualPlace');
     // }, []);
+    function setAdditionalFields(dataArray) {
+        //Добавляет поля stravavisualCount, stravavisualPlace, type(переводит) к массиву результатов array
+        let newPlaces = [...trainingPlaces]; //Неопознанные места сначала попадают сюда
+        let regexp = /^Место (\d*)$/;
+        let newPlacesMax = newPlaces.reduce((total, curr) => {
+                let placeNumber = 0;
+                if (regexp.test(curr.name)) placeNumber = Number((curr.name).match(regexp)[1]); // из "Место 345" получает число 345
+                return (total > placeNumber) ? total : placeNumber; 
+            }, 0); 
+        console.log("newPlaceCount=", newPlacesMax);
+
+        dataArray.forEach(res => {
+            res.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
+
+            let place = newPlaces.find(place => isNear(res.start_latlng, place));
+            if (place) {
+                res.stravavisualPlace = place.name;
+            } else {
+                newPlacesMax++;
+                let newPlaceName = 'Место ' + newPlacesMax;
+                res.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Место 1'
+                newPlaces.push({'name': newPlaceName, 'latlng': res.start_latlng});
+            }
+            saveTrainingPlaces(newPlaces); //Обновляем массив зарегистрированных мест
+            res.type = translateType(res.type); //Меняем вид активности на вид на русском языке
+        });
+    }
 
     async function getData(params, accessToken) {
         //console.log("ПОЛУЧАЮ ДАННЫЕ ПО ФИЛЬТРУ");
@@ -83,17 +113,9 @@ export default function Activities(props) {
             resultChunk.length == per_page
         );
 
+
         //Добавляем поле stravavisualPlace к активности, которое идентифицирует место тренировки
-        result.forEach(res => {
-            res.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
-            let place = trainingPlaces.find(place => isNear(res.start_latlng, place));
-            if (place) {
-                res.stravavisualPlace = place.name;
-            } else {
-                res.stravavisualPlace = 'Неизвестно';
-            }
-            res.type = translateType(res.type); //Меняем вид активности на вид на русском языке
-        });
+        setAdditionalFields(result);
         setLoading(false);
         //console.log("ACTIVITIES - getData. Изменился Loading. RERENDER. loading set to false", loading);
         return result;

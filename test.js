@@ -50,4 +50,14 @@ function hexToHSL(hex) {
         }
   }
 
-  console.log(shuffle([1,2,3,4,5,6,7,8]));
+
+let arr = ['Кино', 'Место', 'Место 1', 'Место 3', 'Место 8'];
+
+function placesCouner() {
+    let regexp = /^Место \d/;
+    arr.forEach(el => console.log(regexp.test(el)));
+    let newPlacesCount = arr.reduce((total, curr) => total + regexp.test(curr) * 1, 0);
+    console.log("newPlaceCount=", newPlacesCount);
+}
+
+placesCouner();

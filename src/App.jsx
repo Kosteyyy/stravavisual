@@ -117,7 +117,8 @@ function App() {
                         accessToken={authInfo.access_token}
                         chartColors={chartColors}
                         trainingPlaces={trainingPlaces}
-                        addTrainingPlace={addTrainingPlace} />} />
+                        addTrainingPlace={addTrainingPlace}
+                        saveTrainingPlaces={saveTrainingPlaces} />} />
                     <Route path="secret" element={<Secret />} />  
                     <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} setChartColors={saveChartColors} />} />  
                     <Route path="*" element={<NotFound />} />                 
