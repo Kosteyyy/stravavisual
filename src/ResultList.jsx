@@ -59,6 +59,7 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     useEffect(() => {
         if (!editMode) return;
         InputRef.current.focus();
+        setInputText(text);
     }, [editMode]);
 
     if (!editMode) return (
@@ -67,7 +68,7 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     return(
         <div>
             <div className="toggleTextInput">
-                <input type={text} placeholder={text} value={inputText} ref={InputRef} onChange={handleInputChange}/>
+                <input type={text} placeholder={text} value={inputText} ref={InputRef} onBlur={() => {}} onChange={handleInputChange}/>
                 <span>
                     <FontAwesomeIcon icon={faSave} onClick={handleSave} style={{color: appColors.mainLight}}/> 
                 </span>

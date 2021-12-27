@@ -132,7 +132,7 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
 }
 
-export function AggregateDistanceToPlaces({activitiesList, chartColors, filter, filterAdd, filterRemove}) {
+export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove}) {
     const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
     const [chartData, setChartData] = useState({}); //объект данных для диаграммы
@@ -142,36 +142,55 @@ export function AggregateDistanceToPlaces({activitiesList, chartColors, filter, 
 
     function calcAggrData(data, keyField, targetField ) {
         //Аггрегирует в массиве объектов data данные по полю объектов keyField, суммируя поля targetField
+        //возвращает объект {"key1": 1234, "key2": 23532, ...}
         let result = {};
         data.forEach(el => {
             if (result[el[keyField]] == undefined) result[el[keyField]] = 0;
             result[el[keyField]] += Number(el[targetField]);
         })
+        //Если аггрегируется дистанция, приводим результат к виду 112.12 
+        Object.keys(result).forEach(key => {
+            if (targetField == 'distance') {
+                result[key] = Math.floor(result[key]/10)/100;
+            }
+        });
+
         return result;
     }
 
+    function shorten(dataObject, length) {
+        //укорачивает объект до length неизмененных значений и одного суммарного из остатков
+        //делаем из объекта массив пар [key, value]
+        let arr = Object.keys(dataObject).map(key => [key, dataObject[key]]);
+        arr.sort((a, b) => b[1] - a[1]); 
+        let newArr = arr.splice(0, length-1);
+        newArr.push(["Прочее", arr.reduce((total, curr) => total + curr[1], 0)]);
+        let resultObject = {};
+        newArr.forEach(el => {
+            let key = el[0];  
+            resultObject[key] = el[1];
+            });
+        return resultObject;
+        }
 
     useEffect(() => {
+    //Вычисляем сводку при изменении исходного массива либо полей аггрегации
         if (activitiesList.length == 0) { 
             setShowChart(false);
             return;
         }
-        
         let aggrobject = calcAggrData(activitiesList, keyField, targetField);
-        //Для агрегированного объекта надо поделить расстояние на 1000
         //aggrobject имеет вид {"место": 11723, "место 2": 24003}
-        Object.keys(aggrobject).forEach(key => {
-            if (targetField == 'distance') {
-                aggrobject[key] = Math.floor(aggrobject[key]/10)/100;
-            }
-        });
         setAggrData(aggrobject);
     }, [activitiesList, keyField, targetField]);
 
     useEffect(() => {
-        if (Object.keys(aggrData).length == 0) return
-        let labels = Object.keys(aggrData);
-        let data = Object.keys(aggrData).map(key => aggrData[key]);
+        //Готовим данные для диаграммы
+        let chartData = {...aggrData};
+        if (Object.keys(chartData).length == 0) return;
+        if (Object.keys(chartData).length > 8) chartData = shorten(chartData, 8);
+        let labels = Object.keys(chartData);
+        let data = Object.keys(chartData).map(key => chartData[key]);
         let readyData = {
             labels: labels,
             datasets: [

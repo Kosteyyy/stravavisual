@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import ActivityFilter from './ActivityFilter.jsx';
 import ResultList from './ResultList.jsx';
 import { isNear } from './functions.js';
-import { AggregateDistanceToPlaces } from './Aggregate.jsx';
+import { Aggregate } from './Aggregate.jsx';
 import Loading from "./Loading.jsx";
 
 function translateType(type) {
@@ -189,7 +189,7 @@ export default function Activities(props) {
         <div id="activities" className="content">
             <ActivityFilter handleFormSubmit={defineQueryParams} filterParams={queryParams}/>
             {loading && <Loading />}
-            {activities.length !== 0 && !loading ? <AggregateDistanceToPlaces 
+            {activities.length !== 0 && !loading ? <Aggregate
                 activitiesList={activities}
                 chartColors={chartColors}
                 filter={filter}

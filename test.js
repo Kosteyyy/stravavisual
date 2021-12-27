@@ -60,4 +60,22 @@ function placesCouner() {
     console.log("newPlaceCount=", newPlacesCount);
 }
 
-placesCouner();
+data = {"1": 5, "2": 7, "3": 1, "4": 2, "5": 4, "6": 2};
+
+function shorten(dataObject, length) {
+  //укорачивает объект до length неизмененных значений и одного суммарного из остатков
+  //делаем из объекта массив пар [key, value]
+  let arr = Object.keys(dataObject).map(key => [key, dataObject[key]]);
+  arr.sort((a, b) => b[1] - a[1]); 
+  newArr = arr.splice(0, length-1);
+  newArr.push(["Прочее", arr.reduce((total, curr) => total + curr[1], 0)]);
+  let resultObject = {};
+  newArr.forEach(el => {
+      let key = el[0];  
+      resultObject[key] = el[1];
+      });
+  console.log(resultObject);
+  return resultObject;
+}
+
+shorten(data, 4);
