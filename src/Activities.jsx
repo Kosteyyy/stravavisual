@@ -194,7 +194,8 @@ export default function Activities(props) {
                 chartColors={chartColors}
                 filter={filter}
                 filterAdd={filterAdd}
-                filterRemove={filterRemove}/> : null}
+                filterRemove={filterRemove}
+                trainingPlaces={trainingPlaces}/> : null}
             {!loading && <ResultList resultList={activities} trainingPlaces={trainingPlaces} addTrainingPlace={addTrainingPlace}/>}
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>

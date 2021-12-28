@@ -1,13 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { secToHMS } from './functions.js';
+import { secToHMS, getAddress } from './functions.js';
 import { ColorContext } from "./Context.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+function Address({ latlng }) {
+    const [address, setAddress] = useState('address');
+    // let latlng = [55.84, 37.34];
 
+    useEffect(() => {
+        getAddress(latlng)
+            .then((res) => {
+                // console.log("res: ", res);
+                setAddress(res);
+            });
+        
+    })
+    return <span className="address">{address}</span>
+}
 
-function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove }) {
+function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove, trainingPlaces }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
  
@@ -32,16 +45,22 @@ function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemo
         }
     }
 
+    function getLatlng(placesArray, name) {
+        let place = placesArray.filter(el => el.name == name)[0];
+        // console.log("I'm getLatlng. name = ", name, " place = ", place);
+        return place.latlng;
+    }
     function handleClick(fieldText) {
-        if (!isFilterApplied || fieldText !== filter.filterValue) {
-            let filterObject = {};
-            filterObject[keyField] = fieldText;
-            filterAdd(filterObject);
-            setFilter({filterKey: keyField, filterValue: fieldText});
-            setIsFilterApplied(true);
-        } else {
-            removeFilter();
-        }
+        return;
+        // if (!isFilterApplied || fieldText !== filter.filterValue) {
+        //     let filterObject = {};
+        //     filterObject[keyField] = fieldText;
+        //     filterAdd(filterObject);
+        //     setFilter({filterKey: keyField, filterValue: fieldText});
+        //     setIsFilterApplied(true);
+        // } else {
+        //     removeFilter();
+        // }
     }
 
     function removeFilter() {
@@ -64,7 +83,16 @@ function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemo
                 <ul>
                     {Object.keys(data).map(
                         (key, i) => {
-                            return <li key={i}><div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>{key}:</div><div className="fieldData">{formatFieldData(data[key], targetField)}</div></li>
+                            let latlng = getLatlng(trainingPlaces, key);
+                            return <li key={i}>
+                                <div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>
+                                    {key}:
+                                </div>
+                                <div className="fieldData">
+                                    {formatFieldData(data[key], targetField)}
+                                </div>
+                                {keyField == "stravavisualPlace" ? <Address latlng={latlng}/> : null}
+                            </li>
                         }
                     )}
                 </ul>
@@ -132,7 +160,7 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
 }
 
-export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove}) {
+export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove, trainingPlaces}) {
     const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
     const [chartData, setChartData] = useState({}); //объект данных для диаграммы
@@ -215,14 +243,6 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
         setShowChart(true);
     }, [aggrData]);
 
-    const legend = {
-        display: true,
-        position: "bottom",
-        // labels: {
-        //   fontColor: "#323130",
-        //   fontSize: 14
-        // }
-      };
 
     return(
         showChart ? 
@@ -231,10 +251,10 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
             <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
             <div className="chart-container">
                 <div className="my-chart">
-                    <Pie data={chartData} legend={legend} />
+                    <Pie data={chartData} />
                 </div>
             </div>
-            <ShowRes data={aggrData} targetField={targetField} keyField={keyField} actFilter={filter} filterAdd={filterAdd} filterRemove={filterRemove}/>
+            <ShowRes data={aggrData} targetField={targetField} keyField={keyField} actFilter={filter} filterAdd={filterAdd} filterRemove={filterRemove} trainingPlaces={trainingPlaces}/>
         </div>
             
         : null

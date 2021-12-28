@@ -357,6 +357,7 @@ button:hover {
 #aggregate li {
     display: flex;
     width: 100%;
+    border-bottom: 1px solid var(--text-lighter);
 }
 #aggregate .field {
     flex-basis: 50%;

@@ -29,6 +29,13 @@ app.post('/api/refreshtoken', function(req, res) {
         .then(auth => res.send(auth));
 })
 
+app.post('/api/getaddress', function(req, res) {
+    let codeString = JSON.stringify(req.body, null, 2);
+    let codeObject = JSON.parse(codeString);
+    //console.log('Got code:', codeObject);
+    let data = fetchFromDadata(codeObject.latlng).then(address => res.send(address));
+})
+
 app.get('*', (req, res) => {
     res.sendFile(path.resolve('public/index.html'));
 });
@@ -69,6 +76,31 @@ async function authWithCode(code) {
     return a;
 }
 
+
+async function fetchFromDadata(latlng, access_token) {
+
+    var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
+    var token = "***REMOVED***";
+    var query = { lat: latlng[0], lon: latlng[1] };
+
+    var options = {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Token " + token
+        },
+        body: JSON.stringify(query)
+    }
+
+    let data = await fetch(url, options)
+        .then(response => response.json())
+        .catch(error => console.log("error", error));
+    // console.log(data.suggestions);
+    if (data.suggestions.length == 0) return '';
+    return data.suggestions[0].value;
+}
 
 app.listen(PORT, function () {
     console.log(`App started at port ${PORT}`);

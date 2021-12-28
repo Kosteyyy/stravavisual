@@ -11,6 +11,7 @@ import Unauthorized from './Unauthorized.jsx';
 import Authorization from './Authorization.jsx';
 import Activities from './Activities.jsx';
 import Settings from './Settings.jsx';
+import Reset from './Reset.jsx';
 
 function Mainpage({ authInfo }) {
     let { isAuth } = authInfo;
@@ -121,6 +122,7 @@ function App() {
                         saveTrainingPlaces={saveTrainingPlaces} />} />
                     <Route path="secret" element={<Secret />} />  
                     <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} setChartColors={saveChartColors} />} />  
+                    <Route path="reset" element={<Reset />} />
                     <Route path="*" element={<NotFound />} />                 
                 </Routes>
             </BrowserRouter>

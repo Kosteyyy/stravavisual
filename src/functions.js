@@ -50,6 +50,19 @@ export async function refreshToken(token) {
     return fetcheddata;
 }
 
+//Запрашивает через наш сервер адрес по latlng вида [55.74, 77.32]
+export async function getAddress(latlng) {
+  let data = {latlng: latlng};
+  // try {
+      const response = await fetch('/api/getaddress', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify(data),
+      });
+      const fetcheddata = await response.text();
+  return fetcheddata;
+}
+
 export function authAtStrava() {
     document.location.href = STRAVA_GET_CODE_LINK;
 }

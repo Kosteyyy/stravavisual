@@ -45,6 +45,7 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     const [editMode, setEditMode] = useState(false);
     const {appColors} = useContext(ColorContext);
     const [inputText, setInputText] = useState(text);
+    // const [showLocationSelect, setShowLocationSelect]
     const InputRef = useRef(null);
 
     function handleInputChange(e) {
