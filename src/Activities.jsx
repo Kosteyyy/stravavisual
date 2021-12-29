@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import ActivityFilter from './ActivityFilter.jsx';
 import ResultList from './ResultList.jsx';
-import { isNear } from './functions.js';
+import { isNear, getAddress } from './functions.js';
 import { Aggregate } from './Aggregate.jsx';
 import Loading from "./Loading.jsx";
 
@@ -20,7 +20,7 @@ function translateType(type) {
 }
 
 export default function Activities(props) { 
-    let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace, saveTrainingPlaces } = props;
+    let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace, saveTrainingPlaces, renameTrainingPlace } = props;
     let currentLocation = useLocation();
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState({});
@@ -60,10 +60,11 @@ export default function Activities(props) {
     //     filterAdd({"stravavisualPlace" : "Митино ФОК"});
     //     filterRemove('stravavisualPlace');
     // }, []);
-    function setAdditionalFields(dataArray) {
+    async function setAdditionalFields(dataArray) {
         //Добавляет поля stravavisualCount, stravavisualPlace, type(переводит) к массиву результатов array
         let newPlaces = [...trainingPlaces]; //Неопознанные места сначала попадают сюда
-        let regexp = /^Место (\d*)$/;
+        let regexp = /^Локация (\d*)$/;
+        //Определяем максимальный номер неизвестной локации Локация 345
         let newPlacesMax = newPlaces.reduce((total, curr) => {
                 let placeNumber = 0;
                 if (regexp.test(curr.name)) placeNumber = Number((curr.name).match(regexp)[1]); // из "Место 345" получает число 345
@@ -71,21 +72,46 @@ export default function Activities(props) {
             }, 0); 
         console.log("newPlaceCount=", newPlacesMax);
 
-        dataArray.forEach(res => {
-            res.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
 
-            let place = newPlaces.find(place => isNear(res.start_latlng, place));
-            if (place) {
-                res.stravavisualPlace = place.name;
-            } else {
-                newPlacesMax++;
-                let newPlaceName = 'Место ' + newPlacesMax;
-                res.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Место 1'
-                newPlaces.push({'name': newPlaceName, 'latlng': res.start_latlng});
-            }
-            saveTrainingPlaces(newPlaces); //Обновляем массив зарегистрированных мест
-            res.type = translateType(res.type); //Меняем вид активности на вид на русском языке
-        });
+        try {
+            for (let data of dataArray) {
+                data.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
+    
+                let place = newPlaces.find(place => isNear(data.start_latlng, place));
+                if (place) {
+                    data.stravavisualPlace = place.name;
+                } else {
+      
+                    let placeAddress = await getAddress(data.start_latlng);
+                    if (placeAddress == '') newPlacesMax++;
+                    let newPlaceName = (placeAddress != '') ? placeAddress : 'Локация ' + newPlacesMax;
+                    data.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Локация 1'
+                    newPlaces.push({'name': newPlaceName, 'latlng': data.start_latlng});
+                }
+                saveTrainingPlaces(newPlaces); //Обновляем массив зарегистрированных мест
+                data.type = translateType(data.type); //Меняем вид активности на вид на русском языке
+            };
+        } catch (err) {
+            console.log(err);
+        }
+       
+
+        // dataArray.forEach(res => {
+        //     res.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
+
+        //     let place = newPlaces.find(place => isNear(res.start_latlng, place));
+        //     if (place) {
+        //         res.stravavisualPlace = place.name;
+        //     } else {
+        //         newPlacesMax++;
+        //         let placeAddress = await getAddress(res.start_latlng);
+        //         let newPlaceName = (placeAddress != '') ? placeAddress : 'Локация ' + newPlacesMax;
+        //         res.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Локация 1'
+        //         newPlaces.push({'name': newPlaceName, 'latlng': res.start_latlng});
+        //     }
+        //     saveTrainingPlaces(newPlaces); //Обновляем массив зарегистрированных мест
+        //     res.type = translateType(res.type); //Меняем вид активности на вид на русском языке
+        // });
     }
 
     async function getData(params, accessToken) {
@@ -115,7 +141,7 @@ export default function Activities(props) {
 
 
         //Добавляем поле stravavisualPlace к активности, которое идентифицирует место тренировки
-        setAdditionalFields(result);
+        await setAdditionalFields(result);
         setLoading(false);
         //console.log("ACTIVITIES - getData. Изменился Loading. RERENDER. loading set to false", loading);
         return result;
@@ -195,7 +221,8 @@ export default function Activities(props) {
                 filter={filter}
                 filterAdd={filterAdd}
                 filterRemove={filterRemove}
-                trainingPlaces={trainingPlaces}/> : null}
+                trainingPlaces={trainingPlaces}
+                renameTrainingPlace={renameTrainingPlace}/> : null}
             {!loading && <ResultList resultList={activities} trainingPlaces={trainingPlaces} addTrainingPlace={addTrainingPlace}/>}
             {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>

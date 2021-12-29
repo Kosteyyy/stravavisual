@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 var my_token = "***REMOVED***";
-latlng = [55.96, 35.42];
+latlng = [55.84, 37.32];
 
 // var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
 // var token = "***REMOVED***";
@@ -53,8 +53,10 @@ async function fetchFromDadata(latlng, access_token) {
 
 async function main() {
 	const data = await fetchFromDadata(latlng);
+    ({ city, street_with_type } = data.suggestions[0].data);
 	// console.log(data);
-    console.log(data.suggestions);
+    console.log(city + ', ' + street_with_type);
+    console.log(data.suggestions[0]);
     
 }
 main()

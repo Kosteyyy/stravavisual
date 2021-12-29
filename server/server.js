@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
 const bodyParser = require('body-parser');
+const { faCity } = require('@fortawesome/free-solid-svg-icons');
 
 const CLIENT_ID = "***REMOVED***";
 const CLIENT_SECRET = "***REMOVED***";
@@ -99,7 +100,11 @@ async function fetchFromDadata(latlng, access_token) {
         .catch(error => console.log("error", error));
     // console.log(data.suggestions);
     if (data.suggestions.length == 0) return '';
-    return data.suggestions[0].value;
+    ({ city, street_with_type } = data.suggestions[0].data);
+    if (city == null && street_with_type == 0) return '';
+    if (street_with_type == null) return city;
+    if (city == null) return street_with_type;
+    return city + ", " + street_with_type ;
 }
 
 app.listen(PORT, function () {

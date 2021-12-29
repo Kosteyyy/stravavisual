@@ -43,12 +43,25 @@ function App() {
 
     function resetTrainingPlaces() {
         saveTrainingPlaces(PLACES);
-        setActivityList([]);
+        setActivityList([]); //Иначе остаются тренировки с удвлёнными местами и выходят ошибки
     }
 
     function saveTrainingPlaces(places) {
         setTrainingPlaces(places);
         saveJSON("StravaTrainingPlaces", places);
+    }
+
+    function renameTrainingPlace(oldName, newName) {
+        let newTrainingPlaces = [...trainingPlaces];
+        newTrainingPlaces.forEach(place => {
+            if (place.name == oldName) place.name = newName;
+        });
+        saveTrainingPlaces(newTrainingPlaces);
+        let newActivityList = [...activityList];
+        newActivityList.forEach(activity => {
+            if (activity.stravavisualPlace == oldName) activity.stravavisualPlace = newName;
+        })
+        setActivityList(newActivityList);
     }
 
     function addTrainingPlace(place) {
@@ -125,7 +138,8 @@ function App() {
                         chartColors={chartColors}
                         trainingPlaces={trainingPlaces}
                         addTrainingPlace={addTrainingPlace}
-                        saveTrainingPlaces={saveTrainingPlaces} />} />
+                        saveTrainingPlaces={saveTrainingPlaces}
+                        renameTrainingPlace={renameTrainingPlace} />} />
                     <Route path="secret" element={<Secret />} />  
                     <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} setChartColors={saveChartColors} />} />  
                     <Route path="reset" element={<Reset resetTrainingPlaces={resetTrainingPlaces}/>} />

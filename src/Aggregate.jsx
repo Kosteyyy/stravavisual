@@ -3,32 +3,18 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { secToHMS, getAddress } from './functions.js';
 import { ColorContext } from "./Context.js";
+import ToggleTextInput from './ToggleTextInput.jsx';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Address({ latlng }) {
-    const [address, setAddress] = useState('address');
-    // let latlng = [55.84, 37.34];
-
-    useEffect(() => {
-        getAddress(latlng)
-            .then((res) => {
-                // console.log("res: ", res);
-                setAddress(res);
-            });
-        
-    })
-    return <span className="address">{address}</span>
-}
-
-function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove, trainingPlaces }) {
+function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove, trainingPlaces, renameTrainingPlace }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
  
     // принимает данные в формате {"место": 11723, "место 2": 24003}
     // и выводит иx в рендер виде ключ: значение.
-    useEffect(() => {
-        if (Object.keys(actFilter).length == 0 && isFilterApplied) removeFilter();
-    }, [actFilter]);
+    // useEffect(() => {
+    //     if (Object.keys(actFilter).length == 0 && isFilterApplied) removeFilter();
+    // }, [actFilter]);
 
     function formatFieldData(data, targetField) {
         switch(targetField) {
@@ -45,11 +31,11 @@ function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemo
         }
     }
 
-    function getLatlng(placesArray, name) {
-        let place = placesArray.filter(el => el.name == name)[0];
-        // console.log("I'm getLatlng. name = ", name, " place = ", place);
-        return place.latlng;
-    }
+    // function getLatlng(placesArray, name) {
+    //     let place = placesArray.filter(el => el.name == name)[0];
+    //     // console.log("I'm getLatlng. name = ", name, " place = ", place);
+    //     return place.latlng;
+    // }
     function handleClick(fieldText) {
         return;
         // if (!isFilterApplied || fieldText !== filter.filterValue) {
@@ -63,17 +49,17 @@ function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemo
         // }
     }
 
-    function removeFilter() {
-        if (!isFilterApplied) return;
-        filterRemove(filter.filterKey);
-        setIsFilterApplied(false);
-        setFilter({filterKey: "", filterValue: ""});
-    }
+    // function removeFilter() {
+    //     if (!isFilterApplied) return;
+    //     filterRemove(filter.filterKey);
+    //     setIsFilterApplied(false);
+    //     setFilter({filterKey: "", filterValue: ""});
+    // }
 
-    useEffect(() => {
-        if (!isFilterApplied) return;
-        if (keyField !== filter.filterKey) removeFilter();
-    }, [keyField]);
+    // useEffect(() => {
+    //     if (!isFilterApplied) return;
+    //     if (keyField !== filter.filterKey) removeFilter();
+    // }, [keyField]);
 
     if (Object.keys(data).length == 0) {
         return
@@ -83,15 +69,13 @@ function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemo
                 <ul>
                     {Object.keys(data).map(
                         (key, i) => {
-                            let latlng = getLatlng(trainingPlaces, key);
                             return <li key={i}>
                                 <div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>
-                                    {key}:
+                                    <ToggleTextInput text={key} handleSubmit={renameTrainingPlace} /><p>:</p>
                                 </div>
                                 <div className="fieldData">
                                     {formatFieldData(data[key], targetField)}
                                 </div>
-                                {keyField == "stravavisualPlace" ? <Address latlng={latlng}/> : null}
                             </li>
                         }
                     )}
@@ -160,7 +144,7 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
 }
 
-export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove, trainingPlaces}) {
+export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove, trainingPlaces, renameTrainingPlace}) {
     const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
     const [chartData, setChartData] = useState({}); //объект данных для диаграммы
@@ -254,7 +238,14 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
                     <Pie data={chartData} />
                 </div>
             </div>
-            <ShowRes data={aggrData} targetField={targetField} keyField={keyField} actFilter={filter} filterAdd={filterAdd} filterRemove={filterRemove} trainingPlaces={trainingPlaces}/>
+            <ShowRes data={aggrData}
+                targetField={targetField} 
+                keyField={keyField} 
+                actFilter={filter} 
+                filterAdd={filterAdd} 
+                filterRemove={filterRemove} 
+                trainingPlaces={trainingPlaces}
+                renameTrainingPlace={renameTrainingPlace}/>
         </div>
             
         : null

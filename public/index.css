@@ -207,7 +207,7 @@ button:hover {
     justify-content: center;
 }
 .my-chart {
-    width: 300px;
+    width: 350px;
     height: fit-content;
 }
 .my-chart h1  {
@@ -338,7 +338,7 @@ button:hover {
 
     .my-chart {
         width: 95%;
-        max-width: 250px;
+        max-width: 350px;
         height: fit-content;
      }
 
@@ -357,7 +357,9 @@ button:hover {
 #aggregate li {
     display: flex;
     width: 100%;
-    border-bottom: 1px solid var(--text-lighter);
+    align-items: center;
+    /* border-bottom: 1px solid var(--text-lighter); */
+    padding-bottom: 5px;
 }
 #aggregate .field {
     flex-basis: 50%;
@@ -365,6 +367,13 @@ button:hover {
     color: var(--text--darker);
     text-align: right;
     margin-right: 10px;
+}
+#aggregate .edit {
+    display: flex;
+    align-items: center;
+}
+#aggregate .edit span {
+    font-size: 1.2em;
 }
 #aggregate .fieldData {
     flex-basis: 50%;
@@ -376,6 +385,13 @@ button:hover {
 }
 .dataList .field {
     cursor: pointer;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+.dataList .field .icon {
+    font-size: 14px;
+    display: block;
 }
 #aggregate .field.filter {
     color: red;
