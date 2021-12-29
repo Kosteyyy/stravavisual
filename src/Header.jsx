@@ -61,6 +61,7 @@ const Nav = () => {
             <Link onClick={setActiveClass} to="/">Главная</Link>{" "}
             <Link onClick={setActiveClass} to="activities">Тренировки</Link> 
             <Link onClick={setActiveClass} to="settings">Настройки</Link>{" "}
+            <Link onClick={setActiveClass} to="reset">Reset</Link>{" "}
         </nav>
     )
 }

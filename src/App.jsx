@@ -40,6 +40,12 @@ function App() {
     const [chartColors, setChartColors] = useState(loadJSON("StravavisualChartColors") || CHART_COLORS[0]);
     const [trainingPlaces, setTrainingPlaces] = useState(loadJSON("StravaTrainingPlaces") || PLACES); // Массив элементов вида     {name: 'Одинцово', latlng: [55.69, 37.25]}
 
+
+    function resetTrainingPlaces() {
+        saveTrainingPlaces(PLACES);
+        setActivityList([]);
+    }
+
     function saveTrainingPlaces(places) {
         setTrainingPlaces(places);
         saveJSON("StravaTrainingPlaces", places);
@@ -122,7 +128,7 @@ function App() {
                         saveTrainingPlaces={saveTrainingPlaces} />} />
                     <Route path="secret" element={<Secret />} />  
                     <Route path="settings" element={<Settings colors={appColors} setColors={saveAppColors} setChartColors={saveChartColors} />} />  
-                    <Route path="reset" element={<Reset />} />
+                    <Route path="reset" element={<Reset resetTrainingPlaces={resetTrainingPlaces}/>} />
                     <Route path="*" element={<NotFound />} />                 
                 </Routes>
             </BrowserRouter>
