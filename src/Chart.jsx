@@ -16,7 +16,7 @@ export default function Chart({ results, fillColors, borderColors }) {
       // cx.lineTo(90, 70);
       cx.fill();
       cx.stroke();
-      let sliceAngle = (results[1].count / total) * 2 * Math.PI;
+      sliceAngle = (results[1].count / total) * 2 * Math.PI;
       cx.beginPath();
       cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
       currentAngle += sliceAngle;
