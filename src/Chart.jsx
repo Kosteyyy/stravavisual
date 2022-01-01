@@ -16,6 +16,18 @@ export default function Chart({ results, fillColors, borderColors }) {
       // cx.lineTo(90, 70);
       cx.fill();
       cx.stroke();
+      let sliceAngle = (results[1].count / total) * 2 * Math.PI;
+      cx.beginPath();
+      cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
+      currentAngle += sliceAngle;
+      cx.lineTo(101, 101);
+      // cx.moveTo(50, 10);
+      // cx.lineTo(10, 70);
+      // cx.lineTo(90, 70);
+        cx.fillStyle = fillColors[1];
+        cx.strokeStyle = borderColors[1];
+      cx.fill();
+      cx.stroke();
     }, [])
 
   // useEffect(() => {
