@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 export default function Chart({ results, fillColors, borderColors }) {
+  console.log(fillColors);
     useEffect(() => {
       let cx = document.querySelector("canvas").getContext("2d");
       let total = results.reduce((sum, { count }) => sum + count, 0);
