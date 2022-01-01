@@ -16,9 +16,9 @@ export default function Chart({ results, chartColors }) {
       cx.beginPath();
       // center=100,100, radius=100
       //from current angle, clockwise by slice's angle
-      cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
+      cx.arc(202, 202, 200, currentAngle, currentAngle + sliceAngle);
       currentAngle += sliceAngle;
-      cx.lineTo(101, 101);
+      cx.lineTo(202, 202);
       cx.fillStyle = fillColors[i];
       cx.fill();
       cx.strokeStyle = borderColors[i];
@@ -28,9 +28,9 @@ export default function Chart({ results, chartColors }) {
   }, [results, fillColors, borderColors]);
 
   return (
-    <div>
+    <div id="chart">
       {/* <div>{color}</div> */}
-      <canvas width="202" height="202"></canvas>;
+      <canvas width="404" height="404"></canvas>;
     </div>
   )
 
