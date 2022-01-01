@@ -8,7 +8,6 @@ import ToggleTextInput from './ToggleTextInput.jsx';
 import Chart from "./Chart.jsx";
 
 function ColorLabel({ labelColor, borderColor }) {
-    console.log(labelColor);
     return <span className="chartLabel" style={{backgroundColor: labelColor, borderColor: borderColor}}></span>
 }
 
