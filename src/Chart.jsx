@@ -58,7 +58,7 @@ export default function Chart({ results, fillColors, borderColors }) {
   return (
     <div>
       <div>{fillColors[0]}</div>
-      <canvas width="202" height="202"></canvas>;
+      {/* <canvas width="202" height="202"></canvas>; */}
     </div>
   )
 
