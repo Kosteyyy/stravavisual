@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 export default function Chart({ results, fillColors, borderColors }) {
   console.log(fillColors);
+  let colors = [...fillColors];
     useEffect(() => {
       let cx = document.querySelector("canvas").getContext("2d");
       let total = results.reduce((sum, { count }) => sum + count, 0);
@@ -26,8 +27,8 @@ export default function Chart({ results, fillColors, borderColors }) {
       // cx.lineTo(10, 70);
       // cx.lineTo(90, 70);
       // console.log(fillColors[1], borderColors[1]);
-      let color = fillColors[1];
-        cx.fillStyle = color;
+        cx.fillStyle = colors[0];
+        console.log(colors[0], typeof colors[0]);
         cx.strokeStyle = "#2176ae";
       cx.fill();
       cx.stroke();
