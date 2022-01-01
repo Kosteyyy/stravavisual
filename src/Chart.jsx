@@ -1,40 +1,10 @@
 import React, { useEffect } from "react";
 import { CHART_COLORS } from "./constants.js";
 
-export default function Chart({ results }) {
-  let fillColors = CHART_COLORS[0].colors;
-  let borderColors = CHART_COLORS[0].borders;
-  // console.log(fillColors);
-    // useEffect(() => {
-    //   let cx = document.querySelector("canvas").getContext("2d");
-    //   let total = results.reduce((sum, { count }) => sum + count, 0);
-    //   console.log("total = ", total);
-    //   let currentAngle = -0.5 * Math.PI;
-    //   let sliceAngle = (results[0].count / total) * 2 * Math.PI;
-    //   cx.beginPath();
-    //   cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
-    //   currentAngle += sliceAngle;
-    //   cx.lineTo(101, 101);
-    //   // cx.moveTo(50, 10);
-    //   // cx.lineTo(10, 70);
-    //   // cx.lineTo(90, 70);
-    //   cx.fill();
-    //   cx.stroke();
-    //   sliceAngle = (results[1].count / total) * 2 * Math.PI;
-    //   cx.beginPath();
-    //   cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
-    //   currentAngle += sliceAngle;
-    //   cx.lineTo(101, 101);
-    //   // cx.moveTo(50, 10);
-    //   // cx.lineTo(10, 70);
-    //   // cx.lineTo(90, 70);
-    //   // console.log(fillColors[1], borderColors[1]);
-    //     cx.fillStyle = colors[0];
-    //     console.log(colors[0], typeof colors[0]);
-    //     cx.strokeStyle = "#2176ae";
-    //   cx.fill();
-    //   cx.stroke();
-    // }, [])
+export default function Chart({ results, chartColors }) {
+  let fillColors = chartColors[0].colors;
+  let borderColors = chartColors[0].borders;
+
 
   useEffect(() => {
     let cx = document.querySelector("canvas").getContext("2d");
