@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 
 export default function Chart({ results, fillColors, borderColors }) {
-  console.log(fillColors);
-  let colors = [...fillColors];
+  // console.log(fillColors);
     // useEffect(() => {
     //   let cx = document.querySelector("canvas").getContext("2d");
     //   let total = results.reduce((sum, { count }) => sum + count, 0);
@@ -57,7 +56,7 @@ export default function Chart({ results, fillColors, borderColors }) {
 
   return (
     <div>
-      <div>{fillColors[0]}</div>
+      <div>Hello!</div>
       {/* <canvas width="202" height="202"></canvas>; */}
     </div>
   )
