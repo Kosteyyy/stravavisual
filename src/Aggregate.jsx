@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
+// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+// import { Pie } from "react-chartjs-2";
 import { secToHMS, getAddress } from './functions.js';
 import { ColorContext } from "./Context.js";
 import ToggleTextInput from './ToggleTextInput.jsx';
-ChartJS.register(ArcElement, Tooltip, Legend);
+// ChartJS.register(ArcElement, Tooltip, Legend);
+import Chart from "./Chart.jsx";
 
 function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove, trainingPlaces, renameTrainingPlace }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
@@ -147,7 +148,7 @@ function SelectChartData({ setKeyField, setTargetField }) {
 export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove, trainingPlaces, renameTrainingPlace}) {
     const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
-    const [chartData, setChartData] = useState({}); //объект данных для диаграммы
+    const [chartData, setChartData] = useState([]); //объект данных для диаграммы
     const [keyField, setKeyField] = useState('stravavisualPlace');
     const [targetField, setTargetField] = useState('distance');
 
@@ -206,24 +207,26 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
 
     useEffect(() => {
         //Готовим данные для диаграммы
-        let chartData = {...aggrData};
-        if (Object.keys(chartData).length == 0) return;
-        if (Object.keys(chartData).length > 8) chartData = shorten(chartData, 8);
-        let labels = Object.keys(chartData);
-        let data = Object.keys(chartData).map(key => chartData[key]);
-        let readyData = {
-            labels: labels,
-            datasets: [
-              {
-                label: "# of Votes",
-                data: data,
-                backgroundColor: chartColors.colors,                
-                borderColor: chartColors.borders,
-                borderWidth: 1
-              }
-            ]
-          };
-        setChartData(readyData);
+        let chartDataObject = {...aggrData};
+        if (Object.keys(chartDataObject).length == 0) return;
+        if (Object.keys(chartDataObject).length > 8) chartDataObject = shorten(chartDataObject, 8);
+        let chartDataArray = Object.keys(chartDataObject).map(key => {return {"name": key, "count": chartDataObject[key]}
+        });
+        // let labels = Object.keys(chartData);
+        // let data = Object.keys(chartData).map(key => chartData[key]);
+        // let readyData = {
+        //     labels: labels,
+        //     datasets: [
+        //       {
+        //         label: "# of Votes",
+        //         data: data,
+        //         backgroundColor: chartColors.colors,                
+        //         borderColor: chartColors.borders,
+        //         borderWidth: 1
+        //       }
+        //     ]
+        //   };
+        setChartData(chartDataArray);
         setShowChart(true);
     }, [aggrData]);
 
@@ -235,7 +238,8 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
             <SelectChartData setKeyField={setKeyField} setTargetField={setTargetField}/>
             <div className="chart-container">
                 <div className="my-chart">
-                    <Pie data={chartData} />
+                    {/* <Pie data={chartData} /> */}
+                    <Chart results={chartData} fillColors={chartColors.colors} borderColors={chartColors.borders}  />
                 </div>
             </div>
             <ShowRes data={aggrData}
