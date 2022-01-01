@@ -1,26 +1,26 @@
 import React, { useEffect } from "react";
 
 export default function Chart({ results, fillColors, borderColors }) {
-  // useEffect(() => {
-  //   let cx = document.querySelector("canvas").getContext("2d");
-  //   let total = results.reduce((sum, { count }) => sum + count, 0);
-  //   //Start at the top
-  //   let currentAngle = -0.5 * Math.PI;
-  //   for (let i = 0; i < results.length; i++) {
-  //     let sliceAngle = (results[i].count / total) * 2 * Math.PI;
-  //     cx.beginPath();
-  //     // center=100,100, radius=100
-  //     //from current angle, clockwise by slice's angle
-  //     cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
-  //     currentAngle += sliceAngle;
-  //     cx.lineTo(101, 101);
-  //     cx.fillStyle = fillColors[i];
-  //     cx.fill();
-  //     cx.strokeStyle = borderColors[i];
+  useEffect(() => {
+    let cx = document.querySelector("canvas").getContext("2d");
+    let total = results.reduce((sum, { count }) => sum + count, 0);
+    //Start at the top
+    let currentAngle = -0.5 * Math.PI;
+    for (let i = 0; i < results.length; i++) {
+      let sliceAngle = (results[i].count / total) * 2 * Math.PI;
+      cx.beginPath();
+      // center=100,100, radius=100
+      //from current angle, clockwise by slice's angle
+      cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
+      currentAngle += sliceAngle;
+      cx.lineTo(101, 101);
+      cx.fillStyle = fillColors[i];
+      cx.fill();
+      cx.strokeStyle = borderColors[i];
 
-  //     cx.stroke();
-  //   }
-  // }, [results]);
+      cx.stroke();
+    }
+  }, [results, fillColors, borderColors]);
 
   return <canvas width="202" height="202"></canvas>;
 }
