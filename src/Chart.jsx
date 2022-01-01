@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { CHART_COLORS } from "./constants.js";
 
 export default function Chart({ results, fillColors, borderColors }) {
+  let color = CHART_COLORS[0].colors[0];
   // console.log(fillColors);
     // useEffect(() => {
     //   let cx = document.querySelector("canvas").getContext("2d");
@@ -56,7 +58,7 @@ export default function Chart({ results, fillColors, borderColors }) {
 
   return (
     <div>
-      <div>Hello!</div>
+      <div>{color}</div>
       {/* <canvas width="202" height="202"></canvas>; */}
     </div>
   )
