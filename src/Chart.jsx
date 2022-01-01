@@ -25,7 +25,7 @@ export default function Chart({ results, fillColors, borderColors }) {
       // cx.lineTo(10, 70);
       // cx.lineTo(90, 70);
       // console.log(fillColors[1], borderColors[1]);
-        // cx.fillStyle = 'red';
+        cx.fillStyle = 'red';
         // cx.strokeStyle = borderColors[1];
       cx.fill();
       cx.stroke();
