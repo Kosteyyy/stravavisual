@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { CHART_COLORS } from "./constants.js";
 
 export default function Chart({ results, chartColors }) {
-  let fillColors = chartColors[0].colors;
-  let borderColors = chartColors[0].borders;
+  let fillColors = chartColors.colors;
+  let borderColors = chartColors.borders;
 
 
   useEffect(() => {
