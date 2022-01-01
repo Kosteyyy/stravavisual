@@ -239,7 +239,7 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
             <div className="chart-container">
                 <div className="my-chart">
                     {/* <Pie data={chartData} /> */}
-                    {/* <Chart results={chartData} fillColors={chartColors.colors} borderColors={chartColors.borders}  /> */}
+                    <Chart results={chartData} fillColors={chartColors.colors} borderColors={chartColors.borders}  />
                 </div>
             </div>
             <ShowRes data={aggrData}
