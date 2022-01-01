@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { CHART_COLORS } from "./constants.js";
 
-export default function Chart({ results, fillColors, borderColors }) {
-  let color = CHART_COLORS[0].colors[0];
+export default function Chart({ results }) {
+  let fillColors = CHART_COLORS[0].colors;
+  let borderColors = CHART_COLORS[0].borders;
   // console.log(fillColors);
     // useEffect(() => {
     //   let cx = document.querySelector("canvas").getContext("2d");
@@ -35,31 +36,31 @@ export default function Chart({ results, fillColors, borderColors }) {
     //   cx.stroke();
     // }, [])
 
-  // useEffect(() => {
-  //   let cx = document.querySelector("canvas").getContext("2d");
-  //   let total = results.reduce((sum, { count }) => sum + count, 0);
-  //   //Start at the top
-  //   let currentAngle = -0.5 * Math.PI;
-  //   for (let i = 0; i < results.length; i++) {
-  //     let sliceAngle = (results[i].count / total) * 2 * Math.PI;
-  //     cx.beginPath();
-  //     // center=100,100, radius=100
-  //     //from current angle, clockwise by slice's angle
-  //     cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
-  //     currentAngle += sliceAngle;
-  //     cx.lineTo(101, 101);
-  //     cx.fillStyle = fillColors[i];
-  //     cx.fill();
-  //     cx.strokeStyle = borderColors[i];
+  useEffect(() => {
+    let cx = document.querySelector("canvas").getContext("2d");
+    let total = results.reduce((sum, { count }) => sum + count, 0);
+    //Start at the top
+    let currentAngle = -0.5 * Math.PI;
+    for (let i = 0; i < results.length; i++) {
+      let sliceAngle = (results[i].count / total) * 2 * Math.PI;
+      cx.beginPath();
+      // center=100,100, radius=100
+      //from current angle, clockwise by slice's angle
+      cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
+      currentAngle += sliceAngle;
+      cx.lineTo(101, 101);
+      cx.fillStyle = fillColors[i];
+      cx.fill();
+      cx.strokeStyle = borderColors[i];
 
-  //     cx.stroke();
-  //   }
-  // }, [results, fillColors, borderColors]);
+      cx.stroke();
+    }
+  }, [results, fillColors, borderColors]);
 
   return (
     <div>
-      <div>{color}</div>
-      {/* <canvas width="202" height="202"></canvas>; */}
+      {/* <div>{color}</div> */}
+      <canvas width="202" height="202"></canvas>;
     </div>
   )
 
