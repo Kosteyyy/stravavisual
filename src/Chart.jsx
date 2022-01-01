@@ -3,11 +3,17 @@ import React, { useEffect } from "react";
 export default function Chart({ results, fillColors, borderColors }) {
     useEffect(() => {
       let cx = document.querySelector("canvas").getContext("2d");
+      let total = results.reduce((sum, { count }) => sum + count, 0);
+      console.log("total = ", total);
+      let currentAngle = -0.5 * Math.PI;
+      let sliceAngle = (results[0].count / total) * 2 * Math.PI;
       cx.beginPath();
+      cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
       cx.moveTo(50, 10);
       cx.lineTo(10, 70);
       cx.lineTo(90, 70);
       cx.fill();
+      cx.stroke();
     }, [])
 
   // useEffect(() => {
