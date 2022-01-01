@@ -9,9 +9,11 @@ export default function Chart({ results, fillColors, borderColors }) {
       let sliceAngle = (results[0].count / total) * 2 * Math.PI;
       cx.beginPath();
       cx.arc(101, 101, 100, currentAngle, currentAngle + sliceAngle);
-      cx.moveTo(50, 10);
-      cx.lineTo(10, 70);
-      cx.lineTo(90, 70);
+      currentAngle += sliceAngle;
+      cx.lineTo(101, 101);
+      // cx.moveTo(50, 10);
+      // cx.lineTo(10, 70);
+      // cx.lineTo(90, 70);
       cx.fill();
       cx.stroke();
     }, [])
