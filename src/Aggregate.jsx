@@ -7,7 +7,12 @@ import ToggleTextInput from './ToggleTextInput.jsx';
 // ChartJS.register(ArcElement, Tooltip, Legend);
 import Chart from "./Chart.jsx";
 
-function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemove, trainingPlaces, renameTrainingPlace }) {
+function ColorLabel({ labelColor, borderColor }) {
+    console.log(labelColor);
+    return <span className="chartLabel" style={{backgroundColor: labelColor, borderColor: borderColor}}></span>
+}
+
+function ShowRes({ data, targetField, renameTrainingPlace, chartColors }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
  
@@ -71,6 +76,7 @@ function ShowRes({ data, targetField, keyField, actFilter, filterAdd, filterRemo
                     {Object.keys(data).map(
                         (key, i) => {
                             return <li key={i}>
+                                {i < 8 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
                                 <div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>
                                     <ToggleTextInput text={key} handleSubmit={renameTrainingPlace} /><p>:</p>
                                 </div>
@@ -244,11 +250,7 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
             </div>
             <ShowRes data={aggrData}
                 targetField={targetField} 
-                keyField={keyField} 
-                actFilter={filter} 
-                filterAdd={filterAdd} 
-                filterRemove={filterRemove} 
-                trainingPlaces={trainingPlaces}
+                chartColors={chartColors}
                 renameTrainingPlace={renameTrainingPlace}/>
         </div>
             
