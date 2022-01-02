@@ -66,23 +66,23 @@ function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors
     //     if (keyField !== filter.filterKey) removeFilter();
     // }, [keyField]);
 
-    if (Object.keys(data).length == 0) {
+    if (data.length == 0) {
         return
     } else {
         return (
             <div className="dataList">
                 <ul>
-                    {Object.keys(data).map(
-                        (key, i) => {
+                    {data.map(
+                        (item, i) => {
                             return <li key={i}>
                                 <div className="label">
-                                    {i < 8 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
+                                    {i < 7 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
                                 </div>
-                                <div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>
-                                    <ToggleTextInput  editable={keyField == "stravavisualPlace" ? true : false} text={key} handleSubmit={renameTrainingPlace} />
+                                <div className={filter.filterValue==item.name ? "field filter" : "field"} onClick={() => handleClick(item.name)}>
+                                    <ToggleTextInput  editable={keyField == "stravavisualPlace" ? true : false} text={item.name} handleSubmit={renameTrainingPlace} />
                                 </div>
                                 <div className="fieldData">
-                                    {formatFieldData(data[key], targetField)}
+                                    {formatFieldData(item.count, targetField)}
                                 </div>
                             </li>
                         }
@@ -152,53 +152,45 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
 }
 
-export function Aggregate({activitiesList, chartColors, filter, filterAdd, filterRemove, trainingPlaces, renameTrainingPlace}) {
-    const [aggrData, setAggrData] = useState({}); //{"место": 11723, "место 2": 24003}
+export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
+    const [aggrData, setAggrData] = useState([]); //{"место": 11723, "место 2": 24003} переделываем в Массив [{name: "Место1", count: Number }]
     const [showChart, setShowChart] = useState(false); // пока данные не готовы мы не показываем график
-    const [chartData, setChartData] = useState([]); //объект данных для диаграммы
+    const [chartData, setChartData] = useState([]); //массив данных для диаграммы
     const [keyField, setKeyField] = useState('stravavisualPlace');
     const [targetField, setTargetField] = useState('distance');
 
 
     function calcAggrData(data, keyField, targetField ) {
         //Аггрегирует в массиве объектов data данные по полю объектов keyField, суммируя поля targetField
-        //возвращает объект {"key1": 1234, "key2": 23532, ...}
-        let result = {};
+        //возвращает объект {"key1": 1234, "key2": 23532, ...} Массив [{name: "Место1", count: Number }]
+        let result = [];
         data.forEach(el => {
-            if (result[el[keyField]] == undefined) result[el[keyField]] = 0;
-            result[el[keyField]] += Number(el[targetField]);
-        })
-        //Если аггрегируется дистанция, приводим результат к виду 112.12 
-        Object.keys(result).forEach(key => {
-            if (targetField == 'distance') {
-                result[key] = Math.floor(result[key]/10)/100;
+            let resultIndex = result.findIndex(item => item.name == el[keyField]);
+            if (resultIndex == -1) {
+                result.push({name: el[keyField], count: el[targetField]});
+            } else {
+                result[resultIndex].count += Number(el[targetField]);
             }
         });
-        result = deleteZero(result);
-        return result;
-    }
-    function deleteZero(data) {
-        //Удаляет из объекта значение ключ-значение, значение которого ноль.
-        let newData = {...data};
-        Object.keys(newData).forEach(key => {
-          if (newData[key] == 0) delete newData[key];
-        })
-        return newData;
-      }
 
-    function shorten(dataObject, length) {
-        //укорачивает объект до length неизмененных значений и одного суммарного из остатков
+        //Если аггрегируется дистанция, приводим результат к виду 112.12 
+        result.forEach(item => {
+            if (targetField == 'distance') {
+                item.count = Math.floor(item.count/10)/100;
+            }
+        });
+        result.sort((a, b) => b.count-a.count);
+        console.log("calcAggrData, result: ", result);
+        return result.filter(el => el.count !== 0);
+    }
+
+    function shorten(dataArray, length) {
+        //укорачивает массив до length неизмененных значений и одного суммарного из остатков
         //делаем из объекта массив пар [key, value]
-        let arr = Object.keys(dataObject).map(key => [key, dataObject[key]]);
-        arr.sort((a, b) => b[1] - a[1]); 
+        let arr = [...dataArray];
         let newArr = arr.splice(0, length-1);
-        newArr.push(["Прочее", arr.reduce((total, curr) => total + curr[1], 0)]);
-        let resultObject = {};
-        newArr.forEach(el => {
-            let key = el[0];  
-            resultObject[key] = el[1];
-            });
-        return resultObject;
+        newArr.push({name: "Прочее", count: arr.reduce((total, curr) => total + curr.count, 0)});
+        return newArr;
         }
 
     useEffect(() => {
@@ -207,32 +199,18 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
             setShowChart(false);
             return;
         }
-        let aggrobject = calcAggrData(activitiesList, keyField, targetField);
+        let aggrArray = calcAggrData(activitiesList, keyField, targetField);
+        console.log("UseEffect 1, agrArray=", aggrArray);
         //aggrobject имеет вид {"место": 11723, "место 2": 24003}
-        setAggrData(aggrobject);
+        setAggrData(aggrArray);
     }, [activitiesList, keyField, targetField]);
 
     useEffect(() => {
         //Готовим данные для диаграммы
-        let chartDataObject = {...aggrData};
-        if (Object.keys(chartDataObject).length == 0) return;
-        if (Object.keys(chartDataObject).length > 8) chartDataObject = shorten(chartDataObject, 8);
-        let chartDataArray = Object.keys(chartDataObject).map(key => {return {"name": key, "count": chartDataObject[key]}
-        });
-        // let labels = Object.keys(chartData);
-        // let data = Object.keys(chartData).map(key => chartData[key]);
-        // let readyData = {
-        //     labels: labels,
-        //     datasets: [
-        //       {
-        //         label: "# of Votes",
-        //         data: data,
-        //         backgroundColor: chartColors.colors,                
-        //         borderColor: chartColors.borders,
-        //         borderWidth: 1
-        //       }
-        //     ]
-        //   };
+        // if (aggrData.length == 0) return;
+        let chartDataArray = [...aggrData];
+        if (chartDataArray.length == 0) return;
+        if (chartDataArray.length > 8) chartDataArray = shorten(chartDataArray, 8);
         setChartData(chartDataArray);
         setShowChart(true);
     }, [aggrData]);
