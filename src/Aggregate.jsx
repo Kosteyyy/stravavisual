@@ -76,7 +76,7 @@ function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors
                         (item, i) => {
                             return <li key={i}>
                                 <div className="label">
-                                    {i < 7 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
+                                    {i < 17 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
                                 </div>
                                 <div className={filter.filterValue==item.name ? "field filter" : "field"} onClick={() => handleClick(item.name)}>
                                     <ToggleTextInput  editable={keyField == "stravavisualPlace" ? true : false} text={item.name} handleSubmit={renameTrainingPlace} />
@@ -210,7 +210,7 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
         // if (aggrData.length == 0) return;
         let chartDataArray = [...aggrData];
         if (chartDataArray.length == 0) return;
-        if (chartDataArray.length > 8) chartDataArray = shorten(chartDataArray, 8);
+        if (chartDataArray.length > 18) chartDataArray = shorten(chartDataArray, 18);
         setChartData(chartDataArray);
         setShowChart(true);
     }, [aggrData]);
