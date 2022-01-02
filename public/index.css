@@ -370,7 +370,7 @@ button:hover {
     font-size: 1.2em;
 }
 #aggregate .fieldData {
-    flex: 0 0 80px;
+    flex: 0 0 100px;
     color: var(--main-text);
     text-align: left;
     margin-right: 10px;
@@ -382,7 +382,7 @@ button:hover {
     display: inline-block;
     width: 15px;
     height: 15px;
-    border: 2px solid;
+    border: 1px solid;
     border-radius: 50%;
 }
 .dataList .field {

@@ -180,7 +180,7 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
             }
         });
         result.sort((a, b) => b.count-a.count);
-        console.log("calcAggrData, result: ", result);
+        // console.log("calcAggrData, result: ", result);
         return result.filter(el => el.count !== 0);
     }
 
@@ -200,7 +200,7 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
             return;
         }
         let aggrArray = calcAggrData(activitiesList, keyField, targetField);
-        console.log("UseEffect 1, agrArray=", aggrArray);
+        // console.log("UseEffect 1, agrArray=", aggrArray);
         //aggrobject имеет вид {"место": 11723, "место 2": 24003}
         setAggrData(aggrArray);
     }, [activitiesList, keyField, targetField]);
