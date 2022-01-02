@@ -11,7 +11,7 @@ function ColorLabel({ labelColor, borderColor }) {
     return <span className="chartLabel" style={{backgroundColor: labelColor, borderColor: borderColor}}></span>
 }
 
-function ShowRes({ data, targetField, renameTrainingPlace, chartColors }) {
+function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
  
@@ -75,9 +75,11 @@ function ShowRes({ data, targetField, renameTrainingPlace, chartColors }) {
                     {Object.keys(data).map(
                         (key, i) => {
                             return <li key={i}>
-                                {i < 8 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
+                                <div className="label">
+                                    {i < 8 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
+                                </div>
                                 <div className={filter.filterValue==key ? "field filter" : "field"} onClick={() => handleClick(key)}>
-                                    <ToggleTextInput text={key} handleSubmit={renameTrainingPlace} /><p>:</p>
+                                    <ToggleTextInput  editable={keyField == "stravavisualPlace" ? true : false} text={key} handleSubmit={renameTrainingPlace} />
                                 </div>
                                 <div className="fieldData">
                                     {formatFieldData(data[key], targetField)}
@@ -248,6 +250,7 @@ export function Aggregate({activitiesList, chartColors, filter, filterAdd, filte
                 </div>
             </div>
             <ShowRes data={aggrData}
+                keyField={keyField}
                 targetField={targetField} 
                 chartColors={chartColors}
                 renameTrainingPlace={renameTrainingPlace}/>

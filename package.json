@@ -5,7 +5,8 @@
   "main": "fetchfromstrava.js",
   "scripts": {
     "heroku-postbuild": "npm run compile",
-    "start": "nodemon -w server server/server.js",
+    "start": "node server/server.js",
+    "start-dev": "nodemon -w server server/server.js",
     "compile": "webpack --mode production",
     "watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,7 +20,6 @@
     "body-parser": "^1.19.1",
     "express": "^4.17.1",
     "node-fetch": "^2.6.6",
-    "nodemon": "^2.0.15",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.1.1",
@@ -31,6 +31,7 @@
     "@babel/preset-react": "^7.16.5",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
+    "nodemon": "^2.0.15",
     "style-loader": "^3.3.1",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1"

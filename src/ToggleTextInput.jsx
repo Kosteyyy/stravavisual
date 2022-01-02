@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSave, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { ColorContext } from "./Context.js";
 
-export default function ToggleTextInput({ text, handleSubmit }) {
+export default function ToggleTextInput({ text, handleSubmit, editable=true }) {
     //Функция handleSubmit принимает два аргумента - старое и новое значение text
     const [editMode, setEditMode] = useState(false);
     const {appColors} = useContext(ColorContext);
@@ -19,6 +19,10 @@ export default function ToggleTextInput({ text, handleSubmit }) {
         handleSubmit(text, inputText);
         setEditMode(false);
     }
+    function handleInputMode() {
+        if (!editable) return;
+        setEditMode(true);
+    }
     
     useEffect(() => {
         if (!editMode) return;
@@ -27,7 +31,7 @@ export default function ToggleTextInput({ text, handleSubmit }) {
     }, [editMode]);
 
     if (!editMode) return (
-        <span className="toggleTextInput"><p>{text}</p><span className='icon'><FontAwesomeIcon icon={faEdit} onClick={()=>{setEditMode(true)}} style={{color: appColors.mainColor}}/></span></span>
+        <span className="toggleTextInput" onClick={handleInputMode}><p>{text}</p><span className='icon'></span></span>
     )
     return(
         <div>

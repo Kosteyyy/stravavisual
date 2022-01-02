@@ -14,7 +14,7 @@ function createSector(r, startAngle, sliceAngle, fillColor, strokeColor) {
   const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path1.setAttribute("fill", fillColor);
   path1.setAttribute("stroke", strokeColor);
-  if (sliceAngle > Math.PI) {
+  if (sliceAngle > Math.PI) { // если угол больше 180 градусво он делает сглаженный круг, поэтому делаем арку из двух
     let innerX = centerX + r * Math.sin(startAngle + Math.PI);
     let innerY = centerY - r * Math.cos(startAngle + Math.PI);
     path1.setAttribute(

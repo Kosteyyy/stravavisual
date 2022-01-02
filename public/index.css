@@ -361,13 +361,7 @@ button:hover {
     /* border-bottom: 1px solid var(--text-lighter); */
     padding-bottom: 5px;
 }
-#aggregate .field {
-    flex-basis: 50%;
-    flex-grow: 1;
-    color: var(--text--darker);
-    text-align: right;
-    margin-right: 10px;
-}
+
 #aggregate .edit {
     display: flex;
     align-items: center;
@@ -376,17 +370,31 @@ button:hover {
     font-size: 1.2em;
 }
 #aggregate .fieldData {
-    flex-basis: 50%;
-    flex-grow: 4;
-    flex-shrink: 1;
+    flex: 0 0 80px;
     color: var(--main-text);
     text-align: left;
     margin-right: 10px;
 }
+.dataList .label {
+    flex: 0 0 20px;
+}
+.chartLabel {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 2px solid;
+    border-radius: 50%;
+}
 .dataList .field {
+    flex-basis: 50%;
+    flex-grow: 1;
+    color: var(--text--darker);
+    margin-right: 10px;
+    margin-left: 10px;
+    text-align: left;
     cursor: pointer;
     display: flex;
-    justify-content: right;
+    justify-content: left;
     align-items: center;
 }
 .dataList .field .icon {
@@ -396,6 +404,7 @@ button:hover {
 #aggregate .field.filter {
     color: red;
 }
+
   
 /* Activity Filter Form */
 
@@ -611,12 +620,7 @@ span.activityIcon {
     align-items: center;
     width: 100%;
 }
-.chartLabel {
-    display: inline-block;
-    width: 30px;
-    height: 15px;
-    border: 2px solid;
-}
+
 
 @media (max-width:420px){
     .activity-form button {
