@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import ActivityFilter from './ActivityFilter.jsx';
 import ResultList from './ResultList.jsx';
-import { isNear, getAddress } from './functions.js';
+import { isNear, getAddress, getAddressFromMapBox } from './functions.js';
 import { Aggregate } from './Aggregate.jsx';
 import Loading from "./Loading.jsx";
 
@@ -83,7 +83,7 @@ export default function Activities(props) {
                     console.log("latlng empty: ", data);
                     data.stravavisualPlace = "Неизвестно";
                 } else {
-                    let placeAddress = await getAddress(data.start_latlng);
+                    let placeAddress = await getAddressFromMapBox(data.start_latlng);
                     if (placeAddress == '') newPlacesMax++;
                     let newPlaceName = (placeAddress != '') ? placeAddress : 'Локация ' + newPlacesMax;
                     data.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Локация 1'

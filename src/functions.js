@@ -62,6 +62,17 @@ export async function getAddress(latlng) {
       const fetcheddata = await response.text();
   return fetcheddata;
 }
+export async function getAddressFromMapBox(latlng) {
+  let data = {latlng: latlng};
+  // try {
+      const response = await fetch('/api/getaddressfrommapbox', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify(data),
+      });
+      const fetcheddata = await response.text();
+  return fetcheddata;
+}
 
 export function authAtStrava() {
     document.location.href = STRAVA_GET_CODE_LINK;

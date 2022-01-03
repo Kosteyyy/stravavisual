@@ -36,6 +36,12 @@ app.post('/api/getaddress', function(req, res) {
     //console.log('Got code:', codeObject);
     let data = fetchFromDadata(codeObject.latlng).then(address => res.send(address));
 })
+app.post('/api/getaddressfrommapbox', function(req, res) {
+    let codeString = JSON.stringify(req.body, null, 2);
+    let codeObject = JSON.parse(codeString);
+    console.log('Got code:', codeObject);
+    let data = fetchFromMapBox(codeObject.latlng).then(address => res.send(address));
+})
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve('public/index.html'));
@@ -77,6 +83,17 @@ async function authWithCode(code) {
     return a;
 }
 
+async function fetchFromMapBox(latlng, access_token="***REMOVED***") {
+
+    let url=`https://api.mapbox.com/geocoding/v5/mapbox.places/${latlng[1]},${latlng[0]}.json?access_token=${access_token}`;
+
+
+    let data = await fetch(url)
+        .then(response => response.json())
+        .catch(error => console.log("error", error));
+    
+    return data.features[0].place_name;
+}
 
 async function fetchFromDadata(latlng, access_token) {
 
