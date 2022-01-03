@@ -42,18 +42,35 @@ export default function ResultList({resultList = [], addTrainingPlace }) {
     )
 }
 function ToggleTextInput({ text, addTrainingPlace, activity }) {
+    const ESCAPE_KEY = 27;
+    const ENTER_KEY = 13;
     const [editMode, setEditMode] = useState(false);
     const {appColors} = useContext(ColorContext);
-    const [inputText, setInputText] = useState(text);
+    const [inputText, setInputText] = useState('');
     // const [showLocationSelect, setShowLocationSelect]
     const InputRef = useRef(null);
+
+    useEffect(() => {
+        setInputText(text);
+    },[text]);
+
 
     function handleInputChange(e) {
         setInputText(e.target.value);
     }
 
+    function handleKeyDown(event) {
+		if (event.which === ESCAPE_KEY) {
+			setEditMode(false);
+            // console.log("pressed ", event.which);
+		} else if (event.which === ENTER_KEY) {
+			handleSave();
+            // console.log("pressed ", event.which);
+		}		
+	}
+
     function handleSave() {
-        let place = {name: inputText, latlng: activity.start_latlng};
+        let place = {name: inputText.trim(), latlng: activity.start_latlng};
         addTrainingPlace(place);
         setEditMode(false);
     }
@@ -70,13 +87,13 @@ function ToggleTextInput({ text, addTrainingPlace, activity }) {
     return(
         <div>
             <div className="toggleTextInput edit">
-                <input type={text} placeholder={text} value={inputText} ref={InputRef} onChange={handleInputChange}/>
-                <span>
+                <input type={text} placeholder={text} value={inputText} ref={InputRef} onChange={handleInputChange} onBlur={handleSave} onKeyDown={(e) => handleKeyDown(e)}/>
+                {/* <span>
                     <FontAwesomeIcon icon={faSave} onClick={handleSave} style={{color: appColors.mainColor}}/> 
                 </span>
                 <span>
                     <FontAwesomeIcon icon={faWindowClose} onClick={() => {setEditMode(false)}} style={{color: appColors.mainColor}}/> 
-                </span>
+                </span> */}
                 
             </div>
             <div className="coords">Координаты {activity.start_latlng[0]} , {activity.start_latlng[1]}</div>

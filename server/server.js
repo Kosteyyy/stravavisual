@@ -39,7 +39,7 @@ app.post('/api/getaddress', function(req, res) {
 app.post('/api/getaddressfrommapbox', function(req, res) {
     let codeString = JSON.stringify(req.body, null, 2);
     let codeObject = JSON.parse(codeString);
-    console.log('Got code:', codeObject);
+    // console.log('Got code:', codeObject);
     let data = fetchFromMapBox(codeObject.latlng).then(address => res.send(address));
 })
 

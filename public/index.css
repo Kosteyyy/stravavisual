@@ -370,10 +370,10 @@ button:hover {
     font-size: 1.2em;
 }
 #aggregate .fieldData {
-    flex: 0 0 80px;
+    flex: 1 1 80px;
     color: var(--main-text);
-    text-align: left;
-    margin-right: 10px;
+    text-align: right;
+    margin-right: 0px;
 }
 .dataList .label {
     flex: 0 0 20px;
@@ -386,8 +386,7 @@ button:hover {
     border-radius: 50%;
 }
 .dataList .field {
-    flex-basis: 50%;
-    flex-grow: 1;
+    flex: 1 1 60%;
     color: var(--text--darker);
     margin-right: 10px;
     margin-left: 10px;

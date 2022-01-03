@@ -10,18 +10,21 @@ export default function ToggleTextInput({ text, handleSubmit, editable=true }) {
     //Функция handleSubmit принимает два аргумента - старое и новое значение text
     const [editMode, setEditMode] = useState(false);
     const {appColors} = useContext(ColorContext);
-    const [inputText, setInputText] = useState(text);
+    const [inputText, setInputText] = useState("");
     // const [showLocationSelect, setShowLocationSelect]
     const InputRef = useRef(null);
 
+    useEffect(() => {
+        setInputText(text);
+    },[text]);
 
     function handleKeyDown(event) {
 		if (event.which === ESCAPE_KEY) {
 			setEditMode(false);
-            console.log("pressed ", event.which);
+            // console.log("pressed ", event.which);
 		} else if (event.which === ENTER_KEY) {
 			handleSave();
-            console.log("pressed ", event.which);
+            // console.log("pressed ", event.which);
 		}		
 	}
 
@@ -30,7 +33,9 @@ export default function ToggleTextInput({ text, handleSubmit, editable=true }) {
     }
 
     function handleSave() {
-        handleSubmit(text, inputText);
+        let newText = inputText;
+        handleSubmit(text, newText.trim());
+        setInputText(newText.trim());
         setEditMode(false);
     }
     function handleInputMode() {

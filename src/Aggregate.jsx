@@ -15,6 +15,8 @@ function ColorLabel({ labelColor, borderColor }) {
 function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
+
+    // console.log("showRes. Data: ", data);
     // console.log("ShowRes. data: ", data);
  
     // принимает данные в формате {"место": 11723, "место 2": 24003}
@@ -78,7 +80,7 @@ function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors
                         (item, i) => {
                             return <li key={i}>
                                 <div className="label">
-                                    {i < 12 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
+                                    {i < CHART_MAX_COUNT ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
                                 </div>
                                 <div className="field">
                                     {keyField == "stravavisualPlace" ? <ToggleTextInput text={item.name} handleSubmit={renameTrainingPlace} /> : item.name }
@@ -162,6 +164,7 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
     const [chartData, setChartData] = useState([]); //массив данных для диаграммы
     const [keyField, setKeyField] = useState('stravavisualPlace');
     const [targetField, setTargetField] = useState('distance');
+    const [dataList, setDataList] = useState([]);
 
 
     function calcAggrData(data, keyField, targetField ) {
@@ -213,17 +216,19 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
         //Готовим данные для диаграммы
         // if (aggrData.length == 0) return;
         let chartDataArray = [...aggrData];
+        let showResData = [...aggrData];
         if (chartDataArray.length == 0) return;
         if (chartDataArray.length > CHART_MAX_COUNT) chartDataArray = shorten(chartDataArray, CHART_MAX_COUNT);
         setChartData(chartDataArray);
+        if (showResData.length > CHART_MAX_COUNT) {
+            showResData.splice(CHART_MAX_COUNT-1, 0, chartDataArray[CHART_MAX_COUNT-1]);
+        }
+        setDataList(showResData);
         setShowChart(true);
     }, [aggrData]);
 
 
-    let showResData = [...aggrData];
-    if (showResData.length > CHART_MAX_COUNT) {
-        showResData.splice(CHART_MAX_COUNT-1, 0, chartData[CHART_MAX_COUNT-1]);
-    }
+
 
     return(
         showChart ? 
@@ -236,7 +241,7 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
                     <Chart results={chartData} chartColors={chartColors}  />
                 </div>
             </div>
-            <ShowRes data={showResData}
+            <ShowRes data={dataList}
                 keyField={keyField}
                 targetField={targetField} 
                 chartColors={chartColors}
