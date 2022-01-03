@@ -218,10 +218,10 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
         let chartDataArray = [...aggrData];
         let showResData = [...aggrData];
         if (chartDataArray.length == 0) return;
-        if (chartDataArray.length > CHART_MAX_COUNT) chartDataArray = shorten(chartDataArray, CHART_MAX_COUNT);
+        if (chartDataArray.length > CHART_MAX_COUNT) chartDataArray = shorten(chartDataArray, CHART_MAX_COUNT); //Укорачиваем массив, добавляя в конец Итог прочего
         setChartData(chartDataArray);
         if (showResData.length > CHART_MAX_COUNT) {
-            showResData.splice(CHART_MAX_COUNT-1, 0, chartDataArray[CHART_MAX_COUNT-1]);
+            showResData.splice(CHART_MAX_COUNT-1, 0, chartDataArray[CHART_MAX_COUNT-1]);//Вставляем в массив Прочее перед списком Прочего
         }
         setDataList(showResData);
         setShowChart(true);
