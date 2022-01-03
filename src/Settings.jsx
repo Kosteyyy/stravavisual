@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { COLORS, CHART_COLORS } from './constants.js';
 import { hslToHex, hexToHSL, loadJSON, saveJSON } from './functions.js'
 
@@ -97,6 +98,7 @@ function ChartColorPicker({ color, index, checkedIndex, handleInput }) {
 
 function ChartColorSettings({ setColors }) {
     let [checkedIndex, setCheckedIndex] = useState(loadJSON("StravavisualChartPaletteIndex") || 0);
+    let navigate = useNavigate();
     function handleInput(e) {
         setCheckedIndex(e.target.value);
         setColors(CHART_COLORS[e.target.value]);
@@ -108,6 +110,7 @@ function ChartColorSettings({ setColors }) {
                 {CHART_COLORS.map(
                     (color, i) => <ChartColorPicker color={color.colors} key={i} index={i} checkedIndex={checkedIndex} handleInput={handleInput}/>
                 )}
+                <button onClick={() => {navigate('/')}}>Сохранить</button>
         </div>
     )
 
