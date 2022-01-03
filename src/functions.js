@@ -7,7 +7,7 @@ export function secToHMS(timeInSeconds) {
     let hours = Math.floor(timeInSeconds / 60 / 60);
     let minutes = Math.floor(timeInSeconds / 60) - (hours * 60);
     let seconds = timeInSeconds % 60;
-    return hours + 'ч ' + minutes + 'мин'; // + seconds + 'с'
+    return hours + 'ч' + minutes + 'мин'; // + seconds + 'с'
 }
 
 export const saveJSON = (key, data) => localStorage.setItem(key, JSON.stringify(data));

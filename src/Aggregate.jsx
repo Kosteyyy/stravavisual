@@ -6,6 +6,7 @@ import { ColorContext } from "./Context.js";
 import ToggleTextInput from './ToggleTextInput.jsx';
 // ChartJS.register(ArcElement, Tooltip, Legend);
 import Chart from "./Chart.jsx";
+import { CHART_MAX_COUNT } from "./constants.js"
 
 function ColorLabel({ labelColor, borderColor }) {
     return <span className="chartLabel" style={{backgroundColor: labelColor, borderColor: borderColor}}></span>
@@ -14,6 +15,7 @@ function ColorLabel({ labelColor, borderColor }) {
 function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors }) {
     const [isFilterApplied, setIsFilterApplied] = useState(false);
     const [filter, setFilter] = useState({filterKey: "", filterValue: ""});
+    // console.log("ShowRes. data: ", data);
  
     // принимает данные в формате {"место": 11723, "место 2": 24003}
     // и выводит иx в рендер виде ключ: значение.
@@ -31,7 +33,7 @@ function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors
             case 'stravavusualCount':
                 return data;
             default:
-                console.log("nothing, ", targetField);
+                // console.log("nothing, ", targetField);
                 return data;
         }
     }
@@ -76,10 +78,10 @@ function ShowRes({ data, keyField, targetField, renameTrainingPlace, chartColors
                         (item, i) => {
                             return <li key={i}>
                                 <div className="label">
-                                    {i < 17 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
+                                    {i < 12 ? <ColorLabel key={i} labelColor={chartColors.colors[i]} borderColor={chartColors.borders[i]} /> : null }
                                 </div>
-                                <div className={filter.filterValue==item.name ? "field filter" : "field"} onClick={() => handleClick(item.name)}>
-                                    <ToggleTextInput  editable={keyField == "stravavisualPlace" ? true : false} text={item.name} handleSubmit={renameTrainingPlace} />
+                                <div className="field">
+                                    {keyField == "stravavisualPlace" ? <ToggleTextInput text={item.name} handleSubmit={renameTrainingPlace} /> : item.name }
                                 </div>
                                 <div className="fieldData">
                                     {formatFieldData(item.count, targetField)}
@@ -107,9 +109,11 @@ function SelectChartData({ setKeyField, setTargetField }) {
 
     function handleKeyChange(e) {
         setKeyValue(e.target.value);
+        setKeyField(e.target.value);
     }
     function handleTargetChange(e) {
         setTargetValue(e.target.value);
+        setTargetField(e.target.value);
     }
 
     function handleClick(e) {
@@ -139,9 +143,9 @@ function SelectChartData({ setKeyField, setTargetField }) {
                             <option value="moving_time">Время</option>
                         </select>
                     </div>
-                    <button style={{backgroundColor: appColors.secondaryColor}} onClick={handleClick}>
+                    {/* <button style={{backgroundColor: appColors.secondaryColor}} onClick={handleClick}>
                         Применить
-                    </button>
+                    </button> */}
                     <span className="toggle" onClick={toggleShowForm}>...</span>
             </div>}
             {!showForm && <div id="selectChartData"><span className="toggle" onClick={toggleShowForm}>...</span></div>}
@@ -210,11 +214,16 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
         // if (aggrData.length == 0) return;
         let chartDataArray = [...aggrData];
         if (chartDataArray.length == 0) return;
-        if (chartDataArray.length > 18) chartDataArray = shorten(chartDataArray, 18);
+        if (chartDataArray.length > CHART_MAX_COUNT) chartDataArray = shorten(chartDataArray, CHART_MAX_COUNT);
         setChartData(chartDataArray);
         setShowChart(true);
     }, [aggrData]);
 
+
+    let showResData = [...aggrData];
+    if (showResData.length > CHART_MAX_COUNT) {
+        showResData.splice(CHART_MAX_COUNT-1, 0, chartData[CHART_MAX_COUNT-1]);
+    }
 
     return(
         showChart ? 
@@ -227,7 +236,7 @@ export function Aggregate({activitiesList, chartColors, renameTrainingPlace}) {
                     <Chart results={chartData} chartColors={chartColors}  />
                 </div>
             </div>
-            <ShowRes data={aggrData}
+            <ShowRes data={showResData}
                 keyField={keyField}
                 targetField={targetField} 
                 chartColors={chartColors}

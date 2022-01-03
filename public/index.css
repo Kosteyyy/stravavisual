@@ -370,7 +370,7 @@ button:hover {
     font-size: 1.2em;
 }
 #aggregate .fieldData {
-    flex: 0 0 100px;
+    flex: 0 0 80px;
     color: var(--main-text);
     text-align: left;
     margin-right: 10px;
@@ -392,7 +392,6 @@ button:hover {
     margin-right: 10px;
     margin-left: 10px;
     text-align: left;
-    cursor: pointer;
     display: flex;
     justify-content: left;
     align-items: center;
@@ -584,6 +583,7 @@ span.activityIcon {
 
 .toggleTextInput {
     display: flex;
+    cursor: pointer;
 }
 .toggleTextInput p {
     margin-right: 10px;

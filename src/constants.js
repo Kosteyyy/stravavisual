@@ -15,9 +15,9 @@ const COLORS = {
     "secondaryColorLight": "#fcc873",
     "secondaryDark": "#b66d0d"
 }
-
+const CHART_MAX_COUNT = 12;
 const CHART_COLORS = [
-    { colors: ['#2176ae',"#fbb13c","#57b8ff","#eee5e9","#493b2a","#d64933","#593f62","#684e32","#fe6847","#f75590","#fce4d8","#fbd87f","#b5f8fe","#10ffcb","#074f57","#077187","#74a57f","#7cc6fe"], borders: ["#2176ae","#a06403","#57b8ff","#b690a1","#493b2a","#d64933","#593f62","#684e32","#fe6847", "#f75590","#fce4d8","#fbd87f","#b5f8fe","#10ffcb","#074f57","#077187","#74a57f","#7cc6fe"] },
+    { colors: ['#2176ae',"#fbb13c","#57b8ff","#eee5e9","#493b2a","#d64933","#593f62","#684e32","#fe6847","#f75590","#fce4d8","#fbd87f"], borders: ["#2176ae","#a06403","#57b8ff","#b690a1","#493b2a","#d64933","#593f62","#684e32","#fe6847", "#f75590","#fce4d8","#fbd87f"] },
     { colors: ["#2f3061","#ffe66d","#6ca6c1","#f7fff7","#efa00b","#d65108","#a18276","#fbacbe","#fa9500"], borders: ["#2f3061","#ccaa00","#6ca6c1","#6ca6c1","#efa00b","#d65108","#a18276","#fbacbe","#fa9500"] },
     { colors: ["#f75590","#fce4d8","#fbd87f","#b5f8fe","#10ffcb","#074f57","#077187","#74a57f","#7cc6fe"], borders: ["#f75590","#fce4d8","#fbd87f","#b5f8fe","#10ffcb","#074f57","#077187","#74a57f","#7cc6fe"] },
     { colors: ['#fff7ec','#fdd49e','#fdbb84','#fc8d59','#ef6548','#fee8c8','#d7301f','#b30000','#7f0000'], borders: ["#fdbb84","#fdbb84","#fdbb84",'#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000'] },
@@ -33,4 +33,4 @@ const CHART_COLORS = [
 //     "secondaryDark": "lime"
 // }
 
-module.exports = { STRAVA_GET_CODE_LINK, PLACES, COLORS, CHART_COLORS };
+module.exports = { STRAVA_GET_CODE_LINK, PLACES, COLORS, CHART_COLORS, CHART_MAX_COUNT };

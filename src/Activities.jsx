@@ -76,16 +76,18 @@ export default function Activities(props) {
         try {
             for (let data of dataArray) {
                 data.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
-    
-                let place = newPlaces.find(place => isNear(data.start_latlng, place));
+                let place = newPlaces.find(p => isNear(data.start_latlng, p));
                 if (place) {
                     data.stravavisualPlace = place.name;
+                } else if (data.start_latlng.length == 0) {
+                    console.log("latlng empty: ", data);
+                    data.stravavisualPlace = "Неизвестно";
                 } else {
-      
                     let placeAddress = await getAddress(data.start_latlng);
                     if (placeAddress == '') newPlacesMax++;
                     let newPlaceName = (placeAddress != '') ? placeAddress : 'Локация ' + newPlacesMax;
                     data.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Локация 1'
+                    console.log("latlng: ", data.start_latlng);
                     newPlaces.push({'name': newPlaceName, 'latlng': data.start_latlng});
                 }
                 saveTrainingPlaces(newPlaces); //Обновляем массив зарегистрированных мест
