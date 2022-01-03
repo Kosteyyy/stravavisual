@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 var my_token = "***REMOVED***";
-latlng = [55.85 , 37.34];
+latlng = [55.84 , 37.37];
 
 // var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
 // var token = "***REMOVED***";

@@ -92,6 +92,10 @@ async function fetchFromMapBox(latlng, access_token="***REMOVED***") {
         .then(response => response.json())
         .catch(error => console.log("error", error));
     
+    let addr = '';
+    let filteredData = data.features.filter(d => d.id.includes('locality'));
+    if (filteredData.length !== 0) return filteredData[0].place_name;
+    
     return data.features[0].place_name;
 }
 

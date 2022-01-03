@@ -42,6 +42,13 @@ export default function Activities(props) {
         setFilter(newFilter);
     }
 
+    function formatMapBoxAddress(address) {
+        address = address.replace('Russia, ', '');
+        address = address.replace('Moscow, ', '');
+        address = address.replace(/\d{6},\s/, '');
+        return address;
+    }
+
     function applyFilter(dataArray, filter) {
         //Применяет фильтр вида {prop1: v1, prop2: v2} к массиву объектов
         return dataArray.filter((data) => {
@@ -83,7 +90,8 @@ export default function Activities(props) {
                     console.log("latlng empty: ", data);
                     data.stravavisualPlace = "Неизвестно";
                 } else {
-                    let placeAddress = await getAddressFromMapBox(data.start_latlng);
+                    let address = await getAddressFromMapBox(data.start_latlng);
+                    let placeAddress = formatMapBoxAddress(address);
                     if (placeAddress == '') newPlacesMax++;
                     let newPlaceName = (placeAddress != '') ? placeAddress : 'Локация ' + newPlacesMax;
                     data.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Локация 1'
