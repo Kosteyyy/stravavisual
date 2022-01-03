@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { getAddress } from './functions.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function Reset({ resetTrainingPlaces }) {
+    let navigate = useNavigate();
+
+    function handleClick() {
+        resetTrainingPlaces();
+        navigate('/');
+    }
     
     return <div>
-            <button onClick={resetTrainingPlaces}>Очистить Базу Локаций</button>
+            <button onClick={handleClick}>Очистить Базу Локаций</button>
             {/* <ChidlrenTest>This is children</ChidlrenTest> */}
         </div>
 }
