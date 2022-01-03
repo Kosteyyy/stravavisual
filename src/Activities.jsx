@@ -46,6 +46,7 @@ export default function Activities(props) {
         address = address.replace('Russia, ', '');
         address = address.replace('Moscow, ', '');
         address = address.replace(/\d{6},\s/, '');
+        address = address.replace('Russia', '');
         return address;
     }
 
