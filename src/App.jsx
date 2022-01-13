@@ -9,7 +9,7 @@ import { loadJSON, saveJSON, isTokenExpired, authAtStrava, refreshToken, isNear 
 import Header from './Header.jsx';
 import Unauthorized from './Unauthorized.jsx';
 import Authorization from './Authorization.jsx';
-import Activities from './Activities.jsx';
+import Activities from './activities/Activities.jsx';
 import Settings from './Settings.jsx';
 import Reset from './Reset.jsx';
 

@@ -221,28 +221,11 @@ button:hover {
     position: relative;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     margin-top: 15px;
 }
-#selectChartData select {
-    margin-right: 5px;
-}
-#selectChartData .toggle {
-    font-size: 24px;
-    font-weight: 600;
-    cursor: pointer;
-    color: var(--main-text);
-    position: absolute;
-    right: 0px;
-    top: -40px;
-}
-#selectChartData button {
-    padding: 7px;
-    margin-left: 0px
-
-}
-
 
 
 @media (max-width:767px){
@@ -434,10 +417,12 @@ button:hover {
     position: relative;
     padding-right: 10px;
 }
+.typeInput {
+    position: relative;
+}
 .dateInput label, .typeInput label{
     position: absolute;
     font-size: 0.8em;
-    display: block;
     left: 0.3125rem;
     display: flex;
     pointer-events: none;
@@ -501,6 +486,79 @@ button:hover {
     margin-right: 5px;
     background-color: transparent;
 }
+
+.chartKeySelector {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+.chartKeySelector span:first-of-type {
+    margin-right: 10px;
+} 
+.chartKeySelector span:last-of-type {
+    margin-left: 10px;
+} 
+.chartKeySelector input[type="checkbox"] {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    -webkit-appearance: none;
+    background: #c6c6c6;
+    outline: none;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: 0.5s;
+  }
+  .chartKeySelector input:checked[type="checkbox"] {
+    background: #03a9f4;
+  }
+  .chartKeySelector input[type="checkbox"]:before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    background: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.5s;
+  }
+  .chartKeySelector input:checked[type="checkbox"]:before {
+    left: 20px;
+  }
+  .chartTargetSelector {
+      height: 40px;
+      display: flex;
+      align-items: center;
+  }
+  .chartTargetSelector input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+  
+    border: 2px solid #999;
+    transition: 0.2s all linear;
+    margin-right: 5px;
+  
+    position: relative;
+    top: 2px;
+  }
+  .chartTargetSelector label {
+      margin-right: 10px;
+  }
+   .chartTargetSelector label:last-of-type {
+      margin-right: 0px;
+  }
+  
+  .chartTargetSelector input:checked {
+    border: 6px solid var(--main-color);
+  }
 
 /* resultList */
 

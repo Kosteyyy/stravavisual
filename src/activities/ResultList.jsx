@@ -1,8 +1,8 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faCaretRight, faSkiingNordic, faRunning, faBiking, faSwimmer, faEdit, faSave, faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import { secToHMS } from './functions.js';
-import { ColorContext } from "./Context.js";
+import { secToHMS } from '../functions.js';
+import { ColorContext } from "../Context.js";
 
 
 

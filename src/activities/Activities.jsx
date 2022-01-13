@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import URLSearchParams from 'url-search-params';
 import { useLocation } from "react-router-dom";
+import reducer from "./reducer.js";
 
 
-import ActivityFilter from './ActivityFilter.jsx';
+import ActivityFilter from './Filter/ActivityFilter.jsx';
 import ResultList from './ResultList.jsx';
-import { isNear, getAddress, getAddressFromMapBox } from './functions.js';
+import { isNear, getAddressFromMapBox } from '../functions.js';
 import { Aggregate } from './Aggregate.jsx';
-import Loading from "./Loading.jsx";
+import Loading from "../Loading.jsx";
 
 function translateType(type) {
     switch(type) {
@@ -18,29 +19,37 @@ function translateType(type) {
         default: return type;
     }
 }
-
+const initialState = {
+    queryParams: {
+        after: "",
+        before: "", 
+        type: ""
+    },
+    keyField: 'stravavisualPlace',
+    targetField: 'distance'
+}
 export default function Activities(props) { 
     let { activityList, setActivityList, accessToken, chartColors, trainingPlaces, addTrainingPlace, saveTrainingPlaces, renameTrainingPlace } = props;
     let currentLocation = useLocation();
+    const [state, dispatch] = useReducer(reducer, initialState);
     const [loading, setLoading] = useState(false);
-    const [filter, setFilter] = useState({});
+    // const [filter, setFilter] = useState({});
     // console.log("rendering Activities");
-    const [queryParams, setQueryParams] = useState({}); //{after: "2021-11-23", before: "2021-12-23", type: "Ride"}
     const [activities, setActivities] = useState([]); //Сохраняю в состоянии поскольку они отфильтрованы, возможно, надо заменить 
     // на входящий список с фильтром. пока что параметры фильтра сбрасываются при навигации, поэтому приходится делать новый запрос
     //console.log("ACTIVITIES: queryParams: ", queryParams, "loading: ", loading, "Activities.length: ", activities.length);
 
-    function filterAdd(object) {
-        //Добавляет к фильтру объект
-        setFilter({...filter, ...object});
-    }
+    // function filterAdd(object) {
+    //     //Добавляет к фильтру объект
+    //     setFilter({...filter, ...object});
+    // }
 
-    function filterRemove(key) {
-        //Удаляет из фильтра ключ фильтрования
-        let newFilter = {...filter};
-        delete newFilter[key];
-        setFilter(newFilter);
-    }
+    // function filterRemove(key) {
+    //     //Удаляет из фильтра ключ фильтрования
+    //     let newFilter = {...filter};
+    //     delete newFilter[key];
+    //     setFilter(newFilter);
+    // }
 
     function formatMapBoxAddress(address) {
         address = address.replace('Russia, ', '');
@@ -50,19 +59,19 @@ export default function Activities(props) {
         return address;
     }
 
-    function applyFilter(dataArray, filter) {
-        //Применяет фильтр вида {prop1: v1, prop2: v2} к массиву объектов
-        return dataArray.filter((data) => {
-            let pass=true;
-            if (Object.keys(filter).length == 0) return true;
-            Object.keys(filter).forEach(
-                (key) => {
-                    pass = pass && (data[key] == filter[key]);
-                }
-            );
-            return pass;
-        })
-    }
+    // function applyFilter(dataArray, filter) {
+    //     //Применяет фильтр вида {prop1: v1, prop2: v2} к массиву объектов
+    //     return dataArray.filter((data) => {
+    //         let pass=true;
+    //         if (Object.keys(filter).length == 0) return true;
+    //         Object.keys(filter).forEach(
+    //             (key) => {
+    //                 pass = pass && (data[key] == filter[key]);
+    //             }
+    //         );
+    //         return pass;
+    //     })
+    // }
 
     // useState(() => {
     //     filterAdd({"stravavisualPlace" : "Митино ФОК"});
@@ -107,22 +116,6 @@ export default function Activities(props) {
         }
        
 
-        // dataArray.forEach(res => {
-        //     res.stravavisualCount = 1; // добавляем параметр число 1 к активности, чтобы потом посчитать можно было в аггрегации поэтому полю.
-
-        //     let place = newPlaces.find(place => isNear(res.start_latlng, place));
-        //     if (place) {
-        //         res.stravavisualPlace = place.name;
-        //     } else {
-        //         newPlacesMax++;
-        //         let placeAddress = await getAddress(res.start_latlng);
-        //         let newPlaceName = (placeAddress != '') ? placeAddress : 'Локация ' + newPlacesMax;
-        //         res.stravavisualPlace = newPlaceName; //Вместо неизвестных добавляем 'Локация 1'
-        //         newPlaces.push({'name': newPlaceName, 'latlng': res.start_latlng});
-        //     }
-        //     saveTrainingPlaces(newPlaces); //Обновляем массив зарегистрированных мест
-        //     res.type = translateType(res.type); //Меняем вид активности на вид на русском языке
-        // });
     }
 
     async function getData(params, accessToken) {
@@ -138,8 +131,8 @@ export default function Activities(props) {
             let addParams = {
                 per_page: per_page.toString(),
                 page: page.toString(),
-                before: (Date.parse(queryParams.before) / 1000 + 24 * 60 *60 ).toString(),
-                after: (Date.parse(queryParams.after) / 1000).toString()
+                before: (Date.parse(params.before) / 1000 + 24 * 60 *60 ).toString(),
+                after: (Date.parse(params.after) / 1000).toString()
             };
             let fetchparams = {...params, ...addParams};
             //console.log(fetchparams);
@@ -179,7 +172,7 @@ export default function Activities(props) {
     }
 
     function defineQueryParams() {
-        setFilter({}); // сбрасываем прочие фильтры кроме queryParams
+        //setFilter({}); // сбрасываем прочие фильтры кроме queryParams
         // console.log("location: ", location.search);
         let params = new URLSearchParams(location.search);
         //console.log("Define queryParams. location: ", currentLocation);
@@ -190,7 +183,8 @@ export default function Activities(props) {
             );
         // console.log(queryObject);
         //console.log("ACTIVITIES - defineQueryParams. Изменился queryParams. RERENDER. queryParams now ", queryParams); 
-        setQueryParams(queryObject);
+        dispatch({type: "SET_QUERY_DATES", payload: {after: queryObject.after, before: queryObject.before}});
+        dispatch({type: "SET_QUERY_TYPE", payload: {type: queryObject.type}});
     }
 
     useEffect(() => {
@@ -200,14 +194,14 @@ export default function Activities(props) {
 
     // При изменении фильтра загружаем активности
     useEffect(() => {
-        //console.log("useEffect 2");
-        if (Object.keys(queryParams).length==0) return;
+        console.log("useEffect 2");
+        if (!state.queryParams.after && !state.queryParams.before) return;
         //console.log("ДАТЫ ФИЛЬТРА ИЗМЕНИЛИСЬ (ИЛИ ПРИ РЕНДЕРЕ СЮДА ЗАШЛИ), БУДУ ПОЛУЧАТЬ ДАННЫЕ И УСТАНОВЛЮ ИХ В МАССИВ. Пока ререндера нет");
         //console.log("На сейчас длина Входящих данных ", activityList.length);
-        getData(queryParams, accessToken)
+        getData(state.queryParams, accessToken)
             .then(res => setActivityList(res))
             .catch(err => console.log(err));
-    }, [queryParams.before, queryParams.after]);
+    }, [state.queryParams.before, state.queryParams.after]);
 
     // При изменении активностей применяем к ним фильтр и загружаем в стэйт
     useEffect(() => {
@@ -216,26 +210,28 @@ export default function Activities(props) {
         //А если пропустим, то отрендерится старый массив
         //console.log("МАССИВ ДАННЫХ ИЛИ ПАРАМЕТРЫ ПОИСКА ИЗМЕНИЛИСЬ, ПРИМЕНЯЮ ФИЛЬТР. РЕРЕНДЕР");
         //console.log("queryParams", queryParams, "activityList: ", activityList);
-        let filteredActivities = activityList.filter((el => queryParams.type ? (el.type == queryParams.type) : true));
+        let filteredActivities = activityList.filter((el => state.queryParams.type ? (el.type == state.queryParams.type) : true));
         // console.log("useEffect 3: filter=", filter, filteredActivities);
-        setActivities(applyFilter(filteredActivities, filter)); // Здесь ещё будет применён фильтр
-    }, [activityList, queryParams, filter]);
+        setActivities(filteredActivities); // Здесь ещё будет применён фильтр
+    }, [activityList, state.queryParams]);
 
     //console.log("Рендерю ACTIVITIES компонент.")
     return(
         <div id="activities" className="content">
-            <ActivityFilter handleFormSubmit={defineQueryParams} filterParams={queryParams}/>
+            <ActivityFilter 
+                filterParams={state.queryParams} 
+                targetField={state.targetField} 
+                dispatch={dispatch}
+            />
             {loading && <Loading />}
             {activities.length !== 0 && !loading ? <Aggregate
                 activitiesList={activities}
                 chartColors={chartColors}
-                filter={filter}
-                filterAdd={filterAdd}
-                filterRemove={filterRemove}
                 trainingPlaces={trainingPlaces}
-                renameTrainingPlace={renameTrainingPlace}/> : null}
+                renameTrainingPlace={renameTrainingPlace}
+                keyField={state.keyField}
+                targetField={state.targetField}/> : null}
             {!loading && <ResultList resultList={activities} trainingPlaces={trainingPlaces} addTrainingPlace={addTrainingPlace}/>}
-            {/* <button onClick={getActivitiesFromStrava}>получить данные</button> */}
         </div>
      )
 }

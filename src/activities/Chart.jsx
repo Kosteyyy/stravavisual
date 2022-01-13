@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CHART_COLORS } from "./constants.js";
+import { CHART_COLORS } from "../constants.js";
 
 function createSector(r, startAngle, sliceAngle, fillColor, strokeColor) {
   const centerX = 175,
