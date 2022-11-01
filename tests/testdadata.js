@@ -1,9 +1,9 @@
 const fetch = require('node-fetch');
-var my_token = "***REMOVED***";
+var my_token = "94d6978a820a1ed10e3fe43d50ebac7c78eaf86a";
 latlng = [55.84 , 37.37];
 
 // var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
-// var token = "***REMOVED***";
+// var token = "94d6978a820a1ed10e3fe43d50ebac7c78eaf86a";
 // var query = { lat: 55.84, lon: 37.34 };
 
 // var options = {
@@ -29,7 +29,7 @@ latlng = [55.84 , 37.37];
 async function fetchFromDadata(latlng, access_token) {
 
     var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
-    var token = "***REMOVED***";
+    var token = "94d6978a820a1ed10e3fe43d50ebac7c78eaf86a";
     var query = { lat: latlng[0], lon: latlng[1] };
 
     var options = {

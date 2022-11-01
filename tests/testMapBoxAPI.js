@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-var my_token = "***REMOVED***";
+var my_token = "pk.eyJ1Ijoia29zdGV5eXkiLCJhIjoiY2t4eWo2aHQ5Mmd0dDJybXA1aXI5dWZwNCJ9.4fkAysxj_CztwNolPCG1-Q";
 latlng = [55.67 , 37.37];
 
 async function fetchFromMapBox(latlng, access_token) {
