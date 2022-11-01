@@ -6,8 +6,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const { faCity } = require("@fortawesome/free-solid-svg-icons");
 
-const CLIENT_ID = "***REMOVED***";
-const CLIENT_SECRET = "***REMOVED***";
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const PORT = process.env.PORT || 3000; //port for deploy or localhost
 //let authUrl = "https://www.strava.com/oauth/token";
 
@@ -63,8 +63,8 @@ async function authWithRefreshToken(token) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      client_id: "***REMOVED***",
-      client_secret: "***REMOVED***",
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
       refresh_token: token,
       grant_type: "refresh_token",
     }),
@@ -82,8 +82,8 @@ async function authWithCode(code) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      client_id: "***REMOVED***",
-      client_secret: "***REMOVED***",
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
       code: code,
       grant_type: "authorization_code",
     }),
@@ -94,7 +94,7 @@ async function authWithCode(code) {
 
 async function fetchFromMapBox(
   latlng,
-  access_token = "***REMOVED***"
+  access_token = process.env.MAPBOX_ACCESS_TOKEN
 ) {
   let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${latlng[1]},${latlng[0]}.json?access_token=${access_token}`;
 
@@ -112,7 +112,7 @@ async function fetchFromMapBox(
 async function fetchFromDadata(latlng, access_token) {
   var url =
     "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
-  var token = "***REMOVED***";
+  var token = process.env.DADATA_TOKEN;
   var query = { lat: latlng[0], lon: latlng[1] };
 
   var options = {
